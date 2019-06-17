@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fpms.dao.ProductLibraryConfigurationDao">
+  <resultMap id="BaseResultMap" type="com.fpms.entity.ProductLibraryConfiguration">
+    <id column="product_con_id" jdbcType="INTEGER" property="productConId" />
+    <result column="product_con_name" jdbcType="VARCHAR" property="productConName" />
+    <result column="product_con_num" jdbcType="INTEGER" property="productConNum" />
+    <result column="product_con_desc" jdbcType="VARCHAR" property="productConDesc" />
+    <result column="product_con_price" jdbcType="DECIMAL" property="productConPrice" />
+    <result column="review_status" jdbcType="TINYINT" property="reviewStatus" />
+    <result column="is_sale" jdbcType="TINYINT" property="isSale" />
+    <result column="sale_start_time" jdbcType="TIMESTAMP" property="saleStartTime" />
+    <result column="sale_end_time" jdbcType="TIMESTAMP" property="saleEndTime" />
+    <result column="sale_num" jdbcType="INTEGER" property="saleNum" />
+    <result column="stock" jdbcType="INTEGER" property="stock" />
+    <result column="evalution_avg_score" jdbcType="DECIMAL" property="evalutionAvgScore" />
+    <result column="evalution_num" jdbcType="INTEGER" property="evalutionNum" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    product_con_id, product_con_name, product_con_num, product_con_desc, product_con_price, 
+    review_status, is_sale, sale_start_time, sale_end_time, sale_num, stock, evalution_avg_score, 
+    evalution_num, create_time
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from product_library_configuration
+    where product_con_id = #{productConId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from product_library_configuration
+    where product_con_id = #{productConId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.fpms.entity.ProductLibraryConfiguration">
+    insert into product_library_configuration (product_con_id, product_con_name, product_con_num, 
+      product_con_desc, product_con_price, review_status, 
+      is_sale, sale_start_time, sale_end_time, 
+      sale_num, stock, evalution_avg_score, 
+      evalution_num, create_time)
+    values (#{productConId,jdbcType=INTEGER}, #{productConName,jdbcType=VARCHAR}, #{productConNum,jdbcType=INTEGER}, 
+      #{productConDesc,jdbcType=VARCHAR}, #{productConPrice,jdbcType=DECIMAL}, #{reviewStatus,jdbcType=TINYINT}, 
+      #{isSale,jdbcType=TINYINT}, #{saleStartTime,jdbcType=TIMESTAMP}, #{saleEndTime,jdbcType=TIMESTAMP}, 
+      #{saleNum,jdbcType=INTEGER}, #{stock,jdbcType=INTEGER}, #{evalutionAvgScore,jdbcType=DECIMAL}, 
+      #{evalutionNum,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.fpms.entity.ProductLibraryConfiguration">
+    insert into product_library_configuration
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="productConId != null">
+        product_con_id,
+      </if>
+      <if test="productConName != null">
+        product_con_name,
+      </if>
+      <if test="productConNum != null">
+        product_con_num,
+      </if>
+      <if test="productConDesc != null">
+        product_con_desc,
+      </if>
+      <if test="productConPrice != null">
+        product_con_price,
+      </if>
+      <if test="reviewStatus != null">
+        review_status,
+      </if>
+      <if test="isSale != null">
+        is_sale,
+      </if>
+      <if test="saleStartTime != null">
+        sale_start_time,
+      </if>
+      <if test="saleEndTime != null">
+        sale_end_time,
+      </if>
+      <if test="saleNum != null">
+        sale_num,
+      </if>
+      <if test="stock != null">
+        stock,
+      </if>
+      <if test="evalutionAvgScore != null">
+        evalution_avg_score,
+      </if>
+      <if test="evalutionNum != null">
+        evalution_num,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="productConId != null">
+        #{productConId,jdbcType=INTEGER},
+      </if>
+      <if test="productConName != null">
+        #{productConName,jdbcType=VARCHAR},
+      </if>
+      <if test="productConNum != null">
+        #{productConNum,jdbcType=INTEGER},
+      </if>
+      <if test="productConDesc != null">
+        #{productConDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="productConPrice != null">
+        #{productConPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="reviewStatus != null">
+        #{reviewStatus,jdbcType=TINYINT},
+      </if>
+      <if test="isSale != null">
+        #{isSale,jdbcType=TINYINT},
+      </if>
+      <if test="saleStartTime != null">
+        #{saleStartTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="saleEndTime != null">
+        #{saleEndTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="saleNum != null">
+        #{saleNum,jdbcType=INTEGER},
+      </if>
+      <if test="stock != null">
+        #{stock,jdbcType=INTEGER},
+      </if>
+      <if test="evalutionAvgScore != null">
+        #{evalutionAvgScore,jdbcType=DECIMAL},
+      </if>
+      <if test="evalutionNum != null">
+        #{evalutionNum,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.fpms.entity.ProductLibraryConfiguration">
+    update product_library_configuration
+    <set>
+      <if test="productConName != null">
+        product_con_name = #{productConName,jdbcType=VARCHAR},
+      </if>
+      <if test="productConNum != null">
+        product_con_num = #{productConNum,jdbcType=INTEGER},
+      </if>
+      <if test="productConDesc != null">
+        product_con_desc = #{productConDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="productConPrice != null">
+        product_con_price = #{productConPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="reviewStatus != null">
+        review_status = #{reviewStatus,jdbcType=TINYINT},
+      </if>
+      <if test="isSale != null">
+        is_sale = #{isSale,jdbcType=TINYINT},
+      </if>
+      <if test="saleStartTime != null">
+        sale_start_time = #{saleStartTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="saleEndTime != null">
+        sale_end_time = #{saleEndTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="saleNum != null">
+        sale_num = #{saleNum,jdbcType=INTEGER},
+      </if>
+      <if test="stock != null">
+        stock = #{stock,jdbcType=INTEGER},
+      </if>
+      <if test="evalutionAvgScore != null">
+        evalution_avg_score = #{evalutionAvgScore,jdbcType=DECIMAL},
+      </if>
+      <if test="evalutionNum != null">
+        evalution_num = #{evalutionNum,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where product_con_id = #{productConId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.fpms.entity.ProductLibraryConfiguration">
+    update product_library_configuration
+    set product_con_name = #{productConName,jdbcType=VARCHAR},
+      product_con_num = #{productConNum,jdbcType=INTEGER},
+      product_con_desc = #{productConDesc,jdbcType=VARCHAR},
+      product_con_price = #{productConPrice,jdbcType=DECIMAL},
+      review_status = #{reviewStatus,jdbcType=TINYINT},
+      is_sale = #{isSale,jdbcType=TINYINT},
+      sale_start_time = #{saleStartTime,jdbcType=TIMESTAMP},
+      sale_end_time = #{saleEndTime,jdbcType=TIMESTAMP},
+      sale_num = #{saleNum,jdbcType=INTEGER},
+      stock = #{stock,jdbcType=INTEGER},
+      evalution_avg_score = #{evalutionAvgScore,jdbcType=DECIMAL},
+      evalution_num = #{evalutionNum,jdbcType=INTEGER},
+      create_time = #{createTime,jdbcType=TIMESTAMP}
+    where product_con_id = #{productConId,jdbcType=INTEGER}
+  </update>
+</mapper>

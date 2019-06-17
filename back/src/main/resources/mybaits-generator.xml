@@ -16,7 +16,7 @@
         </commentGenerator>
 
         <jdbcConnection driverClass="com.mysql.cj.jdbc.Driver"
-                        connectionURL="jdbc:mysql://localhost:3306/spring4_day03?useUnicode=true&amp;characterEncoding=utf-8&amp;useSSL=false&amp;serverTimezone=UTC"
+                        connectionURL="jdbc:mysql://localhost:3306/fpms?useUnicode=true&amp;characterEncoding=utf-8&amp;useSSL=false&amp;serverTimezone=UTC"
                         userId="root"
                         password="aa12131417">
             <property name="nullCatalogMeansCurrent" value="true"></property>
@@ -40,7 +40,79 @@
         </javaClientGenerator>
 
         <!--生成对应表及类名-->
-        <table  tableName="user_info" domainObjectName="UserDO" enableCountByExample="false"
+        <table  tableName="configuration_review" domainObjectName="ConfigurationReview" mapperName="ConfigurationReviewDao" enableCountByExample="false"
+                enableUpdateByExample="false" enableDeleteByExample="false"
+                enableSelectByExample="false" selectByExampleQueryId="false"></table>
+
+        <table  tableName="evaluation" domainObjectName="Evaluation" mapperName="EvaluationDao" enableCountByExample="false"
+                enableUpdateByExample="false" enableDeleteByExample="false"
+                enableSelectByExample="false" selectByExampleQueryId="false"></table>
+
+        <table  tableName="log_money" domainObjectName="LogMoney" mapperName="LogMoneyDao" enableCountByExample="false"
+                enableUpdateByExample="false" enableDeleteByExample="false"
+                enableSelectByExample="false" selectByExampleQueryId="false"></table>
+
+        <table  tableName="log_operate" domainObjectName="LogOperate" mapperName="LogOperateDao" enableCountByExample="false"
+                enableUpdateByExample="false" enableDeleteByExample="false"
+                enableSelectByExample="false" selectByExampleQueryId="false"></table>
+
+        <table  tableName="order" domainObjectName="Order" mapperName="OrderDao" enableCountByExample="false"
+                enableUpdateByExample="false" enableDeleteByExample="false"
+                enableSelectByExample="false" selectByExampleQueryId="false"></table>
+
+        <table  tableName="privilege" domainObjectName="Privilege" mapperName="PrivilegeDao" enableCountByExample="false"
+                enableUpdateByExample="false" enableDeleteByExample="false"
+                enableSelectByExample="false" selectByExampleQueryId="false"></table>
+
+        <table  tableName="product_category" domainObjectName="ProductCategory" mapperName="ProductCategoryDao" enableCountByExample="false"
+                enableUpdateByExample="false" enableDeleteByExample="false"
+                enableSelectByExample="false" selectByExampleQueryId="false"></table>
+
+        <table  tableName="product_configuration" domainObjectName="ProductConfiguration" mapperName="ProductConfigurationDao" enableCountByExample="false"
+                enableUpdateByExample="false" enableDeleteByExample="false"
+                enableSelectByExample="false" selectByExampleQueryId="false"></table>
+
+        <table  tableName="product_library_configuration" domainObjectName="ProductLibraryConfiguration" mapperName="ProductLibraryConfigurationDao" enableCountByExample="false"
+                enableUpdateByExample="false" enableDeleteByExample="false"
+                enableSelectByExample="false" selectByExampleQueryId="false"></table>
+
+        <table  tableName="product_library_pre" domainObjectName="ProductLibraryPre" mapperName="ProductLibraryPreDao" enableCountByExample="false"
+                enableUpdateByExample="false" enableDeleteByExample="false"
+                enableSelectByExample="false" selectByExampleQueryId="false"></table>
+
+        <table  tableName="product_library_standard" domainObjectName="ProductLibraryStandard" mapperName="ProductLibraryStandardDao" enableCountByExample="false"
+                enableUpdateByExample="false" enableDeleteByExample="false"
+                enableSelectByExample="false" selectByExampleQueryId="false"></table>
+
+        <table  tableName="product_review" domainObjectName="ProductReview" mapperName="ProductReviewDao" enableCountByExample="false"
+                enableUpdateByExample="false" enableDeleteByExample="false"
+                enableSelectByExample="false" selectByExampleQueryId="false"></table>
+
+        <table  tableName="product_user" domainObjectName="ProductUser" mapperName="ProductUserDao" enableCountByExample="false"
+                enableUpdateByExample="false" enableDeleteByExample="false"
+                enableSelectByExample="false" selectByExampleQueryId="false"></table>
+
+        <table  tableName="role" domainObjectName="Role" mapperName="RoleDao" enableCountByExample="false"
+                enableUpdateByExample="false" enableDeleteByExample="false"
+                enableSelectByExample="false" selectByExampleQueryId="false"></table>
+
+        <table  tableName="role_privilege" domainObjectName="RolePrivilege" mapperName="RolePrivilegeDao" enableCountByExample="false"
+                enableUpdateByExample="false" enableDeleteByExample="false"
+                enableSelectByExample="false" selectByExampleQueryId="false"></table>
+
+        <table  tableName="staff" domainObjectName="Staff" mapperName="StaffDao" enableCountByExample="false"
+                enableUpdateByExample="false" enableDeleteByExample="false"
+                enableSelectByExample="false" selectByExampleQueryId="false"></table>
+
+        <table  tableName="user" domainObjectName="User" mapperName="UserDao" enableCountByExample="false"
+                enableUpdateByExample="false" enableDeleteByExample="false"
+                enableSelectByExample="false" selectByExampleQueryId="false"></table>
+
+        <table  tableName="staff_role" domainObjectName="StaffRole" mapperName="StaffRoleDao" enableCountByExample="false"
+                enableUpdateByExample="false" enableDeleteByExample="false"
+                enableSelectByExample="false" selectByExampleQueryId="false"></table>
+
+        <table  tableName="supplier" domainObjectName="Supplier" mapperName="SupplierDao" enableCountByExample="false"
                 enableUpdateByExample="false" enableDeleteByExample="false"
                 enableSelectByExample="false" selectByExampleQueryId="false"></table>
 

@@ -1,0 +1,235 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fpms.dao.UserDao">
+  <resultMap id="BaseResultMap" type="com.fpms.entity.User">
+    <id column="user_id" jdbcType="INTEGER" property="userId" />
+    <result column="user_name" jdbcType="VARCHAR" property="userName" />
+    <result column="user_pwd" jdbcType="VARCHAR" property="userPwd" />
+    <result column="user_gender" jdbcType="CHAR" property="userGender" />
+    <result column="user_brithday" jdbcType="DATE" property="userBrithday" />
+    <result column="user_phone" jdbcType="CHAR" property="userPhone" />
+    <result column="user_email" jdbcType="VARCHAR" property="userEmail" />
+    <result column="user_photo" jdbcType="VARCHAR" property="userPhoto" />
+    <result column="zip_code" jdbcType="VARCHAR" property="zipCode" />
+    <result column="user_address" jdbcType="VARCHAR" property="userAddress" />
+    <result column="career" jdbcType="VARCHAR" property="career" />
+    <result column="user_money" jdbcType="DECIMAL" property="userMoney" />
+    <result column="certificate_type" jdbcType="TINYINT" property="certificateType" />
+    <result column="certificate_num" jdbcType="VARCHAR" property="certificateNum" />
+    <result column="integrity_score" jdbcType="INTEGER" property="integrityScore" />
+    <result column="pay_pwd" jdbcType="VARCHAR" property="payPwd" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    user_id, user_name, user_pwd, user_gender, user_brithday, user_phone, user_email, 
+    user_photo, zip_code, user_address, career, user_money, certificate_type, certificate_num, 
+    integrity_score, pay_pwd, create_time
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from user
+    where user_id = #{userId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from user
+    where user_id = #{userId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.fpms.entity.User">
+    insert into user (user_id, user_name, user_pwd, 
+      user_gender, user_brithday, user_phone, 
+      user_email, user_photo, zip_code, 
+      user_address, career, user_money, 
+      certificate_type, certificate_num, integrity_score, 
+      pay_pwd, create_time)
+    values (#{userId,jdbcType=INTEGER}, #{userName,jdbcType=VARCHAR}, #{userPwd,jdbcType=VARCHAR}, 
+      #{userGender,jdbcType=CHAR}, #{userBrithday,jdbcType=DATE}, #{userPhone,jdbcType=CHAR}, 
+      #{userEmail,jdbcType=VARCHAR}, #{userPhoto,jdbcType=VARCHAR}, #{zipCode,jdbcType=VARCHAR}, 
+      #{userAddress,jdbcType=VARCHAR}, #{career,jdbcType=VARCHAR}, #{userMoney,jdbcType=DECIMAL}, 
+      #{certificateType,jdbcType=TINYINT}, #{certificateNum,jdbcType=VARCHAR}, #{integrityScore,jdbcType=INTEGER}, 
+      #{payPwd,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.fpms.entity.User">
+    insert into user
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="userId != null">
+        user_id,
+      </if>
+      <if test="userName != null">
+        user_name,
+      </if>
+      <if test="userPwd != null">
+        user_pwd,
+      </if>
+      <if test="userGender != null">
+        user_gender,
+      </if>
+      <if test="userBrithday != null">
+        user_brithday,
+      </if>
+      <if test="userPhone != null">
+        user_phone,
+      </if>
+      <if test="userEmail != null">
+        user_email,
+      </if>
+      <if test="userPhoto != null">
+        user_photo,
+      </if>
+      <if test="zipCode != null">
+        zip_code,
+      </if>
+      <if test="userAddress != null">
+        user_address,
+      </if>
+      <if test="career != null">
+        career,
+      </if>
+      <if test="userMoney != null">
+        user_money,
+      </if>
+      <if test="certificateType != null">
+        certificate_type,
+      </if>
+      <if test="certificateNum != null">
+        certificate_num,
+      </if>
+      <if test="integrityScore != null">
+        integrity_score,
+      </if>
+      <if test="payPwd != null">
+        pay_pwd,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="userId != null">
+        #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="userName != null">
+        #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="userPwd != null">
+        #{userPwd,jdbcType=VARCHAR},
+      </if>
+      <if test="userGender != null">
+        #{userGender,jdbcType=CHAR},
+      </if>
+      <if test="userBrithday != null">
+        #{userBrithday,jdbcType=DATE},
+      </if>
+      <if test="userPhone != null">
+        #{userPhone,jdbcType=CHAR},
+      </if>
+      <if test="userEmail != null">
+        #{userEmail,jdbcType=VARCHAR},
+      </if>
+      <if test="userPhoto != null">
+        #{userPhoto,jdbcType=VARCHAR},
+      </if>
+      <if test="zipCode != null">
+        #{zipCode,jdbcType=VARCHAR},
+      </if>
+      <if test="userAddress != null">
+        #{userAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="career != null">
+        #{career,jdbcType=VARCHAR},
+      </if>
+      <if test="userMoney != null">
+        #{userMoney,jdbcType=DECIMAL},
+      </if>
+      <if test="certificateType != null">
+        #{certificateType,jdbcType=TINYINT},
+      </if>
+      <if test="certificateNum != null">
+        #{certificateNum,jdbcType=VARCHAR},
+      </if>
+      <if test="integrityScore != null">
+        #{integrityScore,jdbcType=INTEGER},
+      </if>
+      <if test="payPwd != null">
+        #{payPwd,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.fpms.entity.User">
+    update user
+    <set>
+      <if test="userName != null">
+        user_name = #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="userPwd != null">
+        user_pwd = #{userPwd,jdbcType=VARCHAR},
+      </if>
+      <if test="userGender != null">
+        user_gender = #{userGender,jdbcType=CHAR},
+      </if>
+      <if test="userBrithday != null">
+        user_brithday = #{userBrithday,jdbcType=DATE},
+      </if>
+      <if test="userPhone != null">
+        user_phone = #{userPhone,jdbcType=CHAR},
+      </if>
+      <if test="userEmail != null">
+        user_email = #{userEmail,jdbcType=VARCHAR},
+      </if>
+      <if test="userPhoto != null">
+        user_photo = #{userPhoto,jdbcType=VARCHAR},
+      </if>
+      <if test="zipCode != null">
+        zip_code = #{zipCode,jdbcType=VARCHAR},
+      </if>
+      <if test="userAddress != null">
+        user_address = #{userAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="career != null">
+        career = #{career,jdbcType=VARCHAR},
+      </if>
+      <if test="userMoney != null">
+        user_money = #{userMoney,jdbcType=DECIMAL},
+      </if>
+      <if test="certificateType != null">
+        certificate_type = #{certificateType,jdbcType=TINYINT},
+      </if>
+      <if test="certificateNum != null">
+        certificate_num = #{certificateNum,jdbcType=VARCHAR},
+      </if>
+      <if test="integrityScore != null">
+        integrity_score = #{integrityScore,jdbcType=INTEGER},
+      </if>
+      <if test="payPwd != null">
+        pay_pwd = #{payPwd,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where user_id = #{userId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.fpms.entity.User">
+    update user
+    set user_name = #{userName,jdbcType=VARCHAR},
+      user_pwd = #{userPwd,jdbcType=VARCHAR},
+      user_gender = #{userGender,jdbcType=CHAR},
+      user_brithday = #{userBrithday,jdbcType=DATE},
+      user_phone = #{userPhone,jdbcType=CHAR},
+      user_email = #{userEmail,jdbcType=VARCHAR},
+      user_photo = #{userPhoto,jdbcType=VARCHAR},
+      zip_code = #{zipCode,jdbcType=VARCHAR},
+      user_address = #{userAddress,jdbcType=VARCHAR},
+      career = #{career,jdbcType=VARCHAR},
+      user_money = #{userMoney,jdbcType=DECIMAL},
+      certificate_type = #{certificateType,jdbcType=TINYINT},
+      certificate_num = #{certificateNum,jdbcType=VARCHAR},
+      integrity_score = #{integrityScore,jdbcType=INTEGER},
+      pay_pwd = #{payPwd,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP}
+    where user_id = #{userId,jdbcType=INTEGER}
+  </update>
+</mapper>

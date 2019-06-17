@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fpms.dao.LogOperateDao">
+  <resultMap id="BaseResultMap" type="com.fpms.entity.LogOperate">
+    <id column="log_operate_id" jdbcType="INTEGER" property="logOperateId" />
+    <result column="staff_id" jdbcType="INTEGER" property="staffId" />
+    <result column="operate_time" jdbcType="TIMESTAMP" property="operateTime" />
+    <result column="operate_desc" jdbcType="VARCHAR" property="operateDesc" />
+    <result column="operate_url" jdbcType="VARCHAR" property="operateUrl" />
+    <result column="content" jdbcType="VARCHAR" property="content" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    log_operate_id, staff_id, operate_time, operate_desc, operate_url, content, create_time
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from log_operate
+    where log_operate_id = #{logOperateId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from log_operate
+    where log_operate_id = #{logOperateId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.fpms.entity.LogOperate">
+    insert into log_operate (log_operate_id, staff_id, operate_time, 
+      operate_desc, operate_url, content, 
+      create_time)
+    values (#{logOperateId,jdbcType=INTEGER}, #{staffId,jdbcType=INTEGER}, #{operateTime,jdbcType=TIMESTAMP}, 
+      #{operateDesc,jdbcType=VARCHAR}, #{operateUrl,jdbcType=VARCHAR}, #{content,jdbcType=VARCHAR}, 
+      #{createTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.fpms.entity.LogOperate">
+    insert into log_operate
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="logOperateId != null">
+        log_operate_id,
+      </if>
+      <if test="staffId != null">
+        staff_id,
+      </if>
+      <if test="operateTime != null">
+        operate_time,
+      </if>
+      <if test="operateDesc != null">
+        operate_desc,
+      </if>
+      <if test="operateUrl != null">
+        operate_url,
+      </if>
+      <if test="content != null">
+        content,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="logOperateId != null">
+        #{logOperateId,jdbcType=INTEGER},
+      </if>
+      <if test="staffId != null">
+        #{staffId,jdbcType=INTEGER},
+      </if>
+      <if test="operateTime != null">
+        #{operateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="operateDesc != null">
+        #{operateDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="operateUrl != null">
+        #{operateUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="content != null">
+        #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.fpms.entity.LogOperate">
+    update log_operate
+    <set>
+      <if test="staffId != null">
+        staff_id = #{staffId,jdbcType=INTEGER},
+      </if>
+      <if test="operateTime != null">
+        operate_time = #{operateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="operateDesc != null">
+        operate_desc = #{operateDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="operateUrl != null">
+        operate_url = #{operateUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="content != null">
+        content = #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where log_operate_id = #{logOperateId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.fpms.entity.LogOperate">
+    update log_operate
+    set staff_id = #{staffId,jdbcType=INTEGER},
+      operate_time = #{operateTime,jdbcType=TIMESTAMP},
+      operate_desc = #{operateDesc,jdbcType=VARCHAR},
+      operate_url = #{operateUrl,jdbcType=VARCHAR},
+      content = #{content,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP}
+    where log_operate_id = #{logOperateId,jdbcType=INTEGER}
+  </update>
+</mapper>

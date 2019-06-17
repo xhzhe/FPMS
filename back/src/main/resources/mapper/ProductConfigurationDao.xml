@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fpms.dao.ProductConfigurationDao">
+  <resultMap id="BaseResultMap" type="com.fpms.entity.ProductConfiguration">
+    <id column="configuration_id" jdbcType="INTEGER" property="configurationId" />
+    <result column="product_std_id" jdbcType="INTEGER" property="productStdId" />
+    <result column="product_con_id" jdbcType="INTEGER" property="productConId" />
+    <result column="percentage" jdbcType="DECIMAL" property="percentage" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    configuration_id, product_std_id, product_con_id, percentage, create_time
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from product_configuration
+    where configuration_id = #{configurationId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from product_configuration
+    where configuration_id = #{configurationId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.fpms.entity.ProductConfiguration">
+    insert into product_configuration (configuration_id, product_std_id, product_con_id, 
+      percentage, create_time)
+    values (#{configurationId,jdbcType=INTEGER}, #{productStdId,jdbcType=INTEGER}, #{productConId,jdbcType=INTEGER}, 
+      #{percentage,jdbcType=DECIMAL}, #{createTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.fpms.entity.ProductConfiguration">
+    insert into product_configuration
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="configurationId != null">
+        configuration_id,
+      </if>
+      <if test="productStdId != null">
+        product_std_id,
+      </if>
+      <if test="productConId != null">
+        product_con_id,
+      </if>
+      <if test="percentage != null">
+        percentage,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="configurationId != null">
+        #{configurationId,jdbcType=INTEGER},
+      </if>
+      <if test="productStdId != null">
+        #{productStdId,jdbcType=INTEGER},
+      </if>
+      <if test="productConId != null">
+        #{productConId,jdbcType=INTEGER},
+      </if>
+      <if test="percentage != null">
+        #{percentage,jdbcType=DECIMAL},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.fpms.entity.ProductConfiguration">
+    update product_configuration
+    <set>
+      <if test="productStdId != null">
+        product_std_id = #{productStdId,jdbcType=INTEGER},
+      </if>
+      <if test="productConId != null">
+        product_con_id = #{productConId,jdbcType=INTEGER},
+      </if>
+      <if test="percentage != null">
+        percentage = #{percentage,jdbcType=DECIMAL},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where configuration_id = #{configurationId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.fpms.entity.ProductConfiguration">
+    update product_configuration
+    set product_std_id = #{productStdId,jdbcType=INTEGER},
+      product_con_id = #{productConId,jdbcType=INTEGER},
+      percentage = #{percentage,jdbcType=DECIMAL},
+      create_time = #{createTime,jdbcType=TIMESTAMP}
+    where configuration_id = #{configurationId,jdbcType=INTEGER}
+  </update>
+</mapper>

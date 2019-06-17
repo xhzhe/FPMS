@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fpms.dao.LogMoneyDao">
+  <resultMap id="BaseResultMap" type="com.fpms.entity.LogMoney">
+    <id column="log_money_id" jdbcType="INTEGER" property="logMoneyId" />
+    <result column="user_id" jdbcType="INTEGER" property="userId" />
+    <result column="money_type" jdbcType="TINYINT" property="moneyType" />
+    <result column="money" jdbcType="DECIMAL" property="money" />
+    <result column="user_money" jdbcType="DECIMAL" property="userMoney" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    log_money_id, user_id, money_type, money, user_money, remark, create_time
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from log_money
+    where log_money_id = #{logMoneyId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from log_money
+    where log_money_id = #{logMoneyId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.fpms.entity.LogMoney">
+    insert into log_money (log_money_id, user_id, money_type, 
+      money, user_money, remark, 
+      create_time)
+    values (#{logMoneyId,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, #{moneyType,jdbcType=TINYINT}, 
+      #{money,jdbcType=DECIMAL}, #{userMoney,jdbcType=DECIMAL}, #{remark,jdbcType=VARCHAR}, 
+      #{createTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.fpms.entity.LogMoney">
+    insert into log_money
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="logMoneyId != null">
+        log_money_id,
+      </if>
+      <if test="userId != null">
+        user_id,
+      </if>
+      <if test="moneyType != null">
+        money_type,
+      </if>
+      <if test="money != null">
+        money,
+      </if>
+      <if test="userMoney != null">
+        user_money,
+      </if>
+      <if test="remark != null">
+        remark,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="logMoneyId != null">
+        #{logMoneyId,jdbcType=INTEGER},
+      </if>
+      <if test="userId != null">
+        #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="moneyType != null">
+        #{moneyType,jdbcType=TINYINT},
+      </if>
+      <if test="money != null">
+        #{money,jdbcType=DECIMAL},
+      </if>
+      <if test="userMoney != null">
+        #{userMoney,jdbcType=DECIMAL},
+      </if>
+      <if test="remark != null">
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.fpms.entity.LogMoney">
+    update log_money
+    <set>
+      <if test="userId != null">
+        user_id = #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="moneyType != null">
+        money_type = #{moneyType,jdbcType=TINYINT},
+      </if>
+      <if test="money != null">
+        money = #{money,jdbcType=DECIMAL},
+      </if>
+      <if test="userMoney != null">
+        user_money = #{userMoney,jdbcType=DECIMAL},
+      </if>
+      <if test="remark != null">
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where log_money_id = #{logMoneyId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.fpms.entity.LogMoney">
+    update log_money
+    set user_id = #{userId,jdbcType=INTEGER},
+      money_type = #{moneyType,jdbcType=TINYINT},
+      money = #{money,jdbcType=DECIMAL},
+      user_money = #{userMoney,jdbcType=DECIMAL},
+      remark = #{remark,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP}
+    where log_money_id = #{logMoneyId,jdbcType=INTEGER}
+  </update>
+</mapper>

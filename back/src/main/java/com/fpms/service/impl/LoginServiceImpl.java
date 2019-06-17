@@ -9,4 +9,17 @@ import com.fpms.service.LoginService;
  * @modified :
  */
 public class LoginServiceImpl implements LoginService {
+    /**
+     * 管理员登录
+     *
+     * @param systemAdmName
+     * @param systemAdmPwd
+     * @return : void
+     * @author ：YongBiao Liao
+     * @date ：Created in 2019/6/14 16:29
+     */
+    @Override
+    public void loginBySystemAdministrator(String systemAdmName, String systemAdmPwd) {
+
+    }
 }

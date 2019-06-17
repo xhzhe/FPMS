@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fpms.dao.ProductLibraryStandardDao">
+  <resultMap id="BaseResultMap" type="com.fpms.entity.ProductLibraryStandard">
+    <id column="product_std_id" jdbcType="INTEGER" property="productStdId" />
+    <result column="product_pre_id" jdbcType="INTEGER" property="productPreId" />
+    <result column="suit_user" jdbcType="TINYINT" property="suitUser" />
+    <result column="inter_risk_rating" jdbcType="TINYINT" property="interRiskRating" />
+    <result column="exchange_rate_risk_index" jdbcType="TINYINT" property="exchangeRateRiskIndex" />
+    <result column="interest_rate_risk_index" jdbcType="TINYINT" property="interestRateRiskIndex" />
+    <result column="market_risk_index" jdbcType="TINYINT" property="marketRiskIndex" />
+    <result column="credit_risk_index" jdbcType="TINYINT" property="creditRiskIndex" />
+    <result column="is_sale" jdbcType="TINYINT" property="isSale" />
+    <result column="sale_start_time" jdbcType="TIMESTAMP" property="saleStartTime" />
+    <result column="sale_end_time" jdbcType="TIMESTAMP" property="saleEndTime" />
+    <result column="sale_num" jdbcType="INTEGER" property="saleNum" />
+    <result column="stock" jdbcType="INTEGER" property="stock" />
+    <result column="evalution_avg_score" jdbcType="DECIMAL" property="evalutionAvgScore" />
+    <result column="evalution_num" jdbcType="INTEGER" property="evalutionNum" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    product_std_id, product_pre_id, suit_user, inter_risk_rating, exchange_rate_risk_index, 
+    interest_rate_risk_index, market_risk_index, credit_risk_index, is_sale, sale_start_time, 
+    sale_end_time, sale_num, stock, evalution_avg_score, evalution_num, create_time
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from product_library_standard
+    where product_std_id = #{productStdId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from product_library_standard
+    where product_std_id = #{productStdId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.fpms.entity.ProductLibraryStandard">
+    insert into product_library_standard (product_std_id, product_pre_id, suit_user, 
+      inter_risk_rating, exchange_rate_risk_index, 
+      interest_rate_risk_index, market_risk_index, 
+      credit_risk_index, is_sale, sale_start_time, 
+      sale_end_time, sale_num, stock, 
+      evalution_avg_score, evalution_num, create_time
+      )
+    values (#{productStdId,jdbcType=INTEGER}, #{productPreId,jdbcType=INTEGER}, #{suitUser,jdbcType=TINYINT}, 
+      #{interRiskRating,jdbcType=TINYINT}, #{exchangeRateRiskIndex,jdbcType=TINYINT}, 
+      #{interestRateRiskIndex,jdbcType=TINYINT}, #{marketRiskIndex,jdbcType=TINYINT}, 
+      #{creditRiskIndex,jdbcType=TINYINT}, #{isSale,jdbcType=TINYINT}, #{saleStartTime,jdbcType=TIMESTAMP}, 
+      #{saleEndTime,jdbcType=TIMESTAMP}, #{saleNum,jdbcType=INTEGER}, #{stock,jdbcType=INTEGER}, 
+      #{evalutionAvgScore,jdbcType=DECIMAL}, #{evalutionNum,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.fpms.entity.ProductLibraryStandard">
+    insert into product_library_standard
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="productStdId != null">
+        product_std_id,
+      </if>
+      <if test="productPreId != null">
+        product_pre_id,
+      </if>
+      <if test="suitUser != null">
+        suit_user,
+      </if>
+      <if test="interRiskRating != null">
+        inter_risk_rating,
+      </if>
+      <if test="exchangeRateRiskIndex != null">
+        exchange_rate_risk_index,
+      </if>
+      <if test="interestRateRiskIndex != null">
+        interest_rate_risk_index,
+      </if>
+      <if test="marketRiskIndex != null">
+        market_risk_index,
+      </if>
+      <if test="creditRiskIndex != null">
+        credit_risk_index,
+      </if>
+      <if test="isSale != null">
+        is_sale,
+      </if>
+      <if test="saleStartTime != null">
+        sale_start_time,
+      </if>
+      <if test="saleEndTime != null">
+        sale_end_time,
+      </if>
+      <if test="saleNum != null">
+        sale_num,
+      </if>
+      <if test="stock != null">
+        stock,
+      </if>
+      <if test="evalutionAvgScore != null">
+        evalution_avg_score,
+      </if>
+      <if test="evalutionNum != null">
+        evalution_num,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="productStdId != null">
+        #{productStdId,jdbcType=INTEGER},
+      </if>
+      <if test="productPreId != null">
+        #{productPreId,jdbcType=INTEGER},
+      </if>
+      <if test="suitUser != null">
+        #{suitUser,jdbcType=TINYINT},
+      </if>
+      <if test="interRiskRating != null">
+        #{interRiskRating,jdbcType=TINYINT},
+      </if>
+      <if test="exchangeRateRiskIndex != null">
+        #{exchangeRateRiskIndex,jdbcType=TINYINT},
+      </if>
+      <if test="interestRateRiskIndex != null">
+        #{interestRateRiskIndex,jdbcType=TINYINT},
+      </if>
+      <if test="marketRiskIndex != null">
+        #{marketRiskIndex,jdbcType=TINYINT},
+      </if>
+      <if test="creditRiskIndex != null">
+        #{creditRiskIndex,jdbcType=TINYINT},
+      </if>
+      <if test="isSale != null">
+        #{isSale,jdbcType=TINYINT},
+      </if>
+      <if test="saleStartTime != null">
+        #{saleStartTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="saleEndTime != null">
+        #{saleEndTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="saleNum != null">
+        #{saleNum,jdbcType=INTEGER},
+      </if>
+      <if test="stock != null">
+        #{stock,jdbcType=INTEGER},
+      </if>
+      <if test="evalutionAvgScore != null">
+        #{evalutionAvgScore,jdbcType=DECIMAL},
+      </if>
+      <if test="evalutionNum != null">
+        #{evalutionNum,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.fpms.entity.ProductLibraryStandard">
+    update product_library_standard
+    <set>
+      <if test="productPreId != null">
+        product_pre_id = #{productPreId,jdbcType=INTEGER},
+      </if>
+      <if test="suitUser != null">
+        suit_user = #{suitUser,jdbcType=TINYINT},
+      </if>
+      <if test="interRiskRating != null">
+        inter_risk_rating = #{interRiskRating,jdbcType=TINYINT},
+      </if>
+      <if test="exchangeRateRiskIndex != null">
+        exchange_rate_risk_index = #{exchangeRateRiskIndex,jdbcType=TINYINT},
+      </if>
+      <if test="interestRateRiskIndex != null">
+        interest_rate_risk_index = #{interestRateRiskIndex,jdbcType=TINYINT},
+      </if>
+      <if test="marketRiskIndex != null">
+        market_risk_index = #{marketRiskIndex,jdbcType=TINYINT},
+      </if>
+      <if test="creditRiskIndex != null">
+        credit_risk_index = #{creditRiskIndex,jdbcType=TINYINT},
+      </if>
+      <if test="isSale != null">
+        is_sale = #{isSale,jdbcType=TINYINT},
+      </if>
+      <if test="saleStartTime != null">
+        sale_start_time = #{saleStartTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="saleEndTime != null">
+        sale_end_time = #{saleEndTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="saleNum != null">
+        sale_num = #{saleNum,jdbcType=INTEGER},
+      </if>
+      <if test="stock != null">
+        stock = #{stock,jdbcType=INTEGER},
+      </if>
+      <if test="evalutionAvgScore != null">
+        evalution_avg_score = #{evalutionAvgScore,jdbcType=DECIMAL},
+      </if>
+      <if test="evalutionNum != null">
+        evalution_num = #{evalutionNum,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where product_std_id = #{productStdId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.fpms.entity.ProductLibraryStandard">
+    update product_library_standard
+    set product_pre_id = #{productPreId,jdbcType=INTEGER},
+      suit_user = #{suitUser,jdbcType=TINYINT},
+      inter_risk_rating = #{interRiskRating,jdbcType=TINYINT},
+      exchange_rate_risk_index = #{exchangeRateRiskIndex,jdbcType=TINYINT},
+      interest_rate_risk_index = #{interestRateRiskIndex,jdbcType=TINYINT},
+      market_risk_index = #{marketRiskIndex,jdbcType=TINYINT},
+      credit_risk_index = #{creditRiskIndex,jdbcType=TINYINT},
+      is_sale = #{isSale,jdbcType=TINYINT},
+      sale_start_time = #{saleStartTime,jdbcType=TIMESTAMP},
+      sale_end_time = #{saleEndTime,jdbcType=TIMESTAMP},
+      sale_num = #{saleNum,jdbcType=INTEGER},
+      stock = #{stock,jdbcType=INTEGER},
+      evalution_avg_score = #{evalutionAvgScore,jdbcType=DECIMAL},
+      evalution_num = #{evalutionNum,jdbcType=INTEGER},
+      create_time = #{createTime,jdbcType=TIMESTAMP}
+    where product_std_id = #{productStdId,jdbcType=INTEGER}
+  </update>
+</mapper>

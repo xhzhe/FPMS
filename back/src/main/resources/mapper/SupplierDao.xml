@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fpms.dao.SupplierDao">
+  <resultMap id="BaseResultMap" type="com.fpms.entity.Supplier">
+    <id column="supplier_id" jdbcType="INTEGER" property="supplierId" />
+    <result column="supplier_pwd" jdbcType="VARCHAR" property="supplierPwd" />
+    <result column="supplier_name" jdbcType="VARCHAR" property="supplierName" />
+    <result column="supplier_phone" jdbcType="CHAR" property="supplierPhone" />
+    <result column="supplier_email" jdbcType="VARCHAR" property="supplierEmail" />
+    <result column="supplier_desc" jdbcType="VARCHAR" property="supplierDesc" />
+    <result column="zip_code" jdbcType="VARCHAR" property="zipCode" />
+    <result column="supplier_address" jdbcType="VARCHAR" property="supplierAddress" />
+    <result column="establish_date" jdbcType="DATE" property="establishDate" />
+    <result column="register_capital" jdbcType="DECIMAL" property="registerCapital" />
+    <result column="agent" jdbcType="VARCHAR" property="agent" />
+    <result column="supplier_status" jdbcType="TINYINT" property="supplierStatus" />
+    <result column="is_certification" jdbcType="TINYINT" property="isCertification" />
+    <result column="in_white_black_list" jdbcType="TINYINT" property="inWhiteBlackList" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    supplier_id, supplier_pwd, supplier_name, supplier_phone, supplier_email, supplier_desc, 
+    zip_code, supplier_address, establish_date, register_capital, agent, supplier_status, 
+    is_certification, in_white_black_list, create_time
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from supplier
+    where supplier_id = #{supplierId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from supplier
+    where supplier_id = #{supplierId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.fpms.entity.Supplier">
+    insert into supplier (supplier_id, supplier_pwd, supplier_name, 
+      supplier_phone, supplier_email, supplier_desc, 
+      zip_code, supplier_address, establish_date, 
+      register_capital, agent, supplier_status, 
+      is_certification, in_white_black_list, create_time
+      )
+    values (#{supplierId,jdbcType=INTEGER}, #{supplierPwd,jdbcType=VARCHAR}, #{supplierName,jdbcType=VARCHAR}, 
+      #{supplierPhone,jdbcType=CHAR}, #{supplierEmail,jdbcType=VARCHAR}, #{supplierDesc,jdbcType=VARCHAR}, 
+      #{zipCode,jdbcType=VARCHAR}, #{supplierAddress,jdbcType=VARCHAR}, #{establishDate,jdbcType=DATE}, 
+      #{registerCapital,jdbcType=DECIMAL}, #{agent,jdbcType=VARCHAR}, #{supplierStatus,jdbcType=TINYINT}, 
+      #{isCertification,jdbcType=TINYINT}, #{inWhiteBlackList,jdbcType=TINYINT}, #{createTime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.fpms.entity.Supplier">
+    insert into supplier
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="supplierId != null">
+        supplier_id,
+      </if>
+      <if test="supplierPwd != null">
+        supplier_pwd,
+      </if>
+      <if test="supplierName != null">
+        supplier_name,
+      </if>
+      <if test="supplierPhone != null">
+        supplier_phone,
+      </if>
+      <if test="supplierEmail != null">
+        supplier_email,
+      </if>
+      <if test="supplierDesc != null">
+        supplier_desc,
+      </if>
+      <if test="zipCode != null">
+        zip_code,
+      </if>
+      <if test="supplierAddress != null">
+        supplier_address,
+      </if>
+      <if test="establishDate != null">
+        establish_date,
+      </if>
+      <if test="registerCapital != null">
+        register_capital,
+      </if>
+      <if test="agent != null">
+        agent,
+      </if>
+      <if test="supplierStatus != null">
+        supplier_status,
+      </if>
+      <if test="isCertification != null">
+        is_certification,
+      </if>
+      <if test="inWhiteBlackList != null">
+        in_white_black_list,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="supplierId != null">
+        #{supplierId,jdbcType=INTEGER},
+      </if>
+      <if test="supplierPwd != null">
+        #{supplierPwd,jdbcType=VARCHAR},
+      </if>
+      <if test="supplierName != null">
+        #{supplierName,jdbcType=VARCHAR},
+      </if>
+      <if test="supplierPhone != null">
+        #{supplierPhone,jdbcType=CHAR},
+      </if>
+      <if test="supplierEmail != null">
+        #{supplierEmail,jdbcType=VARCHAR},
+      </if>
+      <if test="supplierDesc != null">
+        #{supplierDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="zipCode != null">
+        #{zipCode,jdbcType=VARCHAR},
+      </if>
+      <if test="supplierAddress != null">
+        #{supplierAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="establishDate != null">
+        #{establishDate,jdbcType=DATE},
+      </if>
+      <if test="registerCapital != null">
+        #{registerCapital,jdbcType=DECIMAL},
+      </if>
+      <if test="agent != null">
+        #{agent,jdbcType=VARCHAR},
+      </if>
+      <if test="supplierStatus != null">
+        #{supplierStatus,jdbcType=TINYINT},
+      </if>
+      <if test="isCertification != null">
+        #{isCertification,jdbcType=TINYINT},
+      </if>
+      <if test="inWhiteBlackList != null">
+        #{inWhiteBlackList,jdbcType=TINYINT},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.fpms.entity.Supplier">
+    update supplier
+    <set>
+      <if test="supplierPwd != null">
+        supplier_pwd = #{supplierPwd,jdbcType=VARCHAR},
+      </if>
+      <if test="supplierName != null">
+        supplier_name = #{supplierName,jdbcType=VARCHAR},
+      </if>
+      <if test="supplierPhone != null">
+        supplier_phone = #{supplierPhone,jdbcType=CHAR},
+      </if>
+      <if test="supplierEmail != null">
+        supplier_email = #{supplierEmail,jdbcType=VARCHAR},
+      </if>
+      <if test="supplierDesc != null">
+        supplier_desc = #{supplierDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="zipCode != null">
+        zip_code = #{zipCode,jdbcType=VARCHAR},
+      </if>
+      <if test="supplierAddress != null">
+        supplier_address = #{supplierAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="establishDate != null">
+        establish_date = #{establishDate,jdbcType=DATE},
+      </if>
+      <if test="registerCapital != null">
+        register_capital = #{registerCapital,jdbcType=DECIMAL},
+      </if>
+      <if test="agent != null">
+        agent = #{agent,jdbcType=VARCHAR},
+      </if>
+      <if test="supplierStatus != null">
+        supplier_status = #{supplierStatus,jdbcType=TINYINT},
+      </if>
+      <if test="isCertification != null">
+        is_certification = #{isCertification,jdbcType=TINYINT},
+      </if>
+      <if test="inWhiteBlackList != null">
+        in_white_black_list = #{inWhiteBlackList,jdbcType=TINYINT},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where supplier_id = #{supplierId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.fpms.entity.Supplier">
+    update supplier
+    set supplier_pwd = #{supplierPwd,jdbcType=VARCHAR},
+      supplier_name = #{supplierName,jdbcType=VARCHAR},
+      supplier_phone = #{supplierPhone,jdbcType=CHAR},
+      supplier_email = #{supplierEmail,jdbcType=VARCHAR},
+      supplier_desc = #{supplierDesc,jdbcType=VARCHAR},
+      zip_code = #{zipCode,jdbcType=VARCHAR},
+      supplier_address = #{supplierAddress,jdbcType=VARCHAR},
+      establish_date = #{establishDate,jdbcType=DATE},
+      register_capital = #{registerCapital,jdbcType=DECIMAL},
+      agent = #{agent,jdbcType=VARCHAR},
+      supplier_status = #{supplierStatus,jdbcType=TINYINT},
+      is_certification = #{isCertification,jdbcType=TINYINT},
+      in_white_black_list = #{inWhiteBlackList,jdbcType=TINYINT},
+      create_time = #{createTime,jdbcType=TIMESTAMP}
+    where supplier_id = #{supplierId,jdbcType=INTEGER}
+  </update>
+</mapper>

@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fpms.dao.EvaluationDao">
+  <resultMap id="BaseResultMap" type="com.fpms.entity.Evaluation">
+    <id column="evaluation_id" jdbcType="INTEGER" property="evaluationId" />
+    <result column="order_id" jdbcType="INTEGER" property="orderId" />
+    <result column="user_id" jdbcType="INTEGER" property="userId" />
+    <result column="product_std_id" jdbcType="INTEGER" property="productStdId" />
+    <result column="product_con_id" jdbcType="INTEGER" property="productConId" />
+    <result column="evaluation_score" jdbcType="INTEGER" property="evaluationScore" />
+    <result column="evaluation_desc" jdbcType="VARCHAR" property="evaluationDesc" />
+    <result column="evaluation_type" jdbcType="TINYINT" property="evaluationType" />
+    <result column="evaluation_status" jdbcType="TINYINT" property="evaluationStatus" />
+    <result column="is_delete" jdbcType="TINYINT" property="isDelete" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    evaluation_id, order_id, user_id, product_std_id, product_con_id, evaluation_score, 
+    evaluation_desc, evaluation_type, evaluation_status, is_delete, create_time
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from evaluation
+    where evaluation_id = #{evaluationId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from evaluation
+    where evaluation_id = #{evaluationId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.fpms.entity.Evaluation">
+    insert into evaluation (evaluation_id, order_id, user_id, 
+      product_std_id, product_con_id, evaluation_score, 
+      evaluation_desc, evaluation_type, evaluation_status, 
+      is_delete, create_time)
+    values (#{evaluationId,jdbcType=INTEGER}, #{orderId,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, 
+      #{productStdId,jdbcType=INTEGER}, #{productConId,jdbcType=INTEGER}, #{evaluationScore,jdbcType=INTEGER}, 
+      #{evaluationDesc,jdbcType=VARCHAR}, #{evaluationType,jdbcType=TINYINT}, #{evaluationStatus,jdbcType=TINYINT}, 
+      #{isDelete,jdbcType=TINYINT}, #{createTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.fpms.entity.Evaluation">
+    insert into evaluation
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="evaluationId != null">
+        evaluation_id,
+      </if>
+      <if test="orderId != null">
+        order_id,
+      </if>
+      <if test="userId != null">
+        user_id,
+      </if>
+      <if test="productStdId != null">
+        product_std_id,
+      </if>
+      <if test="productConId != null">
+        product_con_id,
+      </if>
+      <if test="evaluationScore != null">
+        evaluation_score,
+      </if>
+      <if test="evaluationDesc != null">
+        evaluation_desc,
+      </if>
+      <if test="evaluationType != null">
+        evaluation_type,
+      </if>
+      <if test="evaluationStatus != null">
+        evaluation_status,
+      </if>
+      <if test="isDelete != null">
+        is_delete,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="evaluationId != null">
+        #{evaluationId,jdbcType=INTEGER},
+      </if>
+      <if test="orderId != null">
+        #{orderId,jdbcType=INTEGER},
+      </if>
+      <if test="userId != null">
+        #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="productStdId != null">
+        #{productStdId,jdbcType=INTEGER},
+      </if>
+      <if test="productConId != null">
+        #{productConId,jdbcType=INTEGER},
+      </if>
+      <if test="evaluationScore != null">
+        #{evaluationScore,jdbcType=INTEGER},
+      </if>
+      <if test="evaluationDesc != null">
+        #{evaluationDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="evaluationType != null">
+        #{evaluationType,jdbcType=TINYINT},
+      </if>
+      <if test="evaluationStatus != null">
+        #{evaluationStatus,jdbcType=TINYINT},
+      </if>
+      <if test="isDelete != null">
+        #{isDelete,jdbcType=TINYINT},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.fpms.entity.Evaluation">
+    update evaluation
+    <set>
+      <if test="orderId != null">
+        order_id = #{orderId,jdbcType=INTEGER},
+      </if>
+      <if test="userId != null">
+        user_id = #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="productStdId != null">
+        product_std_id = #{productStdId,jdbcType=INTEGER},
+      </if>
+      <if test="productConId != null">
+        product_con_id = #{productConId,jdbcType=INTEGER},
+      </if>
+      <if test="evaluationScore != null">
+        evaluation_score = #{evaluationScore,jdbcType=INTEGER},
+      </if>
+      <if test="evaluationDesc != null">
+        evaluation_desc = #{evaluationDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="evaluationType != null">
+        evaluation_type = #{evaluationType,jdbcType=TINYINT},
+      </if>
+      <if test="evaluationStatus != null">
+        evaluation_status = #{evaluationStatus,jdbcType=TINYINT},
+      </if>
+      <if test="isDelete != null">
+        is_delete = #{isDelete,jdbcType=TINYINT},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where evaluation_id = #{evaluationId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.fpms.entity.Evaluation">
+    update evaluation
+    set order_id = #{orderId,jdbcType=INTEGER},
+      user_id = #{userId,jdbcType=INTEGER},
+      product_std_id = #{productStdId,jdbcType=INTEGER},
+      product_con_id = #{productConId,jdbcType=INTEGER},
+      evaluation_score = #{evaluationScore,jdbcType=INTEGER},
+      evaluation_desc = #{evaluationDesc,jdbcType=VARCHAR},
+      evaluation_type = #{evaluationType,jdbcType=TINYINT},
+      evaluation_status = #{evaluationStatus,jdbcType=TINYINT},
+      is_delete = #{isDelete,jdbcType=TINYINT},
+      create_time = #{createTime,jdbcType=TIMESTAMP}
+    where evaluation_id = #{evaluationId,jdbcType=INTEGER}
+  </update>
+</mapper>

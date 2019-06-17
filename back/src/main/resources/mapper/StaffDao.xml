@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fpms.dao.StaffDao">
+  <resultMap id="BaseResultMap" type="com.fpms.entity.Staff">
+    <id column="staff_id" jdbcType="INTEGER" property="staffId" />
+    <result column="staff_name" jdbcType="VARCHAR" property="staffName" />
+    <result column="staff_pwd" jdbcType="VARCHAR" property="staffPwd" />
+    <result column="staff_gender" jdbcType="CHAR" property="staffGender" />
+    <result column="staff_phone" jdbcType="CHAR" property="staffPhone" />
+    <result column="staff_email" jdbcType="VARCHAR" property="staffEmail" />
+    <result column="staff_department" jdbcType="VARCHAR" property="staffDepartment" />
+    <result column="staff_status" jdbcType="TINYINT" property="staffStatus" />
+    <result column="create_by" jdbcType="INTEGER" property="createBy" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    staff_id, staff_name, staff_pwd, staff_gender, staff_phone, staff_email, staff_department, 
+    staff_status, create_by, create_time
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from staff
+    where staff_id = #{staffId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from staff
+    where staff_id = #{staffId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.fpms.entity.Staff">
+    insert into staff (staff_id, staff_name, staff_pwd, 
+      staff_gender, staff_phone, staff_email, 
+      staff_department, staff_status, create_by, 
+      create_time)
+    values (#{staffId,jdbcType=INTEGER}, #{staffName,jdbcType=VARCHAR}, #{staffPwd,jdbcType=VARCHAR}, 
+      #{staffGender,jdbcType=CHAR}, #{staffPhone,jdbcType=CHAR}, #{staffEmail,jdbcType=VARCHAR}, 
+      #{staffDepartment,jdbcType=VARCHAR}, #{staffStatus,jdbcType=TINYINT}, #{createBy,jdbcType=INTEGER}, 
+      #{createTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.fpms.entity.Staff">
+    insert into staff
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="staffId != null">
+        staff_id,
+      </if>
+      <if test="staffName != null">
+        staff_name,
+      </if>
+      <if test="staffPwd != null">
+        staff_pwd,
+      </if>
+      <if test="staffGender != null">
+        staff_gender,
+      </if>
+      <if test="staffPhone != null">
+        staff_phone,
+      </if>
+      <if test="staffEmail != null">
+        staff_email,
+      </if>
+      <if test="staffDepartment != null">
+        staff_department,
+      </if>
+      <if test="staffStatus != null">
+        staff_status,
+      </if>
+      <if test="createBy != null">
+        create_by,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="staffId != null">
+        #{staffId,jdbcType=INTEGER},
+      </if>
+      <if test="staffName != null">
+        #{staffName,jdbcType=VARCHAR},
+      </if>
+      <if test="staffPwd != null">
+        #{staffPwd,jdbcType=VARCHAR},
+      </if>
+      <if test="staffGender != null">
+        #{staffGender,jdbcType=CHAR},
+      </if>
+      <if test="staffPhone != null">
+        #{staffPhone,jdbcType=CHAR},
+      </if>
+      <if test="staffEmail != null">
+        #{staffEmail,jdbcType=VARCHAR},
+      </if>
+      <if test="staffDepartment != null">
+        #{staffDepartment,jdbcType=VARCHAR},
+      </if>
+      <if test="staffStatus != null">
+        #{staffStatus,jdbcType=TINYINT},
+      </if>
+      <if test="createBy != null">
+        #{createBy,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.fpms.entity.Staff">
+    update staff
+    <set>
+      <if test="staffName != null">
+        staff_name = #{staffName,jdbcType=VARCHAR},
+      </if>
+      <if test="staffPwd != null">
+        staff_pwd = #{staffPwd,jdbcType=VARCHAR},
+      </if>
+      <if test="staffGender != null">
+        staff_gender = #{staffGender,jdbcType=CHAR},
+      </if>
+      <if test="staffPhone != null">
+        staff_phone = #{staffPhone,jdbcType=CHAR},
+      </if>
+      <if test="staffEmail != null">
+        staff_email = #{staffEmail,jdbcType=VARCHAR},
+      </if>
+      <if test="staffDepartment != null">
+        staff_department = #{staffDepartment,jdbcType=VARCHAR},
+      </if>
+      <if test="staffStatus != null">
+        staff_status = #{staffStatus,jdbcType=TINYINT},
+      </if>
+      <if test="createBy != null">
+        create_by = #{createBy,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where staff_id = #{staffId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.fpms.entity.Staff">
+    update staff
+    set staff_name = #{staffName,jdbcType=VARCHAR},
+      staff_pwd = #{staffPwd,jdbcType=VARCHAR},
+      staff_gender = #{staffGender,jdbcType=CHAR},
+      staff_phone = #{staffPhone,jdbcType=CHAR},
+      staff_email = #{staffEmail,jdbcType=VARCHAR},
+      staff_department = #{staffDepartment,jdbcType=VARCHAR},
+      staff_status = #{staffStatus,jdbcType=TINYINT},
+      create_by = #{createBy,jdbcType=INTEGER},
+      create_time = #{createTime,jdbcType=TIMESTAMP}
+    where staff_id = #{staffId,jdbcType=INTEGER}
+  </update>
+</mapper>

@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fpms.dao.PrivilegeDao">
+  <resultMap id="BaseResultMap" type="com.fpms.entity.Privilege">
+    <id column="privilege_id" jdbcType="INTEGER" property="privilegeId" />
+    <result column="privilege_name" jdbcType="VARCHAR" property="privilegeName" />
+    <result column="privilege_code" jdbcType="CHAR" property="privilegeCode" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    privilege_id, privilege_name, privilege_code, create_time
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from privilege
+    where privilege_id = #{privilegeId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from privilege
+    where privilege_id = #{privilegeId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.fpms.entity.Privilege">
+    insert into privilege (privilege_id, privilege_name, privilege_code, 
+      create_time)
+    values (#{privilegeId,jdbcType=INTEGER}, #{privilegeName,jdbcType=VARCHAR}, #{privilegeCode,jdbcType=CHAR}, 
+      #{createTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.fpms.entity.Privilege">
+    insert into privilege
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="privilegeId != null">
+        privilege_id,
+      </if>
+      <if test="privilegeName != null">
+        privilege_name,
+      </if>
+      <if test="privilegeCode != null">
+        privilege_code,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="privilegeId != null">
+        #{privilegeId,jdbcType=INTEGER},
+      </if>
+      <if test="privilegeName != null">
+        #{privilegeName,jdbcType=VARCHAR},
+      </if>
+      <if test="privilegeCode != null">
+        #{privilegeCode,jdbcType=CHAR},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.fpms.entity.Privilege">
+    update privilege
+    <set>
+      <if test="privilegeName != null">
+        privilege_name = #{privilegeName,jdbcType=VARCHAR},
+      </if>
+      <if test="privilegeCode != null">
+        privilege_code = #{privilegeCode,jdbcType=CHAR},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where privilege_id = #{privilegeId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.fpms.entity.Privilege">
+    update privilege
+    set privilege_name = #{privilegeName,jdbcType=VARCHAR},
+      privilege_code = #{privilegeCode,jdbcType=CHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP}
+    where privilege_id = #{privilegeId,jdbcType=INTEGER}
+  </update>
+</mapper>

@@ -1,0 +1,284 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fpms.dao.ProductLibraryPreDao">
+  <resultMap id="BaseResultMap" type="com.fpms.entity.ProductLibraryPre">
+    <id column="product_pre_id" jdbcType="INTEGER" property="productPreId" />
+    <result column="supplier_id" jdbcType="INTEGER" property="supplierId" />
+    <result column="staff_id" jdbcType="INTEGER" property="staffId" />
+    <result column="product_name" jdbcType="VARCHAR" property="productName" />
+    <result column="product_desc" jdbcType="VARCHAR" property="productDesc" />
+    <result column="product_price" jdbcType="DECIMAL" property="productPrice" />
+    <result column="product_status" jdbcType="TINYINT" property="productStatus" />
+    <result column="category_id" jdbcType="INTEGER" property="categoryId" />
+    <result column="purchase_start_point" jdbcType="DECIMAL" property="purchaseStartPoint" />
+    <result column="term" jdbcType="INTEGER" property="term" />
+    <result column="expiry_date" jdbcType="DATE" property="expiryDate" />
+    <result column="risk_rating" jdbcType="TINYINT" property="riskRating" />
+    <result column="return_rate" jdbcType="DECIMAL" property="returnRate" />
+    <result column="performance_benchmark" jdbcType="DECIMAL" property="performanceBenchmark" />
+    <result column="income_type" jdbcType="TINYINT" property="incomeType" />
+    <result column="unit_net_value" jdbcType="DECIMAL" property="unitNetValue" />
+    <result column="cumulative_net_value" jdbcType="DECIMAL" property="cumulativeNetValue" />
+    <result column="notice" jdbcType="VARCHAR" property="notice" />
+    <result column="purchase_limit" jdbcType="INTEGER" property="purchaseLimit" />
+    <result column="commission" jdbcType="DECIMAL" property="commission" />
+    <result column="crate_time" jdbcType="TIMESTAMP" property="crateTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    product_pre_id, supplier_id, staff_id, product_name, product_desc, product_price, 
+    product_status, category_id, purchase_start_point, term, expiry_date, risk_rating, 
+    return_rate, performance_benchmark, income_type, unit_net_value, cumulative_net_value, 
+    notice, purchase_limit, commission, crate_time
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from product_library_pre
+    where product_pre_id = #{productPreId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from product_library_pre
+    where product_pre_id = #{productPreId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.fpms.entity.ProductLibraryPre">
+    insert into product_library_pre (product_pre_id, supplier_id, staff_id, 
+      product_name, product_desc, product_price, 
+      product_status, category_id, purchase_start_point, 
+      term, expiry_date, risk_rating, 
+      return_rate, performance_benchmark, income_type, 
+      unit_net_value, cumulative_net_value, notice, 
+      purchase_limit, commission, crate_time
+      )
+    values (#{productPreId,jdbcType=INTEGER}, #{supplierId,jdbcType=INTEGER}, #{staffId,jdbcType=INTEGER}, 
+      #{productName,jdbcType=VARCHAR}, #{productDesc,jdbcType=VARCHAR}, #{productPrice,jdbcType=DECIMAL}, 
+      #{productStatus,jdbcType=TINYINT}, #{categoryId,jdbcType=INTEGER}, #{purchaseStartPoint,jdbcType=DECIMAL}, 
+      #{term,jdbcType=INTEGER}, #{expiryDate,jdbcType=DATE}, #{riskRating,jdbcType=TINYINT}, 
+      #{returnRate,jdbcType=DECIMAL}, #{performanceBenchmark,jdbcType=DECIMAL}, #{incomeType,jdbcType=TINYINT}, 
+      #{unitNetValue,jdbcType=DECIMAL}, #{cumulativeNetValue,jdbcType=DECIMAL}, #{notice,jdbcType=VARCHAR}, 
+      #{purchaseLimit,jdbcType=INTEGER}, #{commission,jdbcType=DECIMAL}, #{crateTime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.fpms.entity.ProductLibraryPre">
+    insert into product_library_pre
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="productPreId != null">
+        product_pre_id,
+      </if>
+      <if test="supplierId != null">
+        supplier_id,
+      </if>
+      <if test="staffId != null">
+        staff_id,
+      </if>
+      <if test="productName != null">
+        product_name,
+      </if>
+      <if test="productDesc != null">
+        product_desc,
+      </if>
+      <if test="productPrice != null">
+        product_price,
+      </if>
+      <if test="productStatus != null">
+        product_status,
+      </if>
+      <if test="categoryId != null">
+        category_id,
+      </if>
+      <if test="purchaseStartPoint != null">
+        purchase_start_point,
+      </if>
+      <if test="term != null">
+        term,
+      </if>
+      <if test="expiryDate != null">
+        expiry_date,
+      </if>
+      <if test="riskRating != null">
+        risk_rating,
+      </if>
+      <if test="returnRate != null">
+        return_rate,
+      </if>
+      <if test="performanceBenchmark != null">
+        performance_benchmark,
+      </if>
+      <if test="incomeType != null">
+        income_type,
+      </if>
+      <if test="unitNetValue != null">
+        unit_net_value,
+      </if>
+      <if test="cumulativeNetValue != null">
+        cumulative_net_value,
+      </if>
+      <if test="notice != null">
+        notice,
+      </if>
+      <if test="purchaseLimit != null">
+        purchase_limit,
+      </if>
+      <if test="commission != null">
+        commission,
+      </if>
+      <if test="crateTime != null">
+        crate_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="productPreId != null">
+        #{productPreId,jdbcType=INTEGER},
+      </if>
+      <if test="supplierId != null">
+        #{supplierId,jdbcType=INTEGER},
+      </if>
+      <if test="staffId != null">
+        #{staffId,jdbcType=INTEGER},
+      </if>
+      <if test="productName != null">
+        #{productName,jdbcType=VARCHAR},
+      </if>
+      <if test="productDesc != null">
+        #{productDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="productPrice != null">
+        #{productPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="productStatus != null">
+        #{productStatus,jdbcType=TINYINT},
+      </if>
+      <if test="categoryId != null">
+        #{categoryId,jdbcType=INTEGER},
+      </if>
+      <if test="purchaseStartPoint != null">
+        #{purchaseStartPoint,jdbcType=DECIMAL},
+      </if>
+      <if test="term != null">
+        #{term,jdbcType=INTEGER},
+      </if>
+      <if test="expiryDate != null">
+        #{expiryDate,jdbcType=DATE},
+      </if>
+      <if test="riskRating != null">
+        #{riskRating,jdbcType=TINYINT},
+      </if>
+      <if test="returnRate != null">
+        #{returnRate,jdbcType=DECIMAL},
+      </if>
+      <if test="performanceBenchmark != null">
+        #{performanceBenchmark,jdbcType=DECIMAL},
+      </if>
+      <if test="incomeType != null">
+        #{incomeType,jdbcType=TINYINT},
+      </if>
+      <if test="unitNetValue != null">
+        #{unitNetValue,jdbcType=DECIMAL},
+      </if>
+      <if test="cumulativeNetValue != null">
+        #{cumulativeNetValue,jdbcType=DECIMAL},
+      </if>
+      <if test="notice != null">
+        #{notice,jdbcType=VARCHAR},
+      </if>
+      <if test="purchaseLimit != null">
+        #{purchaseLimit,jdbcType=INTEGER},
+      </if>
+      <if test="commission != null">
+        #{commission,jdbcType=DECIMAL},
+      </if>
+      <if test="crateTime != null">
+        #{crateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.fpms.entity.ProductLibraryPre">
+    update product_library_pre
+    <set>
+      <if test="supplierId != null">
+        supplier_id = #{supplierId,jdbcType=INTEGER},
+      </if>
+      <if test="staffId != null">
+        staff_id = #{staffId,jdbcType=INTEGER},
+      </if>
+      <if test="productName != null">
+        product_name = #{productName,jdbcType=VARCHAR},
+      </if>
+      <if test="productDesc != null">
+        product_desc = #{productDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="productPrice != null">
+        product_price = #{productPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="productStatus != null">
+        product_status = #{productStatus,jdbcType=TINYINT},
+      </if>
+      <if test="categoryId != null">
+        category_id = #{categoryId,jdbcType=INTEGER},
+      </if>
+      <if test="purchaseStartPoint != null">
+        purchase_start_point = #{purchaseStartPoint,jdbcType=DECIMAL},
+      </if>
+      <if test="term != null">
+        term = #{term,jdbcType=INTEGER},
+      </if>
+      <if test="expiryDate != null">
+        expiry_date = #{expiryDate,jdbcType=DATE},
+      </if>
+      <if test="riskRating != null">
+        risk_rating = #{riskRating,jdbcType=TINYINT},
+      </if>
+      <if test="returnRate != null">
+        return_rate = #{returnRate,jdbcType=DECIMAL},
+      </if>
+      <if test="performanceBenchmark != null">
+        performance_benchmark = #{performanceBenchmark,jdbcType=DECIMAL},
+      </if>
+      <if test="incomeType != null">
+        income_type = #{incomeType,jdbcType=TINYINT},
+      </if>
+      <if test="unitNetValue != null">
+        unit_net_value = #{unitNetValue,jdbcType=DECIMAL},
+      </if>
+      <if test="cumulativeNetValue != null">
+        cumulative_net_value = #{cumulativeNetValue,jdbcType=DECIMAL},
+      </if>
+      <if test="notice != null">
+        notice = #{notice,jdbcType=VARCHAR},
+      </if>
+      <if test="purchaseLimit != null">
+        purchase_limit = #{purchaseLimit,jdbcType=INTEGER},
+      </if>
+      <if test="commission != null">
+        commission = #{commission,jdbcType=DECIMAL},
+      </if>
+      <if test="crateTime != null">
+        crate_time = #{crateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where product_pre_id = #{productPreId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.fpms.entity.ProductLibraryPre">
+    update product_library_pre
+    set supplier_id = #{supplierId,jdbcType=INTEGER},
+      staff_id = #{staffId,jdbcType=INTEGER},
+      product_name = #{productName,jdbcType=VARCHAR},
+      product_desc = #{productDesc,jdbcType=VARCHAR},
+      product_price = #{productPrice,jdbcType=DECIMAL},
+      product_status = #{productStatus,jdbcType=TINYINT},
+      category_id = #{categoryId,jdbcType=INTEGER},
+      purchase_start_point = #{purchaseStartPoint,jdbcType=DECIMAL},
+      term = #{term,jdbcType=INTEGER},
+      expiry_date = #{expiryDate,jdbcType=DATE},
+      risk_rating = #{riskRating,jdbcType=TINYINT},
+      return_rate = #{returnRate,jdbcType=DECIMAL},
+      performance_benchmark = #{performanceBenchmark,jdbcType=DECIMAL},
+      income_type = #{incomeType,jdbcType=TINYINT},
+      unit_net_value = #{unitNetValue,jdbcType=DECIMAL},
+      cumulative_net_value = #{cumulativeNetValue,jdbcType=DECIMAL},
+      notice = #{notice,jdbcType=VARCHAR},
+      purchase_limit = #{purchaseLimit,jdbcType=INTEGER},
+      commission = #{commission,jdbcType=DECIMAL},
+      crate_time = #{crateTime,jdbcType=TIMESTAMP}
+    where product_pre_id = #{productPreId,jdbcType=INTEGER}
+  </update>
+</mapper>

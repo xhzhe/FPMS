@@ -113,7 +113,7 @@
                     <!--允许自动覆盖-->
                     <overwrite>true</overwrite>
                     <!--mybatis对应的文件名.xml的全路径-->
-                    <configurationFile>E:\Spring\FPMS\src\main\resources\mybaits-generator.xml</configurationFile>
+                    <configurationFile>E:\Spring\shixun\FPMS\back\src\main\resources\mybaits-generator.xml</configurationFile>
                 </configuration>
             </plugin>
         </plugins>
