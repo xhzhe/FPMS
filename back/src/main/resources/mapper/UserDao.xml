@@ -232,4 +232,7 @@
       create_time = #{createTime,jdbcType=TIMESTAMP}
     where user_id = #{userId,jdbcType=INTEGER}
   </update>
+  <select id="selectByUserName" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select * from user where user_name=#{userName}
+  </select>
 </mapper>
