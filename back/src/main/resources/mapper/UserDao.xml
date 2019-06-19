@@ -31,10 +31,6 @@
     from user
     where user_id = #{userId,jdbcType=INTEGER}
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
-    delete from user
-    where user_id = #{userId,jdbcType=INTEGER}
-  </delete>
   <insert id="insert" parameterType="com.fpms.entity.User">
     insert into user (user_id, user_name, user_pwd, 
       user_gender, user_brithday, user_phone, 
@@ -232,4 +228,7 @@
       create_time = #{createTime,jdbcType=TIMESTAMP}
     where user_id = #{userId,jdbcType=INTEGER}
   </update>
+  <select id="selectByUserName" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select * from user where user_name=#{userName}
+  </select>
 </mapper>
