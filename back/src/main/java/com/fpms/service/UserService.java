@@ -26,4 +26,13 @@ public interface UserService {
      * @return     : com.fpms.entity.User
      */
      User getUserById(Integer userId);
+
+    /**
+     *  更新用户密码
+     * @author     ：TianHong Liao
+     * @date       ：Created in 2019/6/19 16:02
+     * @param       user
+     * @return     : void
+     */
+    void updateUserPwd(User user);
 }

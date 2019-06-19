@@ -23,6 +23,7 @@ import java.util.Map;
  * @modified :
  */
 @RestController
+@CrossOrigin
 public class RoleController {
     @Autowired
     private RoleService roleService;
