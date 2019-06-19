@@ -12,11 +12,49 @@ import java.util.List;
  */
 
 public interface PrivilegeService {
-    void addPrivilege(Privilege privilege);
 
-    List<Privilege> selectAllPrivileges();
+    /**
+     *  添加权限
+     * @author     ：TianHong Liao
+     * @date       ：Created in 2019/6/19 14:26
+     * @param       privilege
+     * @return     : void
+     */
+    public void addPrivilege(Privilege privilege);
 
-    void delPrivilegeById(Integer privilege_id);
+    /**
+     *  查找所有权限
+     * @author     ：TianHong Liao
+     * @date       ：Created in 2019/6/19 14:26
+     * @param
+     * @return     : java.util.List<com.fpms.entity.Privilege>
+     */
+    public List<Privilege> selectAllPrivileges();
 
-    void updatePrivilege(Privilege privilege);
+    /**
+     *  通过privilegeId删除权限
+     * @author     ：TianHong Liao
+     * @date       ：Created in 2019/6/19 14:26
+     * @param       privilegeId
+     * @return     : void
+     */
+    public void delPrivilegeById(Integer privilegeId);
+
+    /**
+     *  更新权限
+     * @author     ：TianHong Liao
+     * @date       ：Created in 2019/6/19 14:26
+     * @param       privilege
+     * @return     : void
+     */
+    public void updatePrivilege(Privilege privilege);
+
+    /**
+     *  通过privilegeId查找权限
+     * @author     ：TianHong Liao
+     * @date       ：Created in 2019/6/19 14:27
+     * @param       privilegeId
+     * @return     : com.fpms.entity.Privilege
+     */
+    public Privilege selectById(Integer privilegeId);
 }

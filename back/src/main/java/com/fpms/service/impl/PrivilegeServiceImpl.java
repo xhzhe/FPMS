@@ -30,12 +30,17 @@ public class PrivilegeServiceImpl implements PrivilegeService {
     }
 
     @Override
-    public void delPrivilegeById(Integer privilege_id){
-        privilegeDao.deleteByPrimaryKey(privilege_id);
+    public void delPrivilegeById(Integer privilegeId){
+        privilegeDao.deleteByPrimaryKey(privilegeId);
     }
 
     @Override
     public void updatePrivilege(Privilege privilege){
         privilegeDao.updateByPrimaryKeySelective(privilege);
+    }
+
+    @Override
+    public Privilege selectById(Integer privilegeId) {
+        return privilegeDao.selectByPrimaryKey(privilegeId);
     }
 }
