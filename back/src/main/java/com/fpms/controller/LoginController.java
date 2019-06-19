@@ -1,16 +1,14 @@
 package com.fpms.controller;
 
-import com.fpms.dao.StaffDao;
 import com.fpms.dto.StaffDto;
 import com.fpms.dto.UserDto;
 import com.fpms.entity.Staff;
 import com.fpms.entity.User;
 import com.fpms.enums.LoginResultEnum;
 import com.fpms.service.LoginService;
-import com.fpms.utils.HttpServletRequestUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
@@ -30,12 +28,12 @@ public class LoginController {
     private LoginService loginService;
 
     @PostMapping(value = "/user/actions/login")
-    public HashMap<String,Object> loginByUser(HttpServletRequest request){
+    public HashMap<String,Object> loginByUser(HttpServletRequest request,@RequestBody User userVo){
         HashMap<String, Object> resultMap = new HashMap<>(16);
-        String userName = HttpServletRequestUtil.getString(request,"user_name");
-        String password = HttpServletRequestUtil.getString(request,"password");
+        String userName = userVo.getUserName();
+        String userPwd = userVo.getUserPwd();
         try {
-            HashMap<String, Object> loginResult = loginService.loginByUser(userName, password);
+            HashMap<String, Object> loginResult = loginService.loginByUser(userName, userPwd);
             if (Integer.valueOf(loginResult.get("code").toString()) == LoginResultEnum.SUCCESS.getCode().intValue()) {
                 resultMap.put("success", true);
 
@@ -66,10 +64,11 @@ public class LoginController {
     }
 
     @PostMapping(value = "/staff/actions/login")
-    public HashMap<String,Object> loginByStaff(HttpServletRequest request){
+    public HashMap<String,Object> loginByStaff(HttpServletRequest request,@RequestBody Staff staffVo){
         HashMap<String, Object> resultMap = new HashMap<>(16);
-        String staffName = HttpServletRequestUtil.getString(request,"staff_name");
-        String staffPwd = HttpServletRequestUtil.getString(request,"staff_pwd");
+        String staffName = staffVo.getStaffName();
+        String staffPwd = staffVo.getStaffPwd();
+        System.out.println(staffName);
         try {
             HashMap<String, Object> loginResult = loginService.loginByStaff(staffName, staffPwd);
             if (Integer.valueOf(loginResult.get("code").toString()) == LoginResultEnum.SUCCESS.getCode().intValue()) {
