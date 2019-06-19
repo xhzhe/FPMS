@@ -1,5 +1,6 @@
 package com.fpms;
 
+import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ComponentScan;
@@ -13,7 +14,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
  * @date   : 2019/6/12 9:36
  */
 @SpringBootApplication
-@ComponentScan("com.fpms.dao")
+@MapperScan("com.fpms.dao")
 public class FpmsApplication {
 
     public static void main(String[] args) {
