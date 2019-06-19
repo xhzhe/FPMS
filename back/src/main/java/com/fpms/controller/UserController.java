@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Map;
 
 /**
  * @author : YongBiao Liao
@@ -69,11 +70,26 @@ public class UserController {
         return resultBean;
     }
 
-
-    @PostMapping(value = "/user/{userId}/userPwd/actions/modify")
-    public ResultBean<User> modifyPassword(@RequestBody User user,@PathVariable Integer userId){
-//        User user = userService.getUserById(userId);
-        System.out.println(user.getUserPwd());
-        return null;
+    /**
+     *  修改用户密码
+     * @author     ：TianHong Liao
+     * @date       ：Created in 2019/6/19 16:21
+     * @param       param
+     * @param       userId
+     * @return     : com.fpms.entity.pojo.ResultBean<java.lang.Boolean>
+     */
+    @PutMapping(value = "/user/{userId}/userPwd/actions/modify")
+    public ResultBean<Boolean> modifyPassword(@RequestBody Map<String,String> param, @PathVariable Integer userId){
+        try{
+            String userPwd = param.get("userPwd");
+            User user = new User();
+            user.setUserId(userId);
+            user.setUserPwd(userPwd);
+            userService.updateUserPwd(user);
+        }
+        catch (Exception e){
+            return new ResultBean<>(e);
+        }
+        return new ResultBean<>(true);
     }
 }

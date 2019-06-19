@@ -1,6 +1,7 @@
 package com.fpms.service.impl;
 
 import com.fpms.service.EvaluationService;
+import org.springframework.stereotype.Service;
 
 /**
  * @author : YongBiao Liao
@@ -8,5 +9,6 @@ import com.fpms.service.EvaluationService;
  * @description:
  * @modified :
  */
+@Service
 public class EvaluationServiceImpl implements EvaluationService {
 }
