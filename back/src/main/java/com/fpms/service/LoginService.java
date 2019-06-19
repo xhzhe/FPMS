@@ -1,11 +1,6 @@
 package com.fpms.service;
 
-import org.apache.ibatis.annotations.Insert;
-import org.mybatis.spring.annotation.MapperScan;
-import org.springframework.context.annotation.ComponentScan;
 
-import java.awt.*;
-import java.lang.annotation.Documented;
 import java.util.HashMap;
 
 /**

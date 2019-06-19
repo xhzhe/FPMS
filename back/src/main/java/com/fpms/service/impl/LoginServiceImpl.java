@@ -6,7 +6,6 @@ import com.fpms.entity.Staff;
 import com.fpms.entity.User;
 import com.fpms.enums.LoginResultEnum;
 import com.fpms.service.LoginService;
-import org.apache.ibatis.annotations.Insert;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -74,7 +73,7 @@ public class LoginServiceImpl implements LoginService {
      */
     @Override
     public HashMap<String,Object> loginByStaff(String staffName, String staffPwd) {
-        HashMap<String,Object> staffLoginResult = new HashMap<>(15);
+        HashMap<String,Object> staffLoginResult = new HashMap<>(16);
         if(staffName == null || staffPwd == null){
             staffLoginResult.put("code",LoginResultEnum.INPUT_NULL.getCode());
             staffLoginResult.put("msg",LoginResultEnum.INPUT_NULL.getMsg());

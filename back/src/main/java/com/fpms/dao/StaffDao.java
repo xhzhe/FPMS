@@ -21,8 +21,22 @@ public interface StaffDao {
 
     Staff selectByPrimaryKey(Integer staffId);
 
+    /*/**
+     *
+     * @author     ：YongBiao Liao
+     * @date       ：Created in 2019/6/19 14:40
+     * @param       record
+     * @return     : int
+     */
     int updateByPrimaryKeySelective(Staff record);
 
+    /**
+     *
+     * @author     ：YongBiao Liao
+     * @date       ：Created in 2019/6/19 14:39
+     * @param       record
+     * @return     : int
+     */
     int updateByPrimaryKey(Staff record);
 
     /**

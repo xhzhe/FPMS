@@ -8,6 +8,7 @@ import com.fpms.entity.pojo.ResultBean;
 import com.fpms.enums.LoginResultEnum;
 import com.fpms.service.LoginService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -23,11 +24,20 @@ import java.util.HashMap;
  * @modified :
  */
 @RestController
+@CrossOrigin
 public class LoginController {
 
     @Autowired
     private LoginService loginService;
 
+    /**
+     * 用户登录
+     * @author     ：YongBiao Liao
+     * @date       ：Created in 2019/6/19 14:07
+     * @param       request
+     * @param       userVo
+     * @return     : com.fpms.entity.pojo.ResultBean<com.fpms.dto.UserDto>
+     */
     @PostMapping(value = "/user/actions/login")
     public ResultBean<UserDto> loginByUser(HttpServletRequest request, @RequestBody User userVo){
         ResultBean<UserDto> resultBean = new ResultBean<>();
@@ -58,6 +68,14 @@ public class LoginController {
         return resultBean;
     }
 
+    /**
+     * 职工登录
+     * @author     ：YongBiao Liao
+     * @date       ：Created in 2019/6/19 14:10
+     * @param       request
+     * @param       staffVo
+     * @return     : com.fpms.entity.pojo.ResultBean<com.fpms.dto.StaffDto>
+     */
     @PostMapping(value = "/staff/actions/login")
     public ResultBean<StaffDto> loginByStaff(HttpServletRequest request,@RequestBody Staff staffVo){
 
