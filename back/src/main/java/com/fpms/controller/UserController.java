@@ -70,10 +70,4 @@ public class UserController {
     }
 
 
-    @PostMapping(value = "/user/{userId}/userPwd/actions/modify")
-    public ResultBean<User> modifyPassword(@RequestBody User user,@PathVariable Integer userId){
-//        User user = userService.getUserById(userId);
-        System.out.println(user.getUserPwd());
-        return null;
-    }
 }

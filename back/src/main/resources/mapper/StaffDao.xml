@@ -158,9 +158,4 @@
   <select id="selectByStaffName" parameterType="java.lang.String" resultMap="BaseResultMap">
     select * from staff where staff_name=#{staffName}
   </select>
-  <select id="findAllStaff" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select
-    <include refid="Base_Column_List" />
-    from staff
-  </select>
 </mapper>
