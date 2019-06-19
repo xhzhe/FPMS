@@ -16,9 +16,23 @@
     from role_privilege
     where role_privilege_id = #{rolePrivilegeId,jdbcType=INTEGER}
   </select>
+  <select id="selectByRoleId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from role_privilege
+    where role_id = #{roleId,jdbcType=INTEGER}
+  </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from role_privilege
     where role_privilege_id = #{rolePrivilegeId,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByRoleId" parameterType="java.lang.Integer">
+    delete from role_privilege
+    where role_id = #{roleId,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByPrivilegeId" parameterType="java.lang.Integer">
+    delete from role_privilege
+    where privilege_id = #{privilegeId,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="com.fpms.entity.RolePrivilege">
     insert into role_privilege (role_privilege_id, role_id, privilege_id, 
