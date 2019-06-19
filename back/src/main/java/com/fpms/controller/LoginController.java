@@ -4,6 +4,7 @@ import com.fpms.dto.StaffDto;
 import com.fpms.dto.UserDto;
 import com.fpms.entity.Staff;
 import com.fpms.entity.User;
+import com.fpms.entity.pojo.ResultBean;
 import com.fpms.enums.LoginResultEnum;
 import com.fpms.service.LoginService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,15 +29,13 @@ public class LoginController {
     private LoginService loginService;
 
     @PostMapping(value = "/user/actions/login")
-    public HashMap<String,Object> loginByUser(HttpServletRequest request,@RequestBody User userVo){
-        HashMap<String, Object> resultMap = new HashMap<>(16);
+    public ResultBean<UserDto> loginByUser(HttpServletRequest request, @RequestBody User userVo){
+        ResultBean<UserDto> resultBean = new ResultBean<>();
         String userName = userVo.getUserName();
         String userPwd = userVo.getUserPwd();
         try {
             HashMap<String, Object> loginResult = loginService.loginByUser(userName, userPwd);
             if (Integer.valueOf(loginResult.get("code").toString()) == LoginResultEnum.SUCCESS.getCode().intValue()) {
-                resultMap.put("success", true);
-
                 User user = (User) loginResult.get("user");
                 UserDto userDto = new UserDto();
                 userDto.setUserId(user.getUserId());
@@ -45,35 +44,29 @@ public class LoginController {
                 userDto.setUserEmail(user.getUserEmail());
                 userDto.setUserGender(user.getUserGender());
                 userDto.setUserPhone(user.getUserPhone());
-
                 request.getSession().setAttribute("user",user);
                 //将user返回给前端之后需要使用
-                resultMap.put("user_dto", userDto);
+                resultBean.setData(userDto);
             } else {
-                resultMap.put("success", false);
+                resultBean.setState(1);
+                resultBean.setMsg((String) loginResult.get("msg"));
             }
-            resultMap.put("code", loginResult.get("code"));
-            resultMap.put("msg", loginResult.get("msg"));
 
         } catch (Exception ex) {
-            resultMap.put("success", false);
-            resultMap.put("code", "-1");
-            resultMap.put("msg", ex.getMessage());
+           resultBean = new ResultBean<>(ex.getMessage());
         }
-        return resultMap;
+        return resultBean;
     }
 
     @PostMapping(value = "/staff/actions/login")
-    public HashMap<String,Object> loginByStaff(HttpServletRequest request,@RequestBody Staff staffVo){
-        HashMap<String, Object> resultMap = new HashMap<>(16);
+    public ResultBean<StaffDto> loginByStaff(HttpServletRequest request,@RequestBody Staff staffVo){
+
+        ResultBean<StaffDto> resultBean = new ResultBean<>();
         String staffName = staffVo.getStaffName();
         String staffPwd = staffVo.getStaffPwd();
-        System.out.println(staffName);
         try {
             HashMap<String, Object> loginResult = loginService.loginByStaff(staffName, staffPwd);
             if (Integer.valueOf(loginResult.get("code").toString()) == LoginResultEnum.SUCCESS.getCode().intValue()) {
-                resultMap.put("success", true);
-
                 Staff staff = (Staff) loginResult.get("staff");
                 StaffDto staffDto = new StaffDto();
                 staffDto.setStaffId(staff.getStaffId());
@@ -81,26 +74,18 @@ public class LoginController {
                 staffDto.setStaffGender(staff.getStaffGender());
                 staffDto.setStaffPhone(staff.getStaffPhone());
                 staffDto.setStaffStatus(staff.getStaffStatus());
-
                 request.getSession().setAttribute("staff",staff);
                 //将user返回给前端之后需要使用
-                resultMap.put("staff_dto", staffDto);
+                resultBean.setData(staffDto);
             } else {
-                resultMap.put("success", false);
+                resultBean.setState(1);
+                resultBean.setMsg((String) loginResult.get("msg"));
             }
-            resultMap.put("code", loginResult.get("code"));
-            resultMap.put("msg", loginResult.get("msg"));
 
         } catch (Exception ex) {
-            resultMap.put("success", false);
-            resultMap.put("code", "-1");
-            resultMap.put("msg", ex.getMessage());
+            resultBean = new ResultBean<>(ex.getMessage());
         }
-        return resultMap;
+        return resultBean;
     }
 
-//    @RequestMapping(value = "/index")
-//    public HashMap<String,Object> index(){
-//        return loginService.loginByStaff("honghong","aa123456");
-//    }
 }
