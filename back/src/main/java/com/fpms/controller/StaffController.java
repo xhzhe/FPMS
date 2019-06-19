@@ -29,13 +29,19 @@ public class StaffController {
         ResultBean<ConfigDetail>res=new ResultBean<>();
         try {
             if(productConID==null){
-                System.out.println(productConID);
                 res.setData(null);
                 res.setState(ResultBean.FAIL);
                 res.setMsg(ResultBean.FAIL_MSG);
                 return res;
             }
-            res.setData(staffService.getConfigByID(productConID));
+            ConfigDetail configDetail=staffService.getConfigByID(productConID);
+            if(configDetail==null){
+                res.setData(null);
+                res.setState(ResultBean.FAIL);
+                res.setMsg(ResultBean.FAIL_MSG);
+                return res;
+            }
+            res.setData(configDetail);
             res.setState(ResultBean.SUCCESS);
             res.setMsg(ResultBean.SUCC_MSG);
             return res;

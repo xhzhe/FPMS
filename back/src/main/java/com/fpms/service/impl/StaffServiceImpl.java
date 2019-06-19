@@ -3,9 +3,11 @@ package com.fpms.service.impl;
 import com.fpms.DTO.ConfigDetail;
 import com.fpms.dao.ProductConfigurationDao;
 import com.fpms.dao.ProductLibraryConfigurationDao;
+import com.fpms.dao.ProductLibraryPreDao;
 import com.fpms.dao.ProductLibraryStandardDao;
 import com.fpms.entity.ProductConfiguration;
 import com.fpms.entity.ProductLibraryConfiguration;
+import com.fpms.entity.ProductLibraryPre;
 import com.fpms.entity.ProductLibraryStandard;
 import com.fpms.service.StaffService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +29,8 @@ public class StaffServiceImpl implements StaffService {
     private ProductConfigurationDao productConfigurationDao;
     @Autowired
     private ProductLibraryStandardDao productLibraryStandardDao;
-
+    @Autowired
+    private ProductLibraryPreDao productLibraryPreDao;
     @Override
     public ConfigDetail getConfigByID(Integer configID) {
         ProductLibraryConfiguration productLibraryConfiguration = productLibraryConfigurationDao.selectByPrimaryKey(configID);
@@ -40,10 +43,14 @@ public class StaffServiceImpl implements StaffService {
 
         for(ProductConfiguration productConfiguration:productConfigurations){
             ProductLibraryStandard productLibraryStandard=productLibraryStandardDao.selectByPrimaryKey(productConfiguration.getProductStdId());
-
+            int productLibraryStandardID=productLibraryStandard.getProductStdId();
+            ProductLibraryPre productLibraryPre=productLibraryPreDao.selectByPrimaryKey(productLibraryStandard.getProductPreId());
+            if(productLibraryPre==null){
+                //System.out.println("no such product");
+                break;
+            }
             Float rate=Float.parseFloat(productConfiguration.getPercentage().toString());
-            res.rate.add(rate);
-            res.products.add(productLibraryStandard);
+            res.addProduct(productLibraryPre.getProductName(),productLibraryPre.getProductDesc(),rate,productLibraryStandardID);
         }
 
         return res;

@@ -1,6 +1,6 @@
 package com.fpms.DTO;
 import com.fpms.entity.ProductLibraryConfiguration;
-import com.fpms.entity.ProductLibraryStandard;
+import com.fpms.entity.ProductLibraryPre;
 
 import java.util.ArrayList;
 
@@ -12,7 +12,13 @@ import java.util.ArrayList;
  */
 public class ConfigDetail {
     public ProductLibraryConfiguration configlib;
-    public ArrayList<ProductLibraryStandard> products=new ArrayList<>();
-    public ArrayList<Float>rate=new ArrayList<>();
-
+    public ArrayList<Product> products=new ArrayList<>();
+    public void addProduct(String name, String desc, Float rate,int productLibraryID){
+        Product p=new Product();
+        p.rate=rate;
+        p.describe=name;
+        p.productStdId=productLibraryID;
+        p.productName=desc;
+        products.add(p);
+    }
 }
