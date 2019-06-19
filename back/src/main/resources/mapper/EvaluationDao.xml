@@ -19,10 +19,35 @@
     evaluation_desc, evaluation_type, evaluation_status, is_delete, create_time
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select 
+  select
+  <include refid="Base_Column_List" />
+  from evaluation
+  where evaluation_id = #{evaluationId,jdbcType=INTEGER}
+  </select>
+  <select id="selectByUserIdAndOrderId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
     <include refid="Base_Column_List" />
     from evaluation
-    where evaluation_id = #{evaluationId,jdbcType=INTEGER}
+    where user_id = #{userId,jdbcType=INTEGER}
+    and   order_id = #{orderId,jdbcType=INTEGER}
+  </select>
+  <select id="selectAllByUserId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from evaluation
+    where user_id = #{userId,jdbcType=INTEGER}
+  </select>
+  <select id="selectAllByProductStdId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from evaluation
+    where product_std_id = #{productStdId,jdbcType=INTEGER}
+  </select>
+  <select id="selectAllByProductConId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from evaluation
+    where product_con_id = #{productConId,jdbcType=INTEGER}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from evaluation
