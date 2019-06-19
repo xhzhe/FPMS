@@ -1,5 +1,6 @@
 package com.fpms.controller;
 
+import com.fpms.dto.UserLoginDto;
 import com.fpms.entity.User;
 import com.fpms.entity.pojo.ResultBean;
 import com.fpms.service.UserService;
@@ -25,14 +26,24 @@ public class UserController {
     /**
      * 注册用户
      * @author     ：YongBiao Liao
-     * @date       ：Created in 2019/6/19 14:05
-     * @param       user
+     * @date       ：Created in 2019/6/19 19:38
+     * @param       userLoginDto
      * @return     : com.fpms.entity.pojo.ResultBean<java.lang.Boolean>
      */
     @PostMapping(value = "/user/actions/register")
-    public ResultBean<Boolean> register( @RequestBody User user){
+    public ResultBean<Boolean> register(@RequestBody UserLoginDto userLoginDto){
         ResultBean<Boolean> resultBean = new ResultBean<>();
         try{
+            User user = new User();
+            user.setUserName(userLoginDto.getUserName());
+            user.setUserPwd(userLoginDto.getUserPwd());
+            user.setUserGender(userLoginDto.getUserGender());
+            user.setUserBrithday(userLoginDto.getUserBrithday());
+            user.setUserPhone(userLoginDto.getUserPhone());
+            user.setUserEmail(userLoginDto.getUserEmail());
+            user.setCertificateType(userLoginDto.getCertificateType());
+            user.setCertificateNum(userLoginDto.getCertificateNum());
+            user.setCareer(userLoginDto.getCareer());
             int result = userService.register(user);
             if(result == 0){
                 resultBean.setState(1);
@@ -59,15 +70,19 @@ public class UserController {
      */
     @GetMapping(value = "/user/{userId}")
     public ResultBean<User> getUserById(@PathVariable Integer userId){
-        User user = userService.getUserById(userId);
-        ResultBean<User> resultBean = new ResultBean<>();
-        if(user == null){
-            resultBean.setState(1);
-            resultBean.setMsg("该用户不存在");
-        }else {
-            resultBean= new ResultBean<>(user);
+        try {
+            User user = userService.getUserById(userId);
+            ResultBean<User> resultBean = new ResultBean<>();
+            if (user == null) {
+                resultBean.setState(1);
+                resultBean.setMsg("该用户不存在");
+            } else {
+                resultBean = new ResultBean<>(user);
+            }
+            return resultBean;
+        }catch (Exception e){
+            return new ResultBean<>(e);
         }
-        return resultBean;
     }
 
     /**
