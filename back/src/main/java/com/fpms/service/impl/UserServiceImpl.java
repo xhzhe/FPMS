@@ -51,4 +51,9 @@ public class UserServiceImpl implements UserService {
     public User getUserById(Integer userId) {
         return userDao.selectByPrimaryKey(userId);
     }
+
+    @Override
+    public void updateUserPwd(User user) {
+        userDao.updateByPrimaryKeySelective(user);
+    }
 }

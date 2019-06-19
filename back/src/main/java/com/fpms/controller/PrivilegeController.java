@@ -19,6 +19,7 @@ import java.util.List;
  * @modified :
  */
 @RestController
+@CrossOrigin
 public class PrivilegeController {
     @Autowired
     private PrivilegeService privilegeService;
