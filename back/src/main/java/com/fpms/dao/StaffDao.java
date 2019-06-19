@@ -5,6 +5,8 @@ import com.fpms.entity.User;
 import org.apache.ibatis.annotations.Select;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 /**
  * @author : YongBiao Liao
  * @date : 2019/6/14 15:00
@@ -47,4 +49,13 @@ public interface StaffDao {
      * @return     : com.fpms.entity.User
      */
     Staff selectByStaffName(String staffName);
+
+    /**
+     *  返回所有职工列表
+     * @author     ：TianHong Liao
+     * @date       ：Created in 2019/6/19 14:53
+     * @param
+     * @return     : java.util.List<com.fpms.entity.Staff>
+     */
+    List<Staff> findAllStaff();
 }

@@ -8,7 +8,6 @@ import java.io.Serializable;
  * @description:返回数据规范模型
  * @modified :
  */
-
 public class ResultBean<T> implements Serializable {
     private static final long serialVersionUID = -6248298306422072592L;
     /**
