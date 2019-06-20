@@ -8,13 +8,11 @@ import com.fpms.entity.pojo.ResultBean;
 import com.fpms.enums.LoginResultEnum;
 import com.fpms.service.LoginService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
+import java.util.Map;
 
 
 /**
@@ -35,14 +33,14 @@ public class LoginController {
      * @author     ：YongBiao Liao
      * @date       ：Created in 2019/6/19 14:07
      * @param       request
-     * @param       userVo
+     * @param       param
      * @return     : com.fpms.entity.pojo.ResultBean<com.fpms.dto.UserDto>
      */
     @PostMapping(value = "/user/actions/login")
-    public ResultBean<UserDto> loginByUser(HttpServletRequest request, @RequestBody User userVo){
+    public ResultBean<UserDto> loginByUser(HttpServletRequest request, @RequestBody Map<String,String> param){
         ResultBean<UserDto> resultBean = new ResultBean<>();
-        String userName = userVo.getUserName();
-        String userPwd = userVo.getUserPwd();
+        String userName = param.get("userName");
+        String userPwd = param.get("userPwd");
         try {
             HashMap<String, Object> loginResult = loginService.loginByUser(userName, userPwd);
             if (Integer.valueOf(loginResult.get("code").toString()) == LoginResultEnum.SUCCESS.getCode().intValue()) {
@@ -73,15 +71,15 @@ public class LoginController {
      * @author     ：YongBiao Liao
      * @date       ：Created in 2019/6/19 14:10
      * @param       request
-     * @param       staffVo
+     * @param       param
      * @return     : com.fpms.entity.pojo.ResultBean<com.fpms.dto.StaffDto>
      */
     @PostMapping(value = "/staff/actions/login")
-    public ResultBean<StaffDto> loginByStaff(HttpServletRequest request,@RequestBody Staff staffVo){
+    public ResultBean<StaffDto> loginByStaff(HttpServletRequest request,@RequestBody Map<String,String> param){
 
         ResultBean<StaffDto> resultBean = new ResultBean<>();
-        String staffName = staffVo.getStaffName();
-        String staffPwd = staffVo.getStaffPwd();
+        String staffName = param.get("staffName");
+        String staffPwd = param.get("staffPwd");
         try {
             HashMap<String, Object> loginResult = loginService.loginByStaff(staffName, staffPwd);
             if (Integer.valueOf(loginResult.get("code").toString()) == LoginResultEnum.SUCCESS.getCode().intValue()) {
@@ -106,4 +104,47 @@ public class LoginController {
         return resultBean;
     }
 
+    /**
+     * 用户注销
+     * @author     ：YongBiao Liao
+     * @date       ：Created in 2019/6/19 21:31
+     * @param       request
+     * @return     : com.fpms.entity.pojo.ResultBean<java.lang.Boolean>
+     */
+    @GetMapping(value = "/user/logout")
+    public ResultBean<Boolean> logoutByUser(HttpServletRequest request){
+        try{
+            User uer = (User) request.getSession().getAttribute("user");
+            if(uer == null){
+                return new ResultBean<>("用户未登录");
+            }else {
+                request.getSession().removeAttribute("user");
+                return new ResultBean<>();
+            }
+        }catch (Exception e){
+            return new ResultBean<>(e);
+        }
+    }
+
+    /**
+     * 职工注销
+     * @author     ：YongBiao Liao
+     * @date       ：Created in 2019/6/19 21:38
+     * @param       request
+     * @return     : com.fpms.entity.pojo.ResultBean<java.lang.Boolean>
+     */
+    @GetMapping(value = "/staff/logout")
+    public ResultBean<Boolean> logoutByStaff(HttpServletRequest request){
+        try{
+            Staff staff = (Staff) request.getSession().getAttribute("staff");
+            if(staff == null){
+                return new ResultBean<>("用户未登录");
+            }else {
+                request.getSession().removeAttribute("staff");
+                return new ResultBean<>();
+            }
+        }catch (Exception e){
+            return new ResultBean<>(e);
+        }
+    }
 }
