@@ -3,6 +3,8 @@ package com.fpms.dao;
 import com.fpms.entity.ProductLibraryConfiguration;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 /**
  * @author : YongBiao Liao
  * @date : 2019/6/14 15:00
@@ -22,4 +24,6 @@ public interface ProductLibraryConfigurationDao {
     int updateByPrimaryKeySelective(ProductLibraryConfiguration record);
 
     int updateByPrimaryKey(ProductLibraryConfiguration record);
+
+    List<ProductLibraryConfiguration> selectAll();
 }

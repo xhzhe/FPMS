@@ -23,6 +23,9 @@
     from staff
     where staff_id = #{staffId,jdbcType=INTEGER}
   </select>
+  <select id="getStaffs" resultMap="BaseResultMap">
+    select * from staff
+  </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from staff
     where staff_id = #{staffId,jdbcType=INTEGER}
@@ -37,7 +40,7 @@
       #{staffDepartment,jdbcType=VARCHAR}, #{staffStatus,jdbcType=TINYINT}, #{createBy,jdbcType=INTEGER}, 
       #{createTime,jdbcType=TIMESTAMP})
   </insert>
-  <insert id="insertSelective" parameterType="com.fpms.entity.Staff">
+  <insert id="insertSelective" useGeneratedKeys="true" keyProperty="staffId" parameterType="com.fpms.entity.Staff">
     insert into staff
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="staffId != null">

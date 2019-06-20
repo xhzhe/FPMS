@@ -1,24 +1,22 @@
 package com.fpms.service.impl;
 
 import com.fpms.DTO.ConfigDetail;
-import com.fpms.dao.ProductConfigurationDao;
-import com.fpms.dao.ProductLibraryConfigurationDao;
-import com.fpms.dao.ProductLibraryPreDao;
-import com.fpms.dao.ProductLibraryStandardDao;
-import com.fpms.entity.ProductConfiguration;
-import com.fpms.entity.ProductLibraryConfiguration;
-import com.fpms.entity.ProductLibraryPre;
-import com.fpms.entity.ProductLibraryStandard;
+import com.fpms.DTO.ProductDetail;
+import com.fpms.DTO.ProductsAndConfigs;
+import com.fpms.dao.*;
+import com.fpms.entity.*;
 import com.fpms.service.StaffService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
- * @author : YongBiao Liao
+ * @author : HuiZhe Xu
  * @date : 2019/6/14 15:16
- * @description:
+ * @description: staff service
  * @modified :
  */
 @Service
@@ -31,6 +29,10 @@ public class StaffServiceImpl implements StaffService {
     private ProductLibraryStandardDao productLibraryStandardDao;
     @Autowired
     private ProductLibraryPreDao productLibraryPreDao;
+    @Autowired
+    private StaffDao staffDao;
+    @Autowired
+    private StaffRoleDao staffRoleDao;
     @Override
     public ConfigDetail getConfigByID(Integer configID) {
         ProductLibraryConfiguration productLibraryConfiguration = productLibraryConfigurationDao.selectByPrimaryKey(configID);
@@ -46,7 +48,6 @@ public class StaffServiceImpl implements StaffService {
             int productLibraryStandardID=productLibraryStandard.getProductStdId();
             ProductLibraryPre productLibraryPre=productLibraryPreDao.selectByPrimaryKey(productLibraryStandard.getProductPreId());
             if(productLibraryPre==null){
-                //System.out.println("no such product");
                 break;
             }
             Float rate=Float.parseFloat(productConfiguration.getPercentage().toString());
@@ -55,4 +56,106 @@ public class StaffServiceImpl implements StaffService {
 
         return res;
     }
+
+    @Override
+    public ProductsAndConfigs getAllMall() {
+        List<ProductLibraryConfiguration> productLibraryConfigurations=productLibraryConfigurationDao.selectAll();
+        ProductsAndConfigs productsAndConfigs=new ProductsAndConfigs();
+        if(productLibraryConfigurations!=null) {
+            productsAndConfigs.configs.addAll(productLibraryConfigurations);
+        }
+        List<ProductLibraryPre> productLibraryPres=productLibraryPreDao.getAll();
+        if(productLibraryPres!=null) {
+            productsAndConfigs.products.addAll(productLibraryPres);
+        }
+        return productsAndConfigs;
+    }
+
+    @Override
+    public boolean addStaff(String name, String pwd, String depart, ArrayList roleList) {
+        Staff staff=new Staff();
+        staff.setStaffName(name);
+        staff.setStaffPwd(pwd);
+        staff.setStaffDepartment(depart);
+        staffDao.insertSelective(staff);
+
+        Integer ID=staff.getStaffId();
+        System.out.println(ID);
+        for(Object roleIter:roleList){
+            String roleId=(String)roleIter;
+            StaffRole staffRole=new StaffRole();
+            staffRole.setRoleId(Integer.parseInt(roleId));
+            staffRole.setStaffId(ID);
+            staffRoleDao.insertSelective(staffRole);
+        }
+        return true;
+    }
+
+    @Override
+    public Staff getSingleStaffDetail(Integer StaffId) {
+        Staff staff=staffDao.selectByPrimaryKey(StaffId);
+
+        return staff;
+    }
+
+    @Override
+    public ProductDetail getProductInfo(Integer ProductID) {
+        ProductLibraryStandard productLibraryStandard=productLibraryStandardDao.selectByPrimaryKey(ProductID);
+        if(productLibraryStandard==null){
+            return null;
+        }
+        Integer productPreId=productLibraryStandard.getProductPreId();
+        ProductLibraryPre productLibraryPre=productLibraryPreDao.selectByPrimaryKey(productPreId);
+        if(productLibraryPre==null){
+            return null;
+        }
+        ProductDetail productDetail=new ProductDetail();
+        productDetail.setProductStdId(ProductID.toString());
+        productDetail.setSuitUser(productLibraryStandard.getSuitUser().toString());
+        productDetail.setInterRiskRating(productLibraryStandard.getInterRiskRating().toString());
+        productDetail.setExchangeRateRiskIndex(productLibraryStandard.getExchangeRateRiskIndex().toString());
+        productDetail.setInterestRateRiskIndex(productLibraryStandard.getInterestRateRiskIndex().toString());
+        productDetail.setMarketRiskIndex(productLibraryStandard.getMarketRiskIndex().toString());
+        productDetail.setCreditRiskIndex(productLibraryStandard.getCreditRiskIndex().toString());
+        productDetail.setStock(productLibraryStandard.getStock().toString());
+        productDetail.setSaleNum(productLibraryStandard.getSaleNum().toString());
+        productDetail.setEvalutionAvgScore(productLibraryStandard.getEvalutionAvgScore().toString());
+        productDetail.setProductDesc(productLibraryPre.getProductDesc());
+        productDetail.setProductName(productLibraryPre.getProductName());
+        productDetail.setProductPrice(productLibraryPre.getProductPrice().toString());
+        productDetail.setPurchaseStartPoint(productLibraryPre.getPurchaseStartPoint().toString());
+        productDetail.setCategoryId(productLibraryPre.getCategoryId().toString());
+        productDetail.setTerm(productLibraryPre.getTerm().toString());
+        productDetail.setExpiryDate(productLibraryPre.getExpiryDate().toString());
+        productDetail.setRiskRating(productLibraryPre.getRiskRating().toString());
+        productDetail.setReturnRate(productLibraryPre.getReturnRate().toString());
+        productDetail.setIncomeType(productLibraryPre.getIncomeType().toString());
+        productDetail.setUnitNetValue(productLibraryPre.getUnitNetValue().toString());
+        productDetail.setUnitNetValue(productLibraryPre.getUnitNetValue().toString());
+        productDetail.setCumulativeNetValue(productLibraryPre.getCumulativeNetValue().toString());
+        productDetail.setNotice(productLibraryPre.getNotice());
+        productDetail.setPurchaseLimit(productLibraryPre.getPurchaseLimit().toString());
+
+        return productDetail;
+    }
+
+    @Override
+    public ArrayList<Staff> getStaffs() {
+        List<Staff> res=staffDao.getStaffs();
+        if(res.isEmpty()){
+            return null;
+        }
+        ArrayList<Staff> result=new ArrayList<>(res);
+        return result;
+    }
+
+    @Override
+    public Boolean ModifyPrivilege(Integer staffId, ArrayList Privileges) {
+        for(Object privilege:Privileges){
+            //String
+        }
+        return null;
+    }
+
+
 }

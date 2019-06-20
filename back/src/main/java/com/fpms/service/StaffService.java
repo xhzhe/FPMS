@@ -2,7 +2,13 @@ package com.fpms.service;
 
 import com.fpms.DTO.ConfigDetail;
 
-import java.util.HashMap;
+import com.fpms.DTO.ProductDetail;
+import com.fpms.DTO.ProductsAndConfigs;
+
+import com.fpms.entity.Staff;
+
+import java.util.ArrayList;
+
 
 /**
  * @author : YongBiao Liao
@@ -12,6 +18,17 @@ import java.util.HashMap;
  */
 
 public interface StaffService {
-    public ConfigDetail getConfigByID(Integer configID);
+    ConfigDetail getConfigByID(Integer configID);
 
+    ProductsAndConfigs getAllMall();
+
+    boolean addStaff(String name, String pwd, String depart, ArrayList roleList);
+
+    Staff getSingleStaffDetail(Integer StaffId);
+
+    ProductDetail getProductInfo(Integer ProductID);
+
+    ArrayList<Staff> getStaffs();
+
+    Boolean ModifyPrivilege(Integer staffId,ArrayList Privileges);
 }
