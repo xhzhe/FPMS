@@ -3,6 +3,8 @@ package com.fpms.dao;
 import com.fpms.entity.ProductCategory;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 /**
  * @author : YongBiao Liao
  * @date : 2019/6/14 15:00
@@ -22,4 +24,6 @@ public interface ProductCategoryDao {
     int updateByPrimaryKeySelective(ProductCategory record);
 
     int updateByPrimaryKey(ProductCategory record);
+
+    List<ProductCategory> selectAllProductCategory();
 }
