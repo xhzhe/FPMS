@@ -8,7 +8,7 @@ import java.util.List;
 /**
  * @author : YongBiao Liao
  * @date : 2019/6/14 15:00
- * @description: 配置评审
+ * @description: 评价表数据操作类
  * @modified :
  */
 @Component
