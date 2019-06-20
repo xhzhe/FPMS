@@ -1,5 +1,6 @@
 package com.fpms.controller;
 
+import com.fpms.annotation.OperationLog;
 import com.fpms.entity.Privilege;
 import com.fpms.entity.RolePrivilege;
 import com.fpms.entity.pojo.ResultBean;
@@ -10,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -34,6 +36,7 @@ public class PrivilegeController {
      * @param       privilege
      * @return     : com.fpms.entity.pojo.ResultBean<java.lang.Boolean>
      */
+    @OperationLog(value = "增加权限")
     @PostMapping("/privilege")
     public ResultBean<Boolean> addPrivilege(@RequestBody Privilege privilege){
         try{
@@ -54,7 +57,14 @@ public class PrivilegeController {
      */
     @GetMapping("/privileges")
     public ResultBean<List<Privilege> >selectAllPrivileges(){
-        return new ResultBean<>(privilegeService.selectAllPrivileges());
+        List<Privilege> privilegeList = new ArrayList<>();
+        try{
+            privilegeService.selectAllPrivileges();
+        }
+        catch (Exception e){
+            return new ResultBean<>(e);
+        }
+        return new ResultBean<>(privilegeList);
     }
 
     /**
@@ -64,6 +74,7 @@ public class PrivilegeController {
      * @param       privilegeId
      * @return     : com.fpms.entity.pojo.ResultBean<java.lang.Boolean>
      */
+    @OperationLog(value = "删除权限")
     @DeleteMapping("/privilege/{privilegeId}")
     public ResultBean<Boolean> delPrivilegeById(@PathVariable Integer privilegeId)
     {
@@ -88,6 +99,7 @@ public class PrivilegeController {
      * @param       privilege
      * @return     : com.fpms.entity.pojo.ResultBean<java.lang.Boolean>
      */
+    @OperationLog(value = "更新权限")
     @PutMapping("/privilege/{privilegeId}")
     public ResultBean<Boolean> updatePrivilege(@PathVariable Integer privilegeId,@RequestBody Privilege privilege){
         try{

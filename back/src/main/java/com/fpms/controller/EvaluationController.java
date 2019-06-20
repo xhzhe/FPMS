@@ -1,5 +1,6 @@
 package com.fpms.controller;
 
+import com.fpms.annotation.OperationLog;
 import com.fpms.entity.Evaluation;
 import com.fpms.entity.pojo.ResultBean;
 import com.fpms.service.EvaluationService;
@@ -48,6 +49,7 @@ public class EvaluationController {
      * @param       evaluation
      * @return     : com.fpms.entity.pojo.ResultBean<java.lang.Boolean>
      */
+    @OperationLog(value = "更新评价")
     @PutMapping("/user/{userId}/order/{orderId}/evaluation/{evaluationId}")
     public ResultBean<Boolean> updateEvaluation(@RequestBody Evaluation evaluation,@PathVariable Integer userId, @PathVariable Integer orderId,@PathVariable Integer evaluationId ){
         try{

@@ -2,6 +2,7 @@ package com.fpms.controller;
 
 
 import com.fasterxml.jackson.databind.util.JSONPObject;
+import com.fpms.annotation.OperationLog;
 import com.fpms.dto.RolePrivilegeDto;
 import com.fpms.dto.StaffRoleDto;
 import com.fpms.entity.*;
@@ -47,6 +48,7 @@ public class RoleController {
      * @param       rolePrivilegeDto
      * @return     : com.fpms.entity.pojo.ResultBean<java.lang.Boolean>
      */
+    @OperationLog(value = "新建角色")
     @PostMapping("/role")
     public ResultBean<Boolean> addRole(@RequestBody RolePrivilegeDto rolePrivilegeDto){
         try{
@@ -122,6 +124,7 @@ public class RoleController {
      * @param       roleId
      * @return     : com.fpms.entity.pojo.ResultBean<java.lang.Boolean>
      */
+    @OperationLog(value = "删除角色")
     @DeleteMapping("/role/{roleId}")
     public ResultBean<Boolean> delRoleById(@PathVariable Integer roleId){
         try{
@@ -146,6 +149,7 @@ public class RoleController {
      * @param       roleId
      * @return     : com.fpms.entity.pojo.ResultBean<java.lang.Boolean>
      */
+    @OperationLog(value = "更新角色")
     @PutMapping("/role/{roleId}")
     public ResultBean<Boolean> updateRole(@RequestBody RolePrivilegeDto rolePrivilegeDto,@PathVariable Integer roleId){
         try{
@@ -191,6 +195,7 @@ public class RoleController {
      * @param       roleList
      * @return     : com.fpms.entity.pojo.ResultBean<java.lang.Boolean>
      */
+    @OperationLog(value = "添加职工的角色")
     @PostMapping("/staff/{staffId}/role")
     public ResultBean<Boolean> addStaffRole(@PathVariable Integer staffId,@RequestBody Role[] roleList){
         try{
@@ -215,6 +220,7 @@ public class RoleController {
      * @param       roleList
      * @return     : com.fpms.entity.pojo.ResultBean<java.lang.Boolean>
      */
+    @OperationLog(value = "修改职工的角色")
     @PutMapping("/staff/{staffId}/role")
     public ResultBean<Boolean> updateStaffRole(@PathVariable Integer staffId,@RequestBody Role[] roleList){
         try{
