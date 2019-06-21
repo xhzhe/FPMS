@@ -1,6 +1,10 @@
 package com.fpms.service.impl;
 
+import com.fpms.dao.ProductReviewDao;
+import com.fpms.entity.ProductReview;
 import com.fpms.service.ProductReviewService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 /**
  * @author : YongBiao Liao
@@ -8,5 +12,13 @@ import com.fpms.service.ProductReviewService;
  * @description:
  * @modified :
  */
+@Service
 public class ProductReviewServiceImpl implements ProductReviewService {
+    @Autowired
+    private ProductReviewDao productReviewDao;
+
+    @Override
+    public void addReview(ProductReview productReview) {
+        productReviewDao.insertSelective(productReview);
+    }
 }

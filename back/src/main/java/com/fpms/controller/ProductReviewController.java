@@ -1,7 +1,10 @@
 package com.fpms.controller;
 
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RestController;
+import com.fpms.entity.ProductReview;
+import com.fpms.entity.pojo.ResultBean;
+import com.fpms.service.ProductReviewService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * @author : YongBiao Liao
@@ -12,4 +15,26 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @CrossOrigin
 public class ProductReviewController {
+    @Autowired
+    private ProductReviewService productReviewService;
+
+    /**
+     *  新增对预选库产品的评价
+     * @author     ：TianHong Liao
+     * @date       ：Created in 2019/6/21 11:49
+     * @param       productReview
+     * @param       productPreId
+     * @return     : com.fpms.entity.pojo.ResultBean<java.lang.Boolean>
+     */
+    @PostMapping("/productPre/{productPreId}/review")
+    public ResultBean<Boolean> addReview(@RequestBody ProductReview productReview,@PathVariable Integer productPreId){
+        try{
+            productReview.setProductPreId(productPreId);
+            productReviewService.addReview(productReview);
+        }
+        catch (Exception e){
+            return new ResultBean<>(e);
+        }
+        return new ResultBean<>(true);
+    }
 }
