@@ -2,11 +2,15 @@ package com.fpms.controller;
 
 import com.fpms.dto.StaffDto;
 import com.fpms.dto.UserDto;
+import com.fpms.entity.Role;
 import com.fpms.entity.Staff;
+import com.fpms.entity.StaffRole;
 import com.fpms.entity.User;
 import com.fpms.entity.pojo.ResultBean;
 import com.fpms.enums.LoginResultEnum;
 import com.fpms.service.LoginService;
+import com.fpms.service.RoleService;
+import com.fpms.service.StaffRoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -14,7 +18,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 
 /**
@@ -30,6 +36,11 @@ public class LoginController {
     @Autowired
     private LoginService loginService;
 
+    @Autowired
+    private StaffRoleService staffRoleService;
+
+    @Autowired
+    private RoleService roleService;
     /**
      * 用户登录
      * @author     ：YongBiao Liao
@@ -93,6 +104,15 @@ public class LoginController {
                 staffDto.setStaffPhone(staff.getStaffPhone());
                 staffDto.setStaffStatus(staff.getStaffStatus());
                 request.getSession().setAttribute("staff",staff);
+
+                List<StaffRole> staffRoleList = staffRoleService.selectStaffRoleByStaffId(staff.getStaffId());
+                List<Role> roleList = new ArrayList<>();
+                for(int i=0;i<staffRoleList.size();i++)
+                {
+                    Role role = roleService.selectRoleById(staffRoleList.get(i).getRoleId());
+                    roleList.add(role);
+                }
+                staffDto.setRoleList(roleList);
                 //将user返回给前端之后需要使用
                 resultBean.setData(staffDto);
             } else {
