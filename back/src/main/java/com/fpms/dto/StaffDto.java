@@ -1,5 +1,9 @@
 package com.fpms.dto;
 
+import com.fpms.entity.Role;
+
+import java.util.List;
+
 /**
  * @author : YongBiao Liao
  * @date : 2019/6/18 20:27
@@ -17,6 +21,8 @@ public class StaffDto {
     private String staffPhone;
 
     private Byte staffStatus;
+
+    private List<Role> roleList;
 
     public Integer getStaffId() {
         return staffId;
@@ -56,5 +62,13 @@ public class StaffDto {
 
     public void setStaffStatus(Byte staffStatus) {
         this.staffStatus = staffStatus;
+    }
+
+    public List<Role> getRoleList() {
+        return roleList;
+    }
+
+    public void setRoleList(List<Role> roleList) {
+        this.roleList = roleList;
     }
 }
