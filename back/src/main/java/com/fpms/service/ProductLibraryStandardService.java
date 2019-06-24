@@ -1,5 +1,7 @@
 package com.fpms.service;
 
+import com.fpms.DTO.Product;
+
 /**
  * @author     : YongBiao Liao
  * @date       : 2019/6/14 14:51
@@ -7,4 +9,5 @@ package com.fpms.service;
  * @modified   :
  */
 public interface ProductLibraryStandardService {
+    Boolean obetainProducts(Integer ID);
 }

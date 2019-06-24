@@ -64,4 +64,13 @@ public interface ConfigurationReviewDao {
      * @return     : int
      */
     int updateByPrimaryKey(ConfigurationReview record);
+
+    /**
+     *  通过ProductConId查询一条记录
+     * @author     ：TianHong Liao
+     * @date       ：Created in 2019/6/24 11:21
+     * @param       productConId
+     * @return     : com.fpms.entity.ConfigurationReview
+     */
+    ConfigurationReview selectByProductConId(Integer productConId);
 }

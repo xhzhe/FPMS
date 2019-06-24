@@ -10,11 +10,20 @@ import com.fpms.entity.ConfigurationReview;
  */
 public interface ConfigurationReviewService {
     /**
-     *  增加产品配置评论
+     *  增加对配置产品的评估
      * @author     ：TianHong Liao
      * @date       ：Created in 2019/6/21 11:46
      * @param       configurationReview
      * @return     : void
      */
     void addReview(ConfigurationReview configurationReview);
+
+    /**
+     *  获取该产品配置的评估
+     * @author     ：TianHong Liao
+     * @date       ：Created in 2019/6/24 11:18
+     * @param       productConId
+     * @return     : com.fpms.entity.ConfigurationReview
+     */
+    ConfigurationReview selectByProductConId(Integer productConId);
 }

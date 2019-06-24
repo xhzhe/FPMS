@@ -21,4 +21,9 @@ public class ConfigurationReviewServiceImpl implements ConfigurationReviewServic
     public void addReview(ConfigurationReview configurationReview) {
         configurationReviewDao.insertSelective(configurationReview);
     }
+
+    @Override
+    public ConfigurationReview selectByProductConId(Integer productConId) {
+        return configurationReviewDao.selectByProductConId(productConId);
+    }
 }
