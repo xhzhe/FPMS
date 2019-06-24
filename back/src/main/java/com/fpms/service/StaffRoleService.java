@@ -44,7 +44,7 @@ public interface StaffRoleService {
      * @author     ：TianHong Liao
      * @date       ：Created in 2019/6/19 14:30
      * @param       staffId
-     * @return     : java.util.List<com.fpms.entity.StaffRole>
+     * @return     : com.fpms.entity.StaffRole
      */
-    List<StaffRole> selectStaffRoleByStaffId(Integer staffId);
+    StaffRole selectStaffRoleByStaffId(Integer staffId);
 }
