@@ -44,14 +44,13 @@ public class LoginController {
      * @author     ：YongBiao Liao
      * @date       ：Created in 2019/6/19 14:07
      * @param       request
-     * @param       param
+     * @param       userName
+     * @param       userPwd
      * @return     : com.fpms.entity.pojo.ResultBean<com.fpms.dto.UserDto>
      */
     @PostMapping(value = "/user/actions/login")
-    public ResultBean<UserDto> loginByUser(HttpServletRequest request, @RequestBody Map<String,String> param){
+    public ResultBean<UserDto> loginByUser(HttpServletRequest request, @RequestParam("userName") String userName, @RequestParam("userPwd") String userPwd){
         ResultBean<UserDto> resultBean = new ResultBean<>();
-        String userName = param.get("userName");
-        String userPwd = param.get("userPwd");
         try {
             HashMap<String, Object> loginResult = loginService.loginByUser(userName, userPwd);
             if (Integer.valueOf(loginResult.get("code").toString()) == LoginResultEnum.SUCCESS.getCode().intValue()) {
@@ -82,15 +81,14 @@ public class LoginController {
      * @author     ：YongBiao Liao
      * @date       ：Created in 2019/6/19 14:10
      * @param       request
-     * @param       param
+     * @param       staffName
+     * @param       staffPwd
      * @return     : com.fpms.entity.pojo.ResultBean<com.fpms.dto.StaffDto>
      */
     @PostMapping(value = "/staff/actions/login")
-    public ResultBean<StaffDto> loginByStaff(HttpServletRequest request,@RequestBody Map<String,String> param){
+    public ResultBean<StaffDto> loginByStaff(HttpServletRequest request,@RequestParam("staffName") String staffName, @RequestParam("staffPwd") String staffPwd){
 
         ResultBean<StaffDto> resultBean = new ResultBean<>();
-        String staffName = param.get("staffName");
-        String staffPwd = param.get("staffPwd");
         try {
             HashMap<String, Object> loginResult = loginService.loginByStaff(staffName, staffPwd);
             if (Integer.valueOf(loginResult.get("code").toString()) == LoginResultEnum.SUCCESS.getCode().intValue()) {
@@ -102,15 +100,9 @@ public class LoginController {
                 staffDto.setStaffPhone(staff.getStaffPhone());
                 staffDto.setStaffStatus(staff.getStaffStatus());
                 request.getSession().setAttribute("staff",staff);
-
-                List<StaffRole> staffRoleList = staffRoleService.selectStaffRoleByStaffId(staff.getStaffId());
-                List<Role> roleList = new ArrayList<>();
-                for(int i=0;i<staffRoleList.size();i++)
-                {
-                    Role role = roleService.selectRoleById(staffRoleList.get(i).getRoleId());
-                    roleList.add(role);
-                }
-                staffDto.setRoleList(roleList);
+                StaffRole staffRole = staffRoleService.selectStaffRoleByStaffId(staff.getStaffId());
+                Role role = roleService.selectRoleById(staffRole.getRoleId());
+                staffDto.setRole(role);
                 //将user返回给前端之后需要使用
                 resultBean.setData(staffDto);
             } else {

@@ -90,7 +90,7 @@ public interface StaffRoleDao {
      * @author     ：TianHong Liao
      * @date       ：Created in 2019/6/19 14:45
      * @param       staffId
-     * @return     : java.util.List<com.fpms.entity.StaffRole>
+     * @return     : com.fpms.entity.StaffRole
      */
-    List<StaffRole> selectByStaffId(Integer staffId);
+    StaffRole selectByStaffId(Integer staffId);
 }
