@@ -15,7 +15,7 @@ import javax.validation.constraints.NotNull;
  * @modified :
  */
 @RestController
-@RequestMapping
+@CrossOrigin
 public class ProductLibraryPreController {
     @Autowired
     private ProductLibraryPreService productLibraryPreService;

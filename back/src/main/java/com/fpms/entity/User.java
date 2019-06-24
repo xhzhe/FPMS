@@ -1,5 +1,8 @@
 package com.fpms.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.springframework.format.annotation.DateTimeFormat;
+
 import java.math.BigDecimal;
 import java.util.Date;
 
@@ -14,6 +17,7 @@ public class User {
 
     private String userName;
 
+    @JsonIgnore
     private String userPwd;
 
     private String userGender;
@@ -40,8 +44,10 @@ public class User {
 
     private Integer integrityScore;
 
+    @JsonIgnore
     private String payPwd;
 
+    @JsonIgnore
     private Date createTime;
 
     public Integer getUserId() {

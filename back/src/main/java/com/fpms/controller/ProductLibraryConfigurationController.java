@@ -1,10 +1,40 @@
 package com.fpms.controller;
 
+import com.fpms.entity.pojo.ResultBean;
+import com.fpms.service.ProductLibraryConfigurationService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
+
 /**
  * @author : YongBiao Liao
  * @date : 2019/6/14 15:00
  * @description:
  * @modified :
  */
+@RestController
+@CrossOrigin
 public class ProductLibraryConfigurationController {
+
+    @Autowired
+    private ProductLibraryConfigurationService productLibraryConfigurationService;
+
+    /**
+     * 获取所有配置的信息
+     * @author     ：YongBiao Liao
+     * @date       ：Created in 2019/6/21 14:55
+     * @param
+     * @return     : com.fpms.entity.pojo.ResultBean<java.util.List>
+     */
+    @GetMapping(value = "/configurations")
+    public ResultBean<List> getAllConfiguration(){
+        try{
+            return new ResultBean<>(productLibraryConfigurationService.getAllConfiguration());
+        }catch (Exception e){
+            return new ResultBean<>(e.getMessage());
+        }
+    }
 }

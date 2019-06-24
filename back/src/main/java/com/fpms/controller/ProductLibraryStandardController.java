@@ -16,7 +16,7 @@ import java.util.Map;
  * @modified :
  */
 @RestController
-@RequestMapping
+@CrossOrigin
 public class ProductLibraryStandardController {
     @Autowired
     private ProductLibraryStandardService productLibraryStandardService;

@@ -1,5 +1,6 @@
 package com.fpms.dao;
 
+import com.fpms.dto.ProductLibraryConfigurationDto;
 import com.fpms.entity.ProductLibraryConfiguration;
 import org.springframework.stereotype.Component;
 

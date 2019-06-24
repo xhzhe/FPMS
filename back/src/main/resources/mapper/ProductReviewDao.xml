@@ -17,6 +17,12 @@
     from product_review
     where product_review_id = #{productReviewId,jdbcType=INTEGER}
   </select>
+  <select id="selectByProductPreId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from product_review
+    where product_pre_id = #{productPreId,jdbcType=INTEGER}
+  </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from product_review
     where product_review_id = #{productReviewId,jdbcType=INTEGER}

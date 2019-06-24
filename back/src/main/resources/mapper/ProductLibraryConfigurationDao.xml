@@ -17,6 +17,14 @@
     <result column="evalution_num" jdbcType="INTEGER" property="evalutionNum" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
   </resultMap>
+  <resultMap id="resultMap" type="com.fpms.dto.ProductLibraryConfigurationDto">
+    <id column="product_con_id" jdbcType="INTEGER" property="productConId" />
+    <result column="product_con_name" jdbcType="VARCHAR" property="productConName" />
+    <result column="product_con_num" jdbcType="INTEGER" property="productConNum" />
+    <result column="product_con_desc" jdbcType="VARCHAR" property="productConDesc" />
+    <result column="product_con_price" jdbcType="DECIMAL" property="productConPrice" />
+    <result column="review_status" jdbcType="TINYINT" property="reviewStatus" />
+  </resultMap>
   <sql id="Base_Column_List">
     product_con_id, product_con_name, product_con_num, product_con_desc, product_con_price, 
     review_status, is_sale, sale_start_time, sale_end_time, sale_num, stock, evalution_avg_score, 
@@ -202,4 +210,7 @@
       create_time = #{createTime,jdbcType=TIMESTAMP}
     where product_con_id = #{productConId,jdbcType=INTEGER}
   </update>
+  <select id="selectAll" resultMap="resultMap">
+    select * from product_library_configuration
+  </select>
 </mapper>
