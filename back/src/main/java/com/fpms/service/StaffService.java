@@ -11,7 +11,7 @@ import java.util.ArrayList;
 
 
 /**
- * @author : YongBiao Liao
+ * @author : HuiZhe Xu
  * @date : 2019/6/14 14:58
  * @description:
  * @modified :
@@ -30,5 +30,4 @@ public interface StaffService {
 
     ArrayList<Staff> getStaffs();
 
-    Boolean ModifyPrivilege(Integer staffId,ArrayList Privileges);
 }

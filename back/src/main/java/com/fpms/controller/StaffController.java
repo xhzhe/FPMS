@@ -6,47 +6,46 @@ import com.fpms.DTO.ProductsAndConfigs;
 import com.fpms.entity.ResultBean;
 
 import com.fpms.entity.Staff;
-import com.sun.org.apache.xpath.internal.operations.Bool;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import com.fpms.service.StaffService;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.regex.Pattern;
 
 /**
- * @author : YongBiao Liao
+ * @author : HuiZhe Xu
  * @date : 2019/6/14 15:02
- * @description:
+ * @description: staff class
  * @modified :
  */
 @RestController
 @RequestMapping("/staff")
 public class StaffController {
 
-    @RequestMapping("/test")
-    public String hello() {
-        return "hello";
-    }
-
     @Autowired
     StaffService staffService;
     private Pattern NUMBER_PATTERN = Pattern.compile("[0-9]*");
 
-    @GetMapping("/configurations/{productConID}")
-    public ResultBean<ConfigDetail> getConfigDetail(@PathVariable Integer productConID) {
+    /**
+     * 获取详细设置
+     * @author     ：HuiZhe Xu
+     * @date       ：Created in 2019/6/14 16:29
+     * @parameter      ：productConId
+     * @return     : ResultBean<ConfigDetail>
+     */
+    @GetMapping("/configurations/{productConId}")
+    public ResultBean<ConfigDetail> getConfigDetail(@PathVariable Integer productConId) {
         ResultBean<ConfigDetail> res = new ResultBean<>();
         try {
-            if (productConID == null) {
+            if (productConId == null) {
                 res.setData(null);
                 res.setState(ResultBean.FAIL);
                 res.setMsg(ResultBean.FAIL_MSG);
                 return res;
             }
-            ConfigDetail configDetail = staffService.getConfigByID(productConID);
+            ConfigDetail configDetail = staffService.getConfigByID(productConId);
             if (configDetail == null) {
                 res.setData(null);
                 res.setState(ResultBean.FAIL);
@@ -64,14 +63,25 @@ public class StaffController {
         }
         return res;
     }
-
+    /**
+     * 获取所有商品和设置
+     * @author     ：HuiZhe Xu
+     * @date       ：Created in 2019/6/14 16:29
+     * @return     : ResultBean<ProductsAndConfigs>
+     */
     @GetMapping("/mall")
     public ResultBean<ProductsAndConfigs> getMall() {
         ResultBean<ProductsAndConfigs> res = new ResultBean<>();
-        res.setData(staffService.getAllMall());
-        res.setState(ResultBean.SUCCESS);
-        res.setMsg(ResultBean.SUCC_MSG);
-
+        try {
+            res.setData(staffService.getAllMall());
+            res.setState(ResultBean.SUCCESS);
+            res.setMsg(ResultBean.SUCC_MSG);
+        }catch (Exception e){
+            e.printStackTrace();
+            res.setData(null);
+            res.setState(ResultBean.FAIL);
+            res.setMsg(ResultBean.FAIL_MSG);
+        }
         return res;
     }
 
@@ -79,6 +89,13 @@ public class StaffController {
 //    public ResultBean<> addStaff(){
 //
 //    }
+    /**
+     * 获取职工信息
+     * @author     ：HuiZhe Xu
+     * @date       ：Created in 2019/6/14 16:29
+     * @parameter      : staffId
+     * @return     : ResultBean<Staff>
+     */
     @GetMapping("/{staffId}")
     public ResultBean<Staff> getSingleStaff(@PathVariable String staffId) {
         ResultBean<Staff> res = new ResultBean<>();
@@ -107,7 +124,13 @@ public class StaffController {
         }
         return res;
     }
-
+    /**
+     * 获取产品信息
+     * @author     ：HuiZhe Xu
+     * @date       ：Created in 2019/6/14 16:29
+     * @parameter      : productStdId
+     * @return     : ResultBean<ProductDetail>
+     */
     @GetMapping("productions/{productStdId}")
     public ResultBean<ProductDetail> getSingleProduct(@PathVariable String productStdId) {
         ResultBean<ProductDetail> res = new ResultBean<>();
@@ -136,7 +159,12 @@ public class StaffController {
         }
         return res;
     }
-
+    /**
+     * 获取员工
+     * @author     ：HuiZhe Xu
+     * @date       ：Created in 2019/6/14 16:29
+     * @return     : ResultBean<ArrayList<Staff>>
+     */
     @GetMapping
     public ResultBean<ArrayList<Staff>> getAllStuff() {
         ResultBean<ArrayList<Staff>> res = new ResultBean<>();
@@ -165,18 +193,24 @@ public class StaffController {
 //
 //    }
 
-
+    /**
+     * 添加员工
+     * @author     ：HuiZhe Xu
+     * @date       ：Created in 2019/6/14 16:29
+     * @parameter  : para
+     * @return     : ResultBean<Boolean>
+     */
     @PostMapping
-    public ResultBean<Boolean> addStaff(@RequestBody Map parm) {
+    public ResultBean<Boolean> addStaff(@RequestBody Map para) {
         ResultBean<Boolean> res = new ResultBean<>();
         try {
-            String staffName = parm.get("staffName").toString();
-            String staffPwd = parm.get("staffPwd").toString();
-            String staffDepartment = parm.get("staffDepartment").toString();
+            String staffName = para.get("staffName").toString();
+            String staffPwd = para.get("staffPwd").toString();
+            String staffDepartment = para.get("staffDepartment").toString();
             if(staffName.length()==0||staffPwd.length()==0||staffDepartment.length()==0){
                 throw new Exception("缺少参数");
             }
-            ArrayList<Object> roleList=(ArrayList<Object>)parm.get("roleList");
+            ArrayList<Object> roleList=(ArrayList<Object>)para.get("roleList");
 
             if(!staffService.addStaff(staffName,staffPwd,staffDepartment,roleList)){
                 throw new Exception("插入失败");
@@ -193,23 +227,24 @@ public class StaffController {
         return res;
     }
 
-    @PutMapping("/{staffId}/privilege")
-    public ResultBean<Boolean> modifyStaffPrivilege(@PathVariable Integer staffId, @RequestBody Map parm){
-        ResultBean<Boolean> res = new ResultBean<>();
-        try{
-            ArrayList<Object> privilegeList=(ArrayList)parm.get("privilegeList");
-            if(!staffService.ModifyPrivilege(staffId,privilegeList)){
-                throw new Exception("修改失败");
-            }
-            res.setData(true);
-            res.setState(ResultBean.SUCCESS);
-            res.setMsg(ResultBean.SUCC_MSG);
-        }catch (Exception e){
-            e.printStackTrace();
-            res.setData(false);
-            res.setState(ResultBean.FAIL);
-            res.setMsg(e.getMessage()==null?ResultBean.FAIL_MSG:e.getMessage());
-        }
-        return res;
-    }
+//API
+//    @PutMapping("/{staffId}/privilege")
+//    public ResultBean<Boolean> modifyStaffPrivilege(@PathVariable Integer staffId, @RequestBody Map parm){
+//        ResultBean<Boolean> res = new ResultBean<>();
+//        try{
+//            ArrayList<Object> privilegeList=(ArrayList)parm.get("privilegeList");
+//            if(!staffService.ModifyPrivilege(staffId,privilegeList)){
+//                throw new Exception("修改失败");
+//            }
+//            res.setData(true);
+//            res.setState(ResultBean.SUCCESS);
+//            res.setMsg(ResultBean.SUCC_MSG);
+//        }catch (Exception e){
+//            e.printStackTrace();
+//            res.setData(false);
+//            res.setState(ResultBean.FAIL);
+//            res.setMsg(e.getMessage()==null?ResultBean.FAIL_MSG:e.getMessage());
+//        }
+//        return res;
+//    }
 }

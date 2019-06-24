@@ -149,13 +149,6 @@ public class StaffServiceImpl implements StaffService {
         return result;
     }
 
-    @Override
-    public Boolean ModifyPrivilege(Integer staffId, ArrayList Privileges) {
-        for(Object privilege:Privileges){
-            //String
-        }
-        return null;
-    }
 
 
 }
