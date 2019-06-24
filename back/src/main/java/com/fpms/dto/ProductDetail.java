@@ -1,4 +1,4 @@
-package com.fpms.DTO;
+package com.fpms.dto;
 
 /**
  * @author : xuhuizhe

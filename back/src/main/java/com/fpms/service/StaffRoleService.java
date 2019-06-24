@@ -46,5 +46,5 @@ public interface StaffRoleService {
      * @param       staffId
      * @return     : com.fpms.entity.StaffRole
      */
-    StaffRole selectStaffRoleByStaffId(Integer staffId);
+    List<StaffRole> selectStaffRoleByStaffId(Integer staffId);
 }

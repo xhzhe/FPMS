@@ -8,7 +8,6 @@ import com.fpms.dto.StaffRoleDto;
 import com.fpms.entity.*;
 import com.fpms.entity.pojo.ResultBean;
 import com.fpms.service.*;
-import com.mysql.cj.xdevapi.JsonArray;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -251,7 +250,7 @@ public class RoleController {
     public ResultBean<List<StaffRoleDto>> selectAllStaffRole(){
         List<StaffRoleDto> staffRoleDtoList = new ArrayList<>();
         try{
-            List<Staff> staffList = staffService.selectAllStaff();
+            List<Staff> staffList = staffService.getStaffs();
             for(int i=0;i<staffList.size();i++){
                 StaffRoleDto staffRoleDto = new StaffRoleDto();
                 //加载staff属性
@@ -287,7 +286,7 @@ public class RoleController {
         StaffRoleDto staffRoleDto = new StaffRoleDto();
         try{
             //加载staff属性
-            Staff staff = staffService.selectStaffById(staffId);
+            Staff staff = staffService.getSingleStaffDetail(staffId);
             staffRoleDto.setStaffId(staffId);
             staffRoleDto.setStaffName(staff.getStaffName());
             //加载role属性

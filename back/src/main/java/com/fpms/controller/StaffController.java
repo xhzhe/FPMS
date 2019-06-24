@@ -1,8 +1,8 @@
 package com.fpms.controller;
 
-import com.fpms.DTO.ConfigDetail;
-import com.fpms.DTO.ProductDetail;
-import com.fpms.DTO.ProductsAndConfigs;
+import com.fpms.dto.ConfigDetail;
+import com.fpms.dto.ProductDetail;
+import com.fpms.dto.ProductsAndConfigs;
 import com.fpms.entity.ResultBean;
 
 import com.fpms.entity.Staff;

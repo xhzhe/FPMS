@@ -4,6 +4,7 @@ import com.fpms.entity.ProductConfiguration;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -44,4 +45,6 @@ public interface ProductConfigurationDao {
      * @return     : java.lang.Integer
      */
     Integer deleteByProductConId(@Param("productConId") Integer productConId);
+
+    List<ProductConfiguration> getProductConfigID(Integer configID);
 }

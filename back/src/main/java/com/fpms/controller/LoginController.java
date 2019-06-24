@@ -100,9 +100,13 @@ public class LoginController {
                 staffDto.setStaffPhone(staff.getStaffPhone());
                 staffDto.setStaffStatus(staff.getStaffStatus());
                 request.getSession().setAttribute("staff",staff);
-                StaffRole staffRole = staffRoleService.selectStaffRoleByStaffId(staff.getStaffId());
-                Role role = roleService.selectRoleById(staffRole.getRoleId());
-                staffDto.setRole(role);
+                List<StaffRole> staffRoleList = staffRoleService.selectStaffRoleByStaffId(staff.getStaffId());
+                for(int i=0;i<1;i++){
+                    Role role = roleService.selectRoleById(staffRoleList.get(i).getRoleId());
+                    staffDto.setRole(role);
+                    break;
+                }
+
                 //将user返回给前端之后需要使用
                 resultBean.setData(staffDto);
             } else {

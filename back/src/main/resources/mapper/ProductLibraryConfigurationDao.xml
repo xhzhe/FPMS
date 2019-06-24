@@ -36,11 +36,6 @@
     from product_library_configuration
     where product_con_id = #{productConId,jdbcType=INTEGER}
   </select>
-  <select id="selectAll"  resultMap="BaseResultMap">
-    select
-    *
-     from product_library_configuration
-  </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from product_library_configuration
     where product_con_id = #{productConId,jdbcType=INTEGER}

@@ -1,4 +1,4 @@
-package com.fpms.DTO;
+package com.fpms.dto;
 
 import com.fpms.entity.ProductLibraryConfiguration;
 import com.fpms.entity.ProductLibraryPre;

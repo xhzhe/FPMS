@@ -2,8 +2,8 @@ package com.fpms.service.impl;
 
 import com.fpms.dao.ProductConfigurationDao;
 import com.fpms.dao.ProductLibraryConfigurationDao;
-import com.fpms.dto.ProductLibraryConfigurationDto;
 import com.fpms.entity.ProductConfiguration;
+import com.fpms.entity.ProductLibraryConfiguration;
 import com.fpms.service.ProductLibraryConfigurationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -33,7 +33,7 @@ public class ProductLibraryConfigurationServiceImpl implements ProductLibraryCon
      * @return     : java.util.List<com.fpms.entity.ProductLibraryConfiguration>
      */
     @Override
-    public List<ProductLibraryConfigurationDto> getAllConfiguration() {
+    public List<ProductLibraryConfiguration> getAllConfiguration() {
         return productLibraryConfigurationDao.selectAll();
     }
 

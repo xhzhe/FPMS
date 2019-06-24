@@ -35,7 +35,7 @@ public class StaffRoleServiceImpl implements StaffRoleService {
     }
 
     @Override
-    public StaffRole selectStaffRoleByStaffId(Integer staffId) {
+    public List<StaffRole> selectStaffRoleByStaffId(Integer staffId) {
         return staffRoleDao.selectByStaffId(staffId);
     }
 }

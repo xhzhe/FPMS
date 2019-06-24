@@ -92,5 +92,5 @@ public interface StaffRoleDao {
      * @param       staffId
      * @return     : com.fpms.entity.StaffRole
      */
-    StaffRole selectByStaffId(Integer staffId);
+    List<StaffRole> selectByStaffId(Integer staffId);
 }

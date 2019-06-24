@@ -1,8 +1,8 @@
 package com.fpms.service.impl;
 
-import com.fpms.DTO.ConfigDetail;
-import com.fpms.DTO.ProductDetail;
-import com.fpms.DTO.ProductsAndConfigs;
+import com.fpms.dto.ConfigDetail;
+import com.fpms.dto.ProductDetail;
+import com.fpms.dto.ProductsAndConfigs;
 import com.fpms.dao.*;
 import com.fpms.entity.*;
 import com.fpms.service.StaffService;
@@ -11,7 +11,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 /**
  * @author : HuiZhe Xu

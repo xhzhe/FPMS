@@ -1,8 +1,7 @@
 package com.fpms.service;
 
-import com.fpms.dto.ProductLibraryConfigurationDto;
 import com.fpms.entity.ProductConfiguration;
-import org.springframework.stereotype.Service;
+import com.fpms.entity.ProductLibraryConfiguration;
 
 import java.util.List;
 
@@ -21,7 +20,7 @@ public interface ProductLibraryConfigurationService {
      * @param
      * @return     : java.util.List<com.fpms.entity.ProductLibraryConfiguration>
      */
-    List<ProductLibraryConfigurationDto> getAllConfiguration();
+    List<ProductLibraryConfiguration> getAllConfiguration();
 
     /**
      * 向配置中增加产品
