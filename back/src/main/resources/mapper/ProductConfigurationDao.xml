@@ -90,4 +90,7 @@
       create_time = #{createTime,jdbcType=TIMESTAMP}
     where configuration_id = #{configurationId,jdbcType=INTEGER}
   </update>
+  <select id="selectByPCIAndPSI" resultMap="BaseResultMap">
+    select * from product_configuration where product_con_id = #{productConfigId} and product_std_id = #{productStdId}
+  </select>
 </mapper>
