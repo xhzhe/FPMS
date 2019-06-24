@@ -21,4 +21,9 @@ public class ProductReviewServiceImpl implements ProductReviewService {
     public void addReview(ProductReview productReview) {
         productReviewDao.insertSelective(productReview);
     }
+
+    @Override
+    public ProductReview selectByProductPreId(Integer productPreId) {
+        return productReviewDao.selectByProductPreId(productPreId);
+    }
 }

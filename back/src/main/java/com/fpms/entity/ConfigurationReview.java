@@ -1,5 +1,7 @@
 package com.fpms.entity;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import java.util.Date;
 
 /**
@@ -17,6 +19,7 @@ public class ConfigurationReview {
 
     private String reviewDesc;
 
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date createTime;
 
     public Integer getConReviewId() {

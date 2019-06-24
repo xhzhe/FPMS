@@ -65,4 +65,13 @@ public interface ProductReviewDao {
      * @return     : int
      */
     int updateByPrimaryKey(ProductReview record);
+
+    /**
+     *  通过ProductPreId查询记录
+     * @author     ：TianHong Liao
+     * @date       ：Created in 2019/6/24 11:37
+     * @param       productPreId
+     * @return     : com.fpms.entity.ProductReview
+     */
+    ProductReview selectByProductPreId(Integer productPreId);
 }

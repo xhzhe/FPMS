@@ -26,7 +26,7 @@ public class ConfigurationReviewController {
     private ProductLibraryConfigurationDao productLibraryConfigurationDao;
 
     /**
-     *  新增对配置产品的评价
+     *  新增对配置产品的评估
      * @author     ：TianHong Liao
      * @date       ：Created in 2019/6/21 11:50
      * @param       param
@@ -53,5 +53,24 @@ public class ConfigurationReviewController {
             return new ResultBean<>(e);
         }
         return new ResultBean<>(true);
+    }
+
+    /**
+     *  获取配置产品的评估
+     * @author     ：TianHong Liao
+     * @date       ：Created in 2019/6/24 11:25
+     * @param       productConId
+     * @return     : com.fpms.entity.pojo.ResultBean<com.fpms.entity.ConfigurationReview>
+     */
+    @GetMapping("/productCon/{productConId}/review")
+    public ResultBean<ConfigurationReview> selectReviewByProductConId(@PathVariable Integer productConId){
+        ConfigurationReview configurationReview = new ConfigurationReview();
+        try{
+            configurationReview = configurationReviewService.selectByProductConId(productConId);
+        }
+        catch (Exception e){
+            return new ResultBean<>(e);
+        }
+        return new ResultBean<>(configurationReview);
     }
 }
