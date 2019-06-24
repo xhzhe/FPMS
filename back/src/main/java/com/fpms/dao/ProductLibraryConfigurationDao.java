@@ -26,5 +26,5 @@ public interface ProductLibraryConfigurationDao {
 
     int updateByPrimaryKey(ProductLibraryConfiguration record);
 
-    List<ProductLibraryConfigurationDto> selectAll();
+    List<ProductLibraryConfiguration> selectAll();
 }

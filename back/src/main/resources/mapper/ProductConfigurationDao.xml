@@ -90,4 +90,10 @@
       create_time = #{createTime,jdbcType=TIMESTAMP}
     where configuration_id = #{configurationId,jdbcType=INTEGER}
   </update>
+  <select id="getProductConfigID" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    *
+    from product_configuration
+    where product_con_id = #{proConfigID,jdbcType=INTEGER}
+  </select>
 </mapper>
