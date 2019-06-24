@@ -3,9 +3,7 @@ package com.fpms.controller;
 import com.fpms.entity.pojo.ResultBean;
 import com.fpms.service.ProductLibraryConfigurationService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -36,5 +34,22 @@ public class ProductLibraryConfigurationController {
         }catch (Exception e){
             return new ResultBean<>(e.getMessage());
         }
+    }
+
+    /**
+     * 通过配置id删除配置
+     * @author     ：YongBiao Liao
+     * @date       ：Created in 2019/6/24 21:20
+     * @param       productConId
+     * @return     : com.fpms.entity.pojo.ResultBean<java.lang.Boolean>
+     */
+    @DeleteMapping(value = "/configurations")
+    public ResultBean<Boolean> deleteConfiguration(@RequestParam("productConId") Integer productConId){
+        try {
+            productLibraryConfigurationService.deleteConfiguration(productConId);
+        }catch (Exception e){
+            return new ResultBean<>(e);
+        }
+        return new ResultBean<>(true);
     }
 }
