@@ -22,7 +22,7 @@ public class StaffDto {
 
     private Byte staffStatus;
 
-    private List<Role> roleList;
+    private Role role;
 
     public Integer getStaffId() {
         return staffId;
@@ -64,11 +64,11 @@ public class StaffDto {
         this.staffStatus = staffStatus;
     }
 
-    public List<Role> getRoleList() {
-        return roleList;
+    public Role getRole() {
+        return role;
     }
 
-    public void setRoleList(List<Role> roleList) {
-        this.roleList = roleList;
+    public void setRole(Role role) {
+        this.role = role;
     }
 }
