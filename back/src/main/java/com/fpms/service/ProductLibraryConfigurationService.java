@@ -31,4 +31,13 @@ public interface ProductLibraryConfigurationService {
      * @return     : void
      */
     void addConfigurationProduction(ProductConfiguration productConfiguration) ;
+
+    /**
+     * 通过配置id删除配置
+     * @author     ：YongBiao Liao
+     * @date       ：Created in 2019/6/24 21:04
+     * @param       productConId
+     * @return     : void
+     */
+    void deleteConfiguration(Integer productConId);
 }

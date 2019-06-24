@@ -48,4 +48,17 @@ public class ProductLibraryConfigurationServiceImpl implements ProductLibraryCon
     public void addConfigurationProduction(ProductConfiguration productConfiguration) {
         productConfigurationDao.insert(productConfiguration);
     }
+
+    /**
+     * 通过配置id删除配置
+     * @author     ：YongBiao Liao
+     * @date       ：Created in 2019/6/24 21:06
+     * @param       productConId
+     * @return     : void
+     */
+    @Override
+    public void deleteConfiguration(Integer productConId) {
+        productConfigurationDao.deleteByProductConId(productConId);
+        productLibraryConfigurationDao.deleteByPrimaryKey(productConId);
+    }
 }

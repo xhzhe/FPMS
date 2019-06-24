@@ -25,7 +25,7 @@ public class ProductConfigurationController {
     @Autowired
     private ProductLibraryConfigurationService productLibraryConfigurationService;
     /**
-     * 通过产品标准库id和产品配置id查看配置中某一产品
+     * 通过产品标准库id和产品配置删除配置中某一产品
      * @author     ：YongBiao Liao
      * @date       ：Created in 2019/6/23 23:36
      * @param       param

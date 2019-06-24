@@ -30,9 +30,18 @@ public interface ProductConfigurationDao {
      * 通过产品标准库id和产品配置id查看配置中某一产品
      * @author     ：YongBiao Liao
      * @date       ：Created in 2019/6/23 23:15
-     * @param       productConfigId
+     * @param       productConId
      * @param       productStdId
      * @return     : com.fpms.entity.ProductConfiguration
      */
-    ProductConfiguration selectByPCIAndPSI(@Param("productConfigId") Integer productConfigId, @Param("productStdId") Integer productStdId);
+    ProductConfiguration selectByPCIAndPSI(@Param("productConfigId") Integer productConId, @Param("productStdId") Integer productStdId);
+
+    /**
+     * 通过配置id删除配置
+     * @author     ：YongBiao Liao
+     * @date       ：Created in 2019/6/24 21:09
+     * @param       productConId
+     * @return     : java.lang.Integer
+     */
+    Integer deleteByProductConId(@Param("productConId") Integer productConId);
 }
