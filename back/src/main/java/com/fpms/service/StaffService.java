@@ -25,7 +25,7 @@ public interface StaffService {
      * @param       configID
      * @return     : com.fpms.dto.ConfigDetail
      */
-    ConfigDetail getConfigByID(Integer configID);
+    ConfigDetail getConfigById(Integer configID);
     /**
      *  获取所有配置和产品
      * @author     : HuiZhe Xu

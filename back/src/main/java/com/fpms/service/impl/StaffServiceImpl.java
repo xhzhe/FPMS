@@ -36,28 +36,28 @@ public class StaffServiceImpl implements StaffService {
      *  从ID获取配置详细信息
      * @author     : HuiZhe Xu
      * @date       : Created in 2019/6/25 11:00
-     * @param       configID
+     * @param       configId
      * @return     : com.fpms.dto.ConfigDetail
      */
     @Override
-    public ConfigDetail getConfigByID(Integer configID) {
-        ProductLibraryConfiguration productLibraryConfiguration = productLibraryConfigurationDao.selectByPrimaryKey(configID);
+    public ConfigDetail getConfigById(Integer configId) {
+        ProductLibraryConfiguration productLibraryConfiguration = productLibraryConfigurationDao.selectByPrimaryKey(configId);
         if(productLibraryConfiguration==null) {
             return null;
         }
         ConfigDetail res=new ConfigDetail();
         res.configlib=productLibraryConfiguration;
-        List<ProductConfiguration> productConfigurations= productConfigurationDao.getProductConfigID(configID);
+        List<ProductConfiguration> productConfigurations= productConfigurationDao.getProductConfigID(configId);
 
         for(ProductConfiguration productConfiguration:productConfigurations){
             ProductLibraryStandard productLibraryStandard=productLibraryStandardDao.selectByPrimaryKey(productConfiguration.getProductStdId());
-            int productLibraryStandardID=productLibraryStandard.getProductStdId();
+            int productLibraryStandardId=productLibraryStandard.getProductStdId();
             ProductLibraryPre productLibraryPre=productLibraryPreDao.selectByPrimaryKey(productLibraryStandard.getProductPreId());
             if(productLibraryPre==null){
                 break;
             }
             Float rate=Float.parseFloat(productConfiguration.getPercentage().toString());
-            res.addProduct(productLibraryPre.getProductName(),productLibraryPre.getProductDesc(),rate,productLibraryStandardID);
+            res.addProduct(productLibraryPre.getProductName(),productLibraryPre.getProductDesc(),rate,productLibraryStandardId);
         }
 
         return res;
@@ -100,13 +100,13 @@ public class StaffServiceImpl implements StaffService {
         staff.setStaffDepartment(depart);
         staffDao.insertSelective(staff);
 
-        Integer ID=staff.getStaffId();
-        System.out.println(ID);
+        Integer id=staff.getStaffId();
+        System.out.println(id);
         for(Object roleIter:roleList){
             String roleId=(String)roleIter;
             StaffRole staffRole=new StaffRole();
             staffRole.setRoleId(Integer.parseInt(roleId));
-            staffRole.setStaffId(ID);
+            staffRole.setStaffId(id);
             staffRoleDao.insertSelective(staffRole);
         }
         return true;
@@ -115,12 +115,12 @@ public class StaffServiceImpl implements StaffService {
      *  获得单个员工的详细信息
      * @author     : HuiZhe Xu
      * @date       : Created in 2019/6/25 11:01
-     * @param       StaffId
+     * @param       staffId
      * @return     : com.fpms.entity.Staff
      */
     @Override
-    public Staff getSingleStaffDetail(Integer StaffId) {
-        Staff staff=staffDao.selectByPrimaryKey(StaffId);
+    public Staff getSingleStaffDetail(Integer staffId) {
+        Staff staff=staffDao.selectByPrimaryKey(staffId);
 
         return staff;
     }
@@ -128,12 +128,12 @@ public class StaffServiceImpl implements StaffService {
      *  获取产品简介
      * @author     : HuiZhe Xu
      * @date       : Created in 2019/6/25 11:01
-     * @param       ProductID
+     * @param       productId
      * @return     : com.fpms.dto.ProductDetail
      */
     @Override
-    public ProductDetail getProductInfo(Integer ProductID) {
-        ProductLibraryStandard productLibraryStandard=productLibraryStandardDao.selectByPrimaryKey(ProductID);
+    public ProductDetail getProductInfo(Integer productId) {
+        ProductLibraryStandard productLibraryStandard=productLibraryStandardDao.selectByPrimaryKey(productId);
         if(productLibraryStandard==null){
             return null;
         }
@@ -143,7 +143,7 @@ public class StaffServiceImpl implements StaffService {
             return null;
         }
         ProductDetail productDetail=new ProductDetail();
-        productDetail.setProductStdId(ProductID.toString());
+        productDetail.setProductStdId(productId.toString());
         productDetail.setSuitUser(productLibraryStandard.getSuitUser().toString());
         productDetail.setInterRiskRating(productLibraryStandard.getInterRiskRating().toString());
         productDetail.setExchangeRateRiskIndex(productLibraryStandard.getExchangeRateRiskIndex().toString());

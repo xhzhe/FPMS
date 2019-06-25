@@ -45,7 +45,7 @@ public class StaffController {
                 res.setMsg(ResultBean.FAIL_MSG);
                 return res;
             }
-            ConfigDetail configDetail = staffService.getConfigByID(productConId);
+            ConfigDetail configDetail = staffService.getConfigById(productConId);
             if (configDetail == null) {
                 res.setData(null);
                 res.setState(ResultBean.FAIL);
