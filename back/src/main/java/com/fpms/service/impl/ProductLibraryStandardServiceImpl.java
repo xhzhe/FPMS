@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 public class ProductLibraryStandardServiceImpl implements ProductLibraryStandardService {
     @Autowired
     private ProductLibraryStandardDao productLibraryStandardDao;
+
     @Override
     public Boolean obetainProducts(Integer ID){
         ProductLibraryStandard productLibraryStandard=productLibraryStandardDao.selectByPrimaryKey(ID);
@@ -28,5 +29,15 @@ public class ProductLibraryStandardServiceImpl implements ProductLibraryStandard
             return false;
         }
         return true;
+    }
+
+    @Override
+    public ProductLibraryStandard selectById(Integer productStdId) {
+        return productLibraryStandardDao.selectByPrimaryKey(productStdId);
+    }
+
+    @Override
+    public synchronized void updateProductStandard(ProductLibraryStandard productLibraryStandard) {
+        productLibraryStandardDao.updateByPrimaryKeySelective(productLibraryStandard);
     }
 }

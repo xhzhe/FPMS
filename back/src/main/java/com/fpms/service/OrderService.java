@@ -46,4 +46,13 @@ public interface OrderService {
      * @return     : void
      */
     void updateOrder(Order order);
+
+    /**
+     *  通过orderId获取订单
+     * @author     ：TianHong Liao
+     * @date       ：Created in 2019/6/25 10:18
+     * @param       orderId
+     * @return     : com.fpms.entity.Order
+     */
+    Order selectOrderByOrderId(Integer orderId);
 }

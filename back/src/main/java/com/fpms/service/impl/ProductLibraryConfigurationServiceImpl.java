@@ -61,4 +61,14 @@ public class ProductLibraryConfigurationServiceImpl implements ProductLibraryCon
         productConfigurationDao.deleteByProductConId(productConId);
         productLibraryConfigurationDao.deleteByPrimaryKey(productConId);
     }
+
+    @Override
+    public ProductLibraryConfiguration selectById(Integer productConId) {
+        return productLibraryConfigurationDao.selectByPrimaryKey(productConId);
+    }
+
+    @Override
+    public synchronized void updateProductConfiguration(ProductLibraryConfiguration productLibraryConfiguration) {
+        productLibraryConfigurationDao.updateByPrimaryKeySelective(productLibraryConfiguration);
+    }
 }

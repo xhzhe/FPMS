@@ -39,4 +39,22 @@ public interface ProductLibraryConfigurationService {
      * @return     : void
      */
     void deleteConfiguration(Integer productConId);
+
+    /**
+     *  通过配置Id获取配置
+     * @author     ：TianHong Liao
+     * @date       ：Created in 2019/6/25 10:38
+     * @param       productConId
+     * @return     : com.fpms.entity.ProductLibraryConfiguration
+     */
+    ProductLibraryConfiguration selectById(Integer productConId);
+
+    /**
+     *  通过配置Id更新配置
+     * @author     ：TianHong Liao
+     * @date       ：Created in 2019/6/25 10:42
+     * @param       productLibraryConfiguration
+     * @return     : void
+     */
+    void updateProductConfiguration(ProductLibraryConfiguration productLibraryConfiguration);
 }

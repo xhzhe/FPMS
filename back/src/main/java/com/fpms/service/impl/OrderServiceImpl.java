@@ -38,4 +38,9 @@ public class OrderServiceImpl implements OrderService {
     public void updateOrder(Order order) {
         orderDao.updateByPrimaryKeySelective(order);
     }
+
+    @Override
+    public Order selectOrderByOrderId(Integer orderId) {
+        return orderDao.selectByPrimaryKey(orderId);
+    }
 }
