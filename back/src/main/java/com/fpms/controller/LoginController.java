@@ -101,7 +101,7 @@ public class LoginController {
                 staffDto.setStaffStatus(staff.getStaffStatus());
                 request.getSession().setAttribute("staff",staff);
                 List<StaffRole> staffRoleList = staffRoleService.selectStaffRoleByStaffId(staff.getStaffId());
-                for(int i=0;i<1;i++){
+                for(int i=0;i<staffRoleList.size();i++){
                     Role role = roleService.selectRoleById(staffRoleList.get(i).getRoleId());
                     staffDto.setRole(role);
                     break;
