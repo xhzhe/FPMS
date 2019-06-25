@@ -20,8 +20,8 @@ public class LogMoneyServiceImpl implements LogMoneyService {
     private LogMoneyDao logMoneyDao;
 
     @Override
-    public List<LogMoney> selectAllLogMoney() {
-        return logMoneyDao.selectAll();
+    public List<LogMoney> selectAllLogMoneyByUserId(Integer userId) {
+        return logMoneyDao.selectAllByUserId(userId);
     }
 
     @Override

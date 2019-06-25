@@ -6,6 +6,7 @@ import com.fpms.service.LogMoneyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
@@ -23,11 +24,11 @@ public class LogMoneyController {
     @Autowired
     private LogMoneyService logMoneyService;
 
-    @GetMapping("/moneyLogs")
-    public ResultBean<List<LogMoney>> selectAllMoneyLogs(){
+    @GetMapping("/user/{userId}/moneyLogs")
+    public ResultBean<List<LogMoney>> selectAllMoneyLogs(@PathVariable Integer userId){
         List<LogMoney> logMoneyList = new ArrayList<>();
         try{
-            logMoneyList = logMoneyService.selectAllLogMoney();
+            logMoneyList = logMoneyService.selectAllLogMoneyByUserId(userId);
         }
         catch (Exception e){
             return new ResultBean<>(e);

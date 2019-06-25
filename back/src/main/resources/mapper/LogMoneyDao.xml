@@ -19,10 +19,11 @@
     from log_money
     where log_money_id = #{logMoneyId,jdbcType=INTEGER}
   </select>
-  <select id="selectAll" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+  <select id="selectAllByUserId(" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />
     from log_money
+    where user_id = #{userId,jdbcType=INTEGER}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from log_money
