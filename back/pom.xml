@@ -88,8 +88,6 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
-
-
             <plugin>
                 <!--热部署配置-->
                 <groupId>org.springframework.boot</groupId>
