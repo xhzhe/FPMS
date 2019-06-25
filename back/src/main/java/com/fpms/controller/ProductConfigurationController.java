@@ -12,7 +12,7 @@ import java.util.Map;
 /**
  * @author : YongBiao Liao
  * @date : 2019/6/23 22:45
- * @description:
+ * @description: 配置中的产品逻辑控制器
  * @modified :
  */
 @RestController

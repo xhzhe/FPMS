@@ -10,7 +10,7 @@ import java.util.List;
 /**
  * @author : YongBiao Liao
  * @date : 2019/6/14 15:00
- * @description:
+ * @description: 配置库逻辑控制器
  * @modified :
  */
 @RestController

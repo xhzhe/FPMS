@@ -12,7 +12,7 @@ import java.util.List;
 /**
  * @author : YongBiao Liao
  * @date : 2019/6/14 15:01
- * @description:
+ * @description: 产品类别逻辑控制器
  * @modified :
  */
 @RestController

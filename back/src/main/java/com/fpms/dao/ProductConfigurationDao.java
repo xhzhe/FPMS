@@ -15,16 +15,58 @@ import java.util.Map;
  */
 @Component
 public interface ProductConfigurationDao {
+    /**
+     * 通过主键删除配置产品
+     * @author     ：YongBiao Liao
+     * @date       ：Created in 2019/6/25 10:51
+     * @param       configurationId
+     * @return     : int
+     */
     int deleteByPrimaryKey(Integer configurationId);
 
+    /**
+     * 插入ProductConfiguration
+     * @author     ：YongBiao Liao
+     * @date       ：Created in 2019/6/25 10:54
+     * @param       record
+     * @return     : int
+     */
     int insert(ProductConfiguration record);
 
+    /**
+     *
+     * @author     ：YongBiao Liao
+     * @date       ：Created in 2019/6/25 10:54
+     * @param       record
+     * @return     : int
+     */
     int insertSelective(ProductConfiguration record);
 
+    /**
+     * 通过主键查找ProductConfiguration
+     * @author     ：YongBiao Liao
+     * @date       ：Created in 2019/6/25 10:54
+     * @param       configurationId
+     * @return     : com.fpms.entity.ProductConfiguration
+     */
     ProductConfiguration selectByPrimaryKey(Integer configurationId);
 
+    /**
+     * 更新
+     * @author     ：YongBiao Liao
+     * @date       ：Created in 2019/6/25 10:54
+     * @param       record
+     * @return     : int
+     */
     int updateByPrimaryKeySelective(ProductConfiguration record);
 
+    /**
+     * 通过主键更新ProductConfiguration
+     * @author     ：YongBiao Liao
+     * @date       ：Created in 2019/6/25 10:54
+     * @param       record
+     * @return     : int
+     */
     int updateByPrimaryKey(ProductConfiguration record);
 
     /**

@@ -10,7 +10,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 /**
- * @author : YongBiao Liao
+ * @author : HuiZhe Xu
  * @date : 2019/6/14 15:12
  * @description:
  * @modified :
@@ -19,6 +19,13 @@ import java.lang.reflect.Method;
 public class ProductLibraryPreServiceImpl implements ProductLibraryPreService {
     @Autowired
     private ProductLibraryPreDao productLibraryPreDao;
+    /**
+     *  修改产品属性
+     * @author     : HuiZhe Xu
+     * @date       : Created in 2019/6/25 11:06
+     * @param       productLibraryPre
+     * @return     : java.lang.Boolean
+     */
     @Override
     public Boolean modifyProduct(ProductLibraryPre productLibraryPre) {
         ProductLibraryPre productLibraryPrepare=productLibraryPreDao.selectByPrimaryKey(productLibraryPre.getProductPreId());
@@ -47,7 +54,13 @@ public class ProductLibraryPreServiceImpl implements ProductLibraryPreService {
 
         return false;
     }
-
+    /**
+     *  添加产品
+     * @author     : HuiZhe Xu
+     * @date       : Created in 2019/6/25 11:06
+     * @param       productLibraryPre
+     * @return     : java.lang.Boolean
+     */
     @Override
     public Boolean addProduct(ProductLibraryPre productLibraryPre) {
         try{

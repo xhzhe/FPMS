@@ -11,7 +11,7 @@ import javax.validation.constraints.NotNull;
 /**
  * @author : HuiZhe Xu
  * @date : 2019/6/14 14:59
- * @description:
+ * @description: 产品预选库逻辑控制器
  * @modified :
  */
 @RestController
@@ -29,6 +29,13 @@ public class ProductLibraryPreController {
         res.setState(ResultBean.SUCCESS);
         res.setMsg(message);
     }
+    /**
+     *  修改产品属性
+     * @author     : HuiZhe Xu
+     * @date       : Created in 2019/6/25 10:59
+     * @param       product
+     * @return     : com.fpms.entity.ResultBean<java.lang.Boolean>
+     */
     @PutMapping("/product")
     public ResultBean<Boolean> modifyProduct(@RequestBody ProductLibraryPre product){
         ResultBean<Boolean> res = new ResultBean<>();
@@ -48,7 +55,13 @@ public class ProductLibraryPreController {
         }
         return res;
     }
-
+    /**
+     *  上传商品
+     * @author     : HuiZhe Xu
+     * @date       : Created in 2019/6/25 10:59
+     * @param       product
+     * @return     : com.fpms.entity.ResultBean<java.lang.Boolean>
+     */
     @PostMapping("/product_pre")
     public ResultBean<Boolean> addProduct(@RequestBody ProductLibraryPre product){
         ResultBean<Boolean> res = new ResultBean<>();

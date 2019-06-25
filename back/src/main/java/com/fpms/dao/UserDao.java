@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 /**
  * @author : YongBiao Liao
  * @date : 2019/6/14 15:00
- * @description: 配置评审
+ * @description: 用户表操作类
  * @modified :
  */
 @Component

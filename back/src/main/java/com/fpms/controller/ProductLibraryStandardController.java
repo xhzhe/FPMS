@@ -31,6 +31,13 @@ public class ProductLibraryStandardController {
         res.setState(ResultBean.SUCCESS);
         res.setMsg(Message);
     }
+    /**
+     *  下架产品
+     * @author     : HuiZhe Xu
+     * @date       : Created in 2019/6/25 10:58
+     * @param       productStdId
+     * @return     : com.fpms.entity.ResultBean<java.lang.Boolean>
+     */
     @DeleteMapping("/productStd/{productStdId}")
     public ResultBean<Boolean> productObtained(@PathVariable Integer productStdId){
         ResultBean<Boolean> res = new ResultBean<>();
