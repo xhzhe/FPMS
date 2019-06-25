@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 /**
  * @author : YongBiao Liao
  * @date : 2019/6/14 14:59
- * @description:
+ * @description: 产品评审逻辑控制器
  * @modified :
  */
 @RestController

@@ -11,7 +11,7 @@ import javax.validation.constraints.NotNull;
 /**
  * @author : HuiZhe Xu
  * @date : 2019/6/14 14:59
- * @description:
+ * @description: 产品预选库逻辑控制器
  * @modified :
  */
 @RestController
