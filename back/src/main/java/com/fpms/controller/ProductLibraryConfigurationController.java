@@ -1,5 +1,6 @@
 package com.fpms.controller;
 
+import com.fpms.dto.ProductLibraryConfigurationDto;
 import com.fpms.entity.ProductLibraryConfiguration;
 import com.fpms.entity.pojo.ResultBean;
 import com.fpms.service.ProductLibraryConfigurationService;
@@ -62,8 +63,8 @@ public class ProductLibraryConfigurationController {
      * @return     : com.fpms.entity.pojo.ResultBean<java.util.List<com.fpms.entity.ProductLibraryConfiguration>>
      */
     @GetMapping("/unReviewProductCons")
-    public  ResultBean<List<ProductLibraryConfiguration>> getUnReviewProductCon(){
-        List<ProductLibraryConfiguration> unReviewProductList = new ArrayList<>();
+    public  ResultBean<List<ProductLibraryConfigurationDto>> getUnReviewProductCon(){
+        List<ProductLibraryConfigurationDto> unReviewProductList = new ArrayList<>();
         try{
             unReviewProductList = productLibraryConfigurationService.getUnReviewProductList();
         }catch (Exception e){

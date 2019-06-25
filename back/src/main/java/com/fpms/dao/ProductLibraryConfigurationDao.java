@@ -85,5 +85,5 @@ public interface ProductLibraryConfigurationDao {
      * @param       reviewStatus
      * @return     : java.util.List<com.fpms.entity.ProductLibraryConfiguration>
      */
-    List<ProductLibraryConfiguration> selectByReviewStatus(Byte reviewStatus);
+    List<ProductLibraryConfigurationDto> selectByReviewStatus(Byte reviewStatus);
 }

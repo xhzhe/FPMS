@@ -36,7 +36,7 @@
     from product_library_configuration
     where product_con_id = #{productConId,jdbcType=INTEGER}
   </select>
-  <select id="selectByReviewStatus" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+  <select id="selectByReviewStatus" parameterType="java.lang.Byte" resultMap="resultMap">
     select
     <include refid="Base_Column_List" />
     from product_library_configuration

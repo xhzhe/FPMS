@@ -1,5 +1,6 @@
 package com.fpms.service;
 
+import com.fpms.dto.ProductLibraryConfigurationDto;
 import com.fpms.entity.ProductConfiguration;
 import com.fpms.entity.ProductLibraryConfiguration;
 
@@ -65,5 +66,5 @@ public interface ProductLibraryConfigurationService {
      * @param
      * @return     : java.util.List<com.fpms.entity.ProductLibraryConfiguration>
      */
-    List<ProductLibraryConfiguration> getUnReviewProductList();
+    List<ProductLibraryConfigurationDto> getUnReviewProductList();
 }

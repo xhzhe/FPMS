@@ -41,7 +41,7 @@
     *
     from product_library_pre
   </select>
-  <select id="selectByProductStatus"  resultMap="BaseResultMap">
+  <select id="selectByProductStatus"  parameterType="java.lang.Byte" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />
     from product_library_pre
