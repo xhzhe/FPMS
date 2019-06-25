@@ -1,6 +1,6 @@
 package com.fpms.controller;
 
-import com.fpms.dto.UserLoginDto;
+import com.fpms.dto.UserRegisterDto;
 import com.fpms.entity.User;
 import com.fpms.entity.pojo.ResultBean;
 import com.fpms.service.UserService;
@@ -26,23 +26,23 @@ public class UserController {
      * 注册用户
      * @author     ：YongBiao Liao
      * @date       ：Created in 2019/6/19 19:38
-     * @param       userLoginDto
+     * @param       userRegisterDto
      * @return     : com.fpms.entity.pojo.ResultBean<java.lang.Boolean>
      */
     @PostMapping(value = "/user/actions/register")
-    public ResultBean<Boolean> register(@RequestBody UserLoginDto userLoginDto){
+    public ResultBean<Boolean> register(@RequestBody UserRegisterDto userRegisterDto){
         ResultBean<Boolean> resultBean = new ResultBean<>();
         try{
             User user = new User();
-            user.setUserName(userLoginDto.getUserName());
-            user.setUserPwd(userLoginDto.getUserPwd());
-            user.setUserGender(userLoginDto.getUserGender());
-            user.setUserBrithday(userLoginDto.getUserBrithday());
-            user.setUserPhone(userLoginDto.getUserPhone());
-            user.setUserEmail(userLoginDto.getUserEmail());
-            user.setCertificateType(userLoginDto.getCertificateType());
-            user.setCertificateNum(userLoginDto.getCertificateNum());
-            user.setCareer(userLoginDto.getCareer());
+            user.setUserName(userRegisterDto.getUserName());
+            user.setUserPwd(userRegisterDto.getUserPwd());
+            user.setUserGender(userRegisterDto.getUserGender());
+            user.setUserBrithday(userRegisterDto.getUserBrithday());
+            user.setUserPhone(userRegisterDto.getUserPhone());
+            user.setUserEmail(userRegisterDto.getUserEmail());
+            user.setCertificateType(userRegisterDto.getCertificateType());
+            user.setCertificateNum(userRegisterDto.getCertificateNum());
+            user.setCareer(userRegisterDto.getCareer());
             int result = userService.register(user);
             if(result == 0){
                 resultBean.setState(1);

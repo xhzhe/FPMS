@@ -11,7 +11,7 @@ import java.util.Date;
  * @description: 封装用户的注册信息
  * @modified :
  */
-public class UserLoginDto {
+public class UserRegisterDto {
     private String userName;
 
     private String userPwd;
