@@ -25,4 +25,13 @@ public interface ProductLibraryPreService {
      * @return     : java.lang.Boolean
      */
     Boolean addProduct(ProductLibraryPre productLibraryPre);
+
+    /**
+     *  通过预选库Id获取预选库产品
+     * @author     ：TianHong Liao
+     * @date       ：Created in 2019/6/25 12:04
+     * @param       productPreId
+     * @return     : com.fpms.entity.ProductLibraryPre
+     */
+    ProductLibraryPre selectById(Integer productPreId);
 }

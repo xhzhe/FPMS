@@ -1,11 +1,13 @@
 package com.fpms.controller;
 
+import com.fpms.dto.OrderDto;
 import com.fpms.entity.*;
 import com.fpms.entity.pojo.ResultBean;
 import com.fpms.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,6 +30,9 @@ public class OrderController {
     private ProductLibraryConfigurationService productLibraryConfigurationService;
 
     @Autowired
+    private ProductLibraryPreService productLibraryPreService;
+
+    @Autowired
     private UserService userService;
 
     @Autowired
@@ -40,15 +45,34 @@ public class OrderController {
      * @return     : com.fpms.entity.pojo.ResultBean<java.util.List<com.fpms.entity.Order>>
      */
     @GetMapping("/user/{userId}/orders")
-    public ResultBean<List<Order> > selectOrdersByUser(@PathVariable Integer userId){
-        List<Order> orderList = new ArrayList<>();
+    public ResultBean<List<OrderDto> > selectOrdersByUser(HttpServletRequest request,@PathVariable Integer userId){
+        List<OrderDto> orderDtoList = new ArrayList<>();
         try{
-            orderList = orderService.selectOrdersByUserId(userId);
+            List<Order> orderList = orderService.selectOrdersByUserId(userId);
+            for(int i=0;i<orderList.size();i++){
+                Order order = orderList.get(i);
+                OrderDto orderDto = new OrderDto();
+                orderDto.setOrderId(order.getOrderId());
+                orderDto.setCreateTime(order.getCreateTime());
+                orderDto.setOrderMoney(order.getOrderMoney());
+                orderDto.setOrderStatus(order.getOrderStatus());
+                User user = (User)request.getSession().getAttribute("user");
+                orderDto.setUserName(user.getUserName());
+                if(order.getOrderType() == 1){
+                    Integer ProductPreId = productLibraryStandardService.selectById(order.getProductStdId()).getProductPreId();
+                    ProductLibraryPre productLibraryPre = productLibraryPreService.selectById(ProductPreId);
+                    orderDto.setProductName(productLibraryPre.getProductName());
+                }else if(order.getOrderType() == 2){
+                    ProductLibraryConfiguration productLibraryConfiguration = productLibraryConfigurationService.selectById(order.getProductConId());
+                    orderDto.setProductName(productLibraryConfiguration.getProductConName());
+                }
+                orderDtoList.add(orderDto);
+            }
         }
         catch (Exception e){
             return new ResultBean<>(e);
         }
-        return new ResultBean<>(orderList);
+        return new ResultBean<>(orderDtoList);
     }
 
     /**

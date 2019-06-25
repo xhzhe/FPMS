@@ -74,4 +74,9 @@ public class ProductLibraryPreServiceImpl implements ProductLibraryPreService {
         }
         return false;
     }
+
+    @Override
+    public ProductLibraryPre selectById(Integer productPreId) {
+        return productLibraryPreDao.selectByPrimaryKey(productPreId);
+    }
 }
