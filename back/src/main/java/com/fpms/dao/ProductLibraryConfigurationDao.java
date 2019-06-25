@@ -77,4 +77,13 @@ public interface ProductLibraryConfigurationDao {
      * @return     : java.util.List<com.fpms.entity.ProductLibraryConfiguration>
      */
     List<ProductLibraryConfiguration> selectAll();
+
+    /**
+     *  通过评审状态获取记录
+     * @author     ：TianHong Liao
+     * @date       ：Created in 2019/6/25 14:05
+     * @param       reviewStatus
+     * @return     : java.util.List<com.fpms.entity.ProductLibraryConfiguration>
+     */
+    List<ProductLibraryConfiguration> selectByReviewStatus(Byte reviewStatus);
 }

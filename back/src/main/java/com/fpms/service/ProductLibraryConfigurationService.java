@@ -57,4 +57,13 @@ public interface ProductLibraryConfigurationService {
      * @return     : void
      */
     void updateProductConfiguration(ProductLibraryConfiguration productLibraryConfiguration);
+
+    /**
+     * 返回未评估的产品列表
+     * @author     ：TianHong Liao
+     * @date       ：Created in 2019/6/25 14:02
+     * @param
+     * @return     : java.util.List<com.fpms.entity.ProductLibraryConfiguration>
+     */
+    List<ProductLibraryConfiguration> getUnReviewProductList();
 }

@@ -71,4 +71,9 @@ public class ProductLibraryConfigurationServiceImpl implements ProductLibraryCon
     public synchronized void updateProductConfiguration(ProductLibraryConfiguration productLibraryConfiguration) {
         productLibraryConfigurationDao.updateByPrimaryKeySelective(productLibraryConfiguration);
     }
+
+    @Override
+    public List<ProductLibraryConfiguration> getUnReviewProductList() {
+        return productLibraryConfigurationDao.selectByReviewStatus(Byte.valueOf("0"));
+    }
 }

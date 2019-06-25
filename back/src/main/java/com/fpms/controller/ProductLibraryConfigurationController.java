@@ -1,10 +1,12 @@
 package com.fpms.controller;
 
+import com.fpms.entity.ProductLibraryConfiguration;
 import com.fpms.entity.pojo.ResultBean;
 import com.fpms.service.ProductLibraryConfigurationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -51,5 +53,22 @@ public class ProductLibraryConfigurationController {
             return new ResultBean<>(e);
         }
         return new ResultBean<>(true);
+    }
+    /**
+     *  获取未评估的配置产品列表
+     * @author     ：TianHong Liao
+     * @date       ：Created in 2019/6/25 14:01
+     * @param
+     * @return     : com.fpms.entity.pojo.ResultBean<java.util.List<com.fpms.entity.ProductLibraryConfiguration>>
+     */
+    @GetMapping("/unReviewProductCons")
+    public  ResultBean<List<ProductLibraryConfiguration>> getUnReviewProductCon(){
+        List<ProductLibraryConfiguration> unReviewProductList = new ArrayList<>();
+        try{
+            unReviewProductList = productLibraryConfigurationService.getUnReviewProductList();
+        }catch (Exception e){
+            return new ResultBean<>(e);
+        }
+        return new ResultBean<>(unReviewProductList);
     }
 }
