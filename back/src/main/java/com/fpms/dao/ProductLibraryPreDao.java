@@ -26,4 +26,6 @@ public interface ProductLibraryPreDao {
     int updateByPrimaryKey(ProductLibraryPre record);
 
     List<ProductLibraryPre> getAll();
+
+    List<ProductLibraryPre> selectByProductStatus(Byte productStatus);
 }

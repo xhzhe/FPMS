@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author : HuiZhe Xu
@@ -76,5 +78,23 @@ public class ProductLibraryPreController {
             setFail(res);
         }
         return res;
+    }
+
+    /**
+     *  获取未评估的预选库产品列表
+     * @author     ：TianHong Liao
+     * @date       ：Created in 2019/6/25 13:03
+     * @param
+     * @return     : com.fpms.entity.ResultBean<java.util.List<com.fpms.entity.ProductLibraryPre>>
+     */
+    @GetMapping("/unReviewProductPres")
+    public  ResultBean<List<ProductLibraryPre>> getUnReviewProductPre(){
+        List<ProductLibraryPre> unReviewProductList = new ArrayList<>();
+        try{
+            unReviewProductList = productLibraryPreService.getUnReviewProductList();
+        }catch (Exception e){
+            return new ResultBean<>(e);
+        }
+        return new ResultBean<>(unReviewProductList);
     }
 }

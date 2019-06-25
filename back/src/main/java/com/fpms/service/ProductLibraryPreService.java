@@ -2,6 +2,8 @@ package com.fpms.service;
 
 import com.fpms.entity.ProductLibraryPre;
 
+import java.util.List;
+
 /**
  * @author     : HuiZhe Xu
  * @date       : 2019/6/14 14:49
@@ -34,4 +36,13 @@ public interface ProductLibraryPreService {
      * @return     : com.fpms.entity.ProductLibraryPre
      */
     ProductLibraryPre selectById(Integer productPreId);
+
+    /**
+     *  获取未评审的产品
+     * @author     ：TianHong Liao
+     * @date       ：Created in 2019/6/25 12:54
+     * @param
+     * @return     : java.util.List<com.fpms.entity.ProductLibraryPre>
+     */
+    List<ProductLibraryPre> getUnReviewProductList();
 }

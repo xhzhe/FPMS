@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.List;
 
 /**
  * @author : HuiZhe Xu
@@ -78,5 +79,10 @@ public class ProductLibraryPreServiceImpl implements ProductLibraryPreService {
     @Override
     public ProductLibraryPre selectById(Integer productPreId) {
         return productLibraryPreDao.selectByPrimaryKey(productPreId);
+    }
+
+    @Override
+    public List<ProductLibraryPre> getUnReviewProductList() {
+        return productLibraryPreDao.selectByProductStatus(Byte.valueOf("0"));
     }
 }
