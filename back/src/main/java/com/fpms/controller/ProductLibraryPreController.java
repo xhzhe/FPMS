@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.constraints.NotNull;
 
 /**
- * @author : YongBiao Liao
+ * @author : HuiZhe Xu
  * @date : 2019/6/14 14:59
  * @description:
  * @modified :
@@ -19,15 +19,15 @@ import javax.validation.constraints.NotNull;
 public class ProductLibraryPreController {
     @Autowired
     private ProductLibraryPreService productLibraryPreService;
-    public void setFail(@NotNull ResultBean res){
+    private void setFail(@NotNull ResultBean res){
         res.setData(null);
         res.setState(ResultBean.FAIL);
         res.setMsg(ResultBean.FAIL_MSG);
     }
-    public <T> void setSuccess(String Message,T data,@NotNull ResultBean res){
+    private  <T> void setSuccess(String message,T data,@NotNull ResultBean res){
         res.setData(data);
         res.setState(ResultBean.SUCCESS);
-        res.setMsg(Message);
+        res.setMsg(message);
     }
     @PutMapping("/product")
     public ResultBean<Boolean> modifyProduct(@RequestBody ProductLibraryPre product){
