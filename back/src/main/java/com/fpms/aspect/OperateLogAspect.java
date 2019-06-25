@@ -26,8 +26,7 @@ import java.util.*;
  * @description:操作日志切面
  * @modified :
  */
-@Aspect
-@Component
+
 public class OperateLogAspect {
     @Autowired
     private LogOperateService logOperateService;

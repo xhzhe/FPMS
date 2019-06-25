@@ -7,8 +7,6 @@ import com.fpms.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
-import java.text.SimpleDateFormat;
 import java.util.Map;
 
 /**
@@ -101,7 +99,7 @@ public class UserController {
             User user = new User();
             user.setUserId(userId);
             user.setUserPwd(userPwd);
-            userService.updateUserPwd(user);
+            userService.updateUser(user);
         }
         catch (Exception e){
             return new ResultBean<>(e);
@@ -121,7 +119,7 @@ public class UserController {
     public ResultBean<Boolean> modifyUser(@RequestBody User user, @PathVariable Integer userId){
         try{
             if(userService.getUserById(userId) != null ) {
-                userService.updateUserPwd(user);
+                userService.updateUser(user);
                 return new ResultBean<>();
             }else {
                 return new ResultBean<>("此用户不存在");
@@ -147,7 +145,7 @@ public class UserController {
             User user = new User();
             user.setUserId(userId);
             user.setPayPwd(payPwd);
-            userService.updateUserPwd(user);
+            userService.updateUser(user);
         }
         catch (Exception e){
             return new ResultBean<>(e);

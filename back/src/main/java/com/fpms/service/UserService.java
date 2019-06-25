@@ -28,11 +28,11 @@ public interface UserService {
      User getUserById(Integer userId);
 
     /**
-     *  更新用户密码
+     *  通过传入的user更新用户
      * @author     ：TianHong Liao
      * @date       ：Created in 2019/6/19 16:02
      * @param       user
      * @return     : void
      */
-    void updateUserPwd(User user);
+    void updateUser(User user);
 }

@@ -53,7 +53,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void updateUserPwd(User user) {
+    public void updateUser(User user) {
         userDao.updateByPrimaryKeySelective(user);
     }
 }

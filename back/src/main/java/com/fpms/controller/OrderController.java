@@ -1,13 +1,8 @@
 package com.fpms.controller;
 
-import com.fpms.entity.LogOperate;
-import com.fpms.entity.Order;
-import com.fpms.entity.ProductLibraryConfiguration;
-import com.fpms.entity.ProductLibraryStandard;
+import com.fpms.entity.*;
 import com.fpms.entity.pojo.ResultBean;
-import com.fpms.service.OrderService;
-import com.fpms.service.ProductLibraryConfigurationService;
-import com.fpms.service.ProductLibraryStandardService;
+import com.fpms.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -31,6 +26,12 @@ public class OrderController {
 
     @Autowired
     private ProductLibraryConfigurationService productLibraryConfigurationService;
+
+    @Autowired
+    private UserService userService;
+
+    @Autowired
+    private LogMoneyService logMoneyService;
     /**
      *  获取用户的订单列表
      * @author     ：TianHong Liao
@@ -100,17 +101,42 @@ public class OrderController {
             order.setOrderId(orderId);
             order.setOrderStatus(Byte.valueOf("2"));
             orderService.updateOrder(order);
-            //减少库存
+
             Order order1 = orderService.selectOrderByOrderId(orderId);
             if(order1.getOrderType() == 1){
+                //减少库存
                 ProductLibraryStandard productLibraryStandard = productLibraryStandardService.selectById(order1.getProductStdId());
                 productLibraryStandard.setStock(productLibraryStandard.getStock() - 1);
                 productLibraryStandardService.updateProductStandard(productLibraryStandard);
+                //支付
+                User user = userService.getUserById(order1.getUserId());
+                user.setUserMoney(user.getUserMoney().subtract(order1.getOrderMoney()));
+                userService.updateUser(user);
+                //资金变动记录
+                LogMoney logMoney = new LogMoney();
+                logMoney.setMoneyType(Byte.valueOf("1"));
+                logMoney.setUserId(user.getUserId());
+                logMoney.setMoney(order1.getOrderMoney());
+                logMoney.setUserMoney(user.getUserMoney());
+                logMoney.setRemark(order1.getProductStdId().toString());
+                logMoneyService.addLogMoney(logMoney);
             }
             else if(order1.getOrderType() == 2){
+                //减少库存
                 ProductLibraryConfiguration productLibraryConfiguration= productLibraryConfigurationService.selectById(order1.getProductConId());
                 productLibraryConfiguration.setStock(productLibraryConfiguration.getStock() - 1);
                 productLibraryConfigurationService.updateProductConfiguration(productLibraryConfiguration);
+                //支付
+                User user = userService.getUserById(order1.getUserId());
+                user.setUserMoney(user.getUserMoney().subtract(order1.getOrderMoney()));
+                //资金变动记录
+                LogMoney logMoney = new LogMoney();
+                logMoney.setMoneyType(Byte.valueOf("1"));
+                logMoney.setUserId(user.getUserId());
+                logMoney.setRemark(order1.getProductConId().toString());
+                logMoney.setMoney(order1.getOrderMoney());
+                logMoney.setUserMoney(user.getUserMoney());
+                logMoneyService.addLogMoney(logMoney);
             }
         }
         catch (Exception e){
