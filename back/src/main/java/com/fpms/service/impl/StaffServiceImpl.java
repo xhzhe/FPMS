@@ -32,6 +32,13 @@ public class StaffServiceImpl implements StaffService {
     private StaffDao staffDao;
     @Autowired
     private StaffRoleDao staffRoleDao;
+    /**
+     *  从ID获取配置详细信息
+     * @author     : HuiZhe Xu
+     * @date       : Created in 2019/6/25 11:00
+     * @param       configID
+     * @return     : com.fpms.dto.ConfigDetail
+     */
     @Override
     public ConfigDetail getConfigByID(Integer configID) {
         ProductLibraryConfiguration productLibraryConfiguration = productLibraryConfigurationDao.selectByPrimaryKey(configID);
@@ -55,7 +62,13 @@ public class StaffServiceImpl implements StaffService {
 
         return res;
     }
-
+    /**
+     *  获取所有配置和产品
+     * @author     : HuiZhe Xu
+     * @date       : Created in 2019/6/25 11:00
+     * @param
+     * @return     : com.fpms.dto.ProductsAndConfigs
+     */
     @Override
     public ProductsAndConfigs getAllMall() {
         List<ProductLibraryConfiguration> productLibraryConfigurations=productLibraryConfigurationDao.selectAll();
@@ -69,7 +82,16 @@ public class StaffServiceImpl implements StaffService {
         }
         return productsAndConfigs;
     }
-
+    /**
+     *  添加员工
+     * @author     : HuiZhe Xu
+     * @date       : Created in 2019/6/25 11:00
+     * @param       name
+     * @param       pwd
+     * @param       depart
+     * @param       roleList
+     * @return     : boolean
+     */
     @Override
     public boolean addStaff(String name, String pwd, String depart, ArrayList roleList) {
         Staff staff=new Staff();
@@ -89,14 +111,26 @@ public class StaffServiceImpl implements StaffService {
         }
         return true;
     }
-
+    /**
+     *  获得单个员工的详细信息
+     * @author     : HuiZhe Xu
+     * @date       : Created in 2019/6/25 11:01
+     * @param       StaffId
+     * @return     : com.fpms.entity.Staff
+     */
     @Override
     public Staff getSingleStaffDetail(Integer StaffId) {
         Staff staff=staffDao.selectByPrimaryKey(StaffId);
 
         return staff;
     }
-
+    /**
+     *  获取产品简介
+     * @author     : HuiZhe Xu
+     * @date       : Created in 2019/6/25 11:01
+     * @param       ProductID
+     * @return     : com.fpms.dto.ProductDetail
+     */
     @Override
     public ProductDetail getProductInfo(Integer ProductID) {
         ProductLibraryStandard productLibraryStandard=productLibraryStandardDao.selectByPrimaryKey(ProductID);
@@ -137,7 +171,13 @@ public class StaffServiceImpl implements StaffService {
 
         return productDetail;
     }
-
+    /**
+     *  获取所有员工
+     * @author     : HuiZhe Xu
+     * @date       : Created in 2019/6/25 11:01
+     * @param
+     * @return     : java.util.ArrayList<com.fpms.entity.Staff>
+     */
     @Override
     public ArrayList<Staff> getStaffs() {
         List<Staff> res=staffDao.getStaffs();
