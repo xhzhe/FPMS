@@ -27,12 +27,12 @@ public class ProductLibraryConfigurationController {
     /**
      * 获取所有配置的信息
      * @author     ：YongBiao Liao
-     * @date       ：Created in 2019/6/21 14:55
+     * @date       ：Created in 2019/6/26 16:05
      * @param
-     * @return     : com.fpms.entity.pojo.ResultBean<java.util.List>
+     * @return     : com.fpms.entity.pojo.ResultBean<java.util.List<com.fpms.entity.ProductLibraryConfiguration>>
      */
     @GetMapping(value = "/configurations")
-    public ResultBean<List> getAllConfiguration(){
+    public ResultBean<List<ProductLibraryConfiguration>> getAllConfiguration(){
         try{
             return new ResultBean<>(productLibraryConfigurationService.getAllConfiguration());
         }catch (Exception e){
