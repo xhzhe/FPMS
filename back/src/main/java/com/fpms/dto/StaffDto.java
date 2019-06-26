@@ -2,6 +2,7 @@ package com.fpms.dto;
 
 import com.fpms.entity.Role;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -19,6 +20,12 @@ public class StaffDto {
     private String staffGender;
 
     private String staffPhone;
+
+    private String staffEmail;
+
+    private String staffDepartment;
+
+    private Date createTime;
 
     private Byte staffStatus;
 
@@ -70,5 +77,29 @@ public class StaffDto {
 
     public void setRole(Role role) {
         this.role = role;
+    }
+
+    public String getStaffEmail() {
+        return staffEmail;
+    }
+
+    public void setStaffEmail(String staffEmail) {
+        this.staffEmail = staffEmail;
+    }
+
+    public String getStaffDepartment() {
+        return staffDepartment;
+    }
+
+    public void setStaffDepartment(String staffDepartment) {
+        this.staffDepartment = staffDepartment;
+    }
+
+    public Date getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
     }
 }

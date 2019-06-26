@@ -3,14 +3,20 @@ package com.fpms.controller;
 import com.fpms.dto.ConfigDetail;
 import com.fpms.dto.ProductDetail;
 import com.fpms.dto.ProductsAndConfigs;
+import com.fpms.dto.StaffDto;
 import com.fpms.entity.ResultBean;
 
+import com.fpms.entity.Role;
 import com.fpms.entity.Staff;
+import com.fpms.entity.StaffRole;
+import com.fpms.service.RoleService;
+import com.fpms.service.StaffRoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import com.fpms.service.StaffService;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
 
@@ -28,6 +34,11 @@ public class StaffController {
     StaffService staffService;
     private Pattern NUMBER_PATTERN = Pattern.compile("[0-9]*");
 
+    @Autowired
+    StaffRoleService staffRoleService;
+
+    @Autowired
+    RoleService roleService;
     /**
      * 获取详细设置
      * @author     ：HuiZhe Xu
@@ -97,8 +108,8 @@ public class StaffController {
      * @return     : ResultBean<Staff>
      */
     @GetMapping("/staff/{staffId}")
-    public ResultBean<Staff> getSingleStaff(@PathVariable String staffId) {
-        ResultBean<Staff> res = new ResultBean<>();
+    public ResultBean<StaffDto> getSingleStaff(@PathVariable String staffId) {
+        ResultBean<StaffDto> res = new ResultBean<>();
         if (staffId == null || staffId.length() <= 0) {
             res.setData(null);
             res.setState(ResultBean.FAIL);
@@ -108,7 +119,22 @@ public class StaffController {
         if (NUMBER_PATTERN.matcher(staffId).matches()) {
             try {
                 Staff staff = staffService.getSingleStaffDetail(Integer.parseInt(staffId));
-                res.setData(staff);
+                StaffDto staffDto = new StaffDto();
+                staffDto.setStaffId(staff.getStaffId());
+                staffDto.setStaffName(staff.getStaffName());
+                staffDto.setStaffGender(staff.getStaffGender());
+                staffDto.setStaffPhone(staff.getStaffPhone());
+                staffDto.setStaffEmail(staff.getStaffEmail());
+                staffDto.setStaffDepartment(staff.getStaffDepartment());
+                staffDto.setCreateTime(staff.getCreateTime());
+                staffDto.setStaffStatus(staff.getStaffStatus());
+                List<StaffRole> staffRoleList = staffRoleService.selectStaffRoleByStaffId(staff.getStaffId());
+                for(int j=0;j<staffRoleList.size();j++){
+                    Role role = roleService.selectRoleById(staffRoleList.get(j).getRoleId());
+                    staffDto.setRole(role);
+                    break;
+                }
+                res.setData(staffDto);
                 if (staff == null) {
                     res.setState(ResultBean.FAIL);
                     res.setMsg("没有该员工");
@@ -166,12 +192,32 @@ public class StaffController {
      * @return     : ResultBean<ArrayList<Staff>>
      */
     @GetMapping("/staffs")
-    public ResultBean<ArrayList<Staff>> getAllStuff() {
-        ResultBean<ArrayList<Staff>> res = new ResultBean<>();
+    public ResultBean<ArrayList<StaffDto>> getAllStuff() {
+        ResultBean<ArrayList<StaffDto>> res = new ResultBean<>();
         try {
-            ArrayList<Staff> staff = staffService.getStaffs();
-            res.setData(staff);
-            if (staff == null) {
+            ArrayList<Staff> staffList = staffService.getStaffs();
+            ArrayList<StaffDto> staffDtoList = new ArrayList<>();
+            for(int i=0;i<staffList.size();i++){
+                StaffDto staffDto = new StaffDto();
+                Staff staff = staffList.get(i);
+                staffDto.setStaffId(staff.getStaffId());
+                staffDto.setStaffName(staff.getStaffName());
+                staffDto.setStaffGender(staff.getStaffGender());
+                staffDto.setStaffPhone(staff.getStaffPhone());
+                staffDto.setStaffEmail(staff.getStaffEmail());
+                staffDto.setStaffDepartment(staff.getStaffDepartment());
+                staffDto.setCreateTime(staff.getCreateTime());
+                staffDto.setStaffStatus(staff.getStaffStatus());
+                List<StaffRole> staffRoleList = staffRoleService.selectStaffRoleByStaffId(staff.getStaffId());
+                for(int j=0;j<staffRoleList.size();j++){
+                    Role role = roleService.selectRoleById(staffRoleList.get(j).getRoleId());
+                    staffDto.setRole(role);
+                    break;
+                }
+                staffDtoList.add(staffDto);
+            }
+            res.setData(staffDtoList);
+            if (staffList == null) {
                 res.setState(ResultBean.FAIL);
                 res.setMsg("暂无员工");
             } else {
