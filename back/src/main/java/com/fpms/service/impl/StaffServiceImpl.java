@@ -32,6 +32,8 @@ public class StaffServiceImpl implements StaffService {
     private StaffDao staffDao;
     @Autowired
     private StaffRoleDao staffRoleDao;
+    @Autowired
+    private RoleDao roleDao;
     /**
      *  从ID获取配置详细信息
      * @author     : HuiZhe Xu
@@ -89,26 +91,23 @@ public class StaffServiceImpl implements StaffService {
      * @param       name
      * @param       pwd
      * @param       depart
-     * @param       roleList
+     * @param       roleName
      * @return     : boolean
      */
     @Override
-    public boolean addStaff(String name, String pwd, String depart, ArrayList roleList) {
+    public boolean addStaff(String name, String pwd, String depart, String roleName) {
+        //添加职工
         Staff staff=new Staff();
         staff.setStaffName(name);
         staff.setStaffPwd(pwd);
         staff.setStaffDepartment(depart);
         staffDao.insertSelective(staff);
-
-        Integer id=staff.getStaffId();
-        System.out.println(id);
-        for(Object roleIter:roleList){
-            String roleId=(String)roleIter;
-            StaffRole staffRole=new StaffRole();
-            staffRole.setRoleId(Integer.parseInt(roleId));
-            staffRole.setStaffId(id);
-            staffRoleDao.insertSelective(staffRole);
-        }
+        //添加职工与角色的关联
+        Role role = roleDao.selectByRoleName(roleName);
+        StaffRole staffRole = new StaffRole();
+        staffRole.setRoleId(role.getRoleId());
+        staffRole.setStaffId(staff.getStaffId());
+        staffRoleDao.insertSelective(staffRole);
         return true;
     }
     /**
@@ -188,7 +187,16 @@ public class StaffServiceImpl implements StaffService {
         return result;
     }
 
-
-
+    /**
+     *  更新职工信息
+     * @author     ：TianHong Liao
+     * @date       ：Created in 2019/6/26 13:47
+     * @param       staff
+     * @return     : void
+     */
+    @Override
+    public void updateStaff(Staff staff) {
+        staffDao.insertSelective(staff);
+    }
 }
 

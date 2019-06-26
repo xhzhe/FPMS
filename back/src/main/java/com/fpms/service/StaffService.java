@@ -41,10 +41,10 @@ public interface StaffService {
      * @param       name
      * @param       pwd
      * @param       depart
-     * @param       roleList
+     * @param       roleName
      * @return     : boolean
      */
-    boolean addStaff(String name, String pwd, String depart, ArrayList roleList);
+    boolean addStaff(String name, String pwd, String depart, String roleName);
     /**
      *  获得单个员工的详细信息
      * @author     : HuiZhe Xu
@@ -70,4 +70,12 @@ public interface StaffService {
      */
     ArrayList<Staff> getStaffs();
 
+    /**
+     *  更新职工信息
+     * @author     ：TianHong Liao
+     * @date       ：Created in 2019/6/26 13:42
+     * @param       staff
+     * @return     : void
+     */
+    void updateStaff(Staff staff);
 }

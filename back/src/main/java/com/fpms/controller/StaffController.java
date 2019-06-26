@@ -258,9 +258,8 @@ public class StaffController {
             if(staffName.length()==0||staffPwd.length()==0||staffDepartment.length()==0){
                 throw new Exception("缺少参数");
             }
-            ArrayList<Object> roleList=(ArrayList<Object>)para.get("roleList");
-
-            if(!staffService.addStaff(staffName,staffPwd,staffDepartment,roleList)){
+            String roleName = para.get("roleName").toString();
+            if(!staffService.addStaff(staffName,staffPwd,staffDepartment,roleName)){
                 throw new Exception("插入失败");
             }
             res.setData(true);
@@ -275,6 +274,25 @@ public class StaffController {
         return res;
     }
 
+    /**
+     *  修改员工信息
+     * @author     ：TianHong Liao
+     * @date       ：Created in 2019/6/26 13:32
+     * @param       staffId
+     * @param       staff
+     * @return     : com.fpms.entity.pojo.ResultBean<java.lang.Boolean>
+     */
+    @PutMapping("/staff/{staffId}")
+    public ResultBean<Boolean> modifyStaffInfo(@PathVariable Integer staffId, @RequestBody Staff staff){
+        try{
+            staff.setStaffId(staffId);
+            staffService.updateStaff(staff);
+        }
+        catch (Exception e){
+            return new ResultBean<>(e);
+        }
+        return new ResultBean<>(true);
+    }
 //API
 //    @PutMapping("/{staffId}/privilege")
 //    public ResultBean<Boolean> modifyStaffPrivilege(@PathVariable Integer staffId, @RequestBody Map parm){

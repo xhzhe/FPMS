@@ -76,4 +76,13 @@ public interface RoleDao {
      * @return     : java.util.List<com.fpms.entity.Role>
      */
     List<Role> findAllRoles();
+
+    /**
+     *  通过roleName返回记录
+     * @author     ：TianHong Liao
+     * @date       ：Created in 2019/6/26 14:18
+     * @param       roleName
+     * @return     : com.fpms.entity.Role
+     */
+    Role selectByRoleName(String roleName);
 }
