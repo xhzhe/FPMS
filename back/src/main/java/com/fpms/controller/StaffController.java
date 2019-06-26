@@ -98,7 +98,7 @@ public class StaffController {
     }
 
     //    @PostMapping
-//    public ResultBean<> addStaff(){
+//    public ResultBean<> addSupplier(){
 //
 //    }
     /**
@@ -235,7 +235,7 @@ public class StaffController {
     }
 
 //    @PostMapping
-//    public ResultBean<Boolean> addStaff(@RequestBody  Staff staff){
+//    public ResultBean<Boolean> addSupplier(@RequestBody  Staff staff){
 //        ResultBean<Boolean>res = new ResultBean<>();
 //
 //    }
