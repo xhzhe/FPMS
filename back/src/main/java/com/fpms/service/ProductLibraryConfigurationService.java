@@ -67,4 +67,13 @@ public interface ProductLibraryConfigurationService {
      * @return     : java.util.List<com.fpms.entity.ProductLibraryConfiguration>
      */
     List<ProductLibraryConfigurationDto> getUnReviewProductList();
+
+    /**
+     * 通过配置id获取该配置中的所有产品
+     * @author     ：YongBiao Liao
+     * @date       ：Created in 2019/6/26 16:43
+     * @param       productConId
+     * @return     : java.util.List<com.fpms.entity.ProductConfiguration>
+     */
+    List<ProductConfiguration> getProductConfigurationByproductConId(Integer productConId);
 }

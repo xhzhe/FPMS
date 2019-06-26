@@ -102,4 +102,8 @@
   <delete id="deleteByProductConId">
     delete * from product_configuration where product_con_id = #{productConId}
   </delete>
+
+  <select id="getProductConfigurationByproductConId" resultMap="BaseResultMap">
+    select * from product_configuration where product_con_id = #{productConId}
+  </select>
 </mapper>

@@ -77,4 +77,16 @@ public class ProductLibraryConfigurationServiceImpl implements ProductLibraryCon
     public List<ProductLibraryConfigurationDto> getUnReviewProductList() {
         return productLibraryConfigurationDao.selectByReviewStatus(Byte.valueOf("0"));
     }
+
+    /**
+     * 通过配置id获取该配置中的所有产品
+     * @author     ：YongBiao Liao
+     * @date       ：Created in 2019/6/26 16:45
+     * @param       productConId
+     * @return     : java.util.List<com.fpms.entity.ProductConfiguration>
+     */
+    @Override
+    public List<ProductConfiguration> getProductConfigurationByproductConId(Integer productConId) {
+        return productConfigurationDao.getProductConfigurationByproductConId(productConId);
+    }
 }
