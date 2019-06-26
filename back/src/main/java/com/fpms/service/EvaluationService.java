@@ -74,4 +74,13 @@ public interface EvaluationService {
      * @return     : java.util.List<com.fpms.entity.Evaluation>
      */
     List<Evaluation> selectAllEvaluationByProductConId(Integer productConId);
+
+    /**
+     *  获取所有评价
+     * @author     ：TianHong Liao
+     * @date       ：Created in 2019/6/26 15:44
+     * @param
+     * @return     : java.util.List<com.fpms.entity.Evaluation>
+     */
+    List<Evaluation> selectAll();
 }
