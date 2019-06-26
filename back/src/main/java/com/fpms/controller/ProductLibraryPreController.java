@@ -1,5 +1,6 @@
 package com.fpms.controller;
 
+import com.fpms.annotation.OperationLog;
 import com.fpms.entity.ProductLibraryPre;
 import com.fpms.entity.ResultBean;
 import com.fpms.service.ProductLibraryPreService;
@@ -38,6 +39,7 @@ public class ProductLibraryPreController {
      * @param       product
      * @return     : com.fpms.entity.ResultBean<java.lang.Boolean>
      */
+    @OperationLog(value = "修改产品属性")
     @PutMapping("/product")
     public ResultBean<Boolean> modifyProduct(@RequestBody ProductLibraryPre product){
         ResultBean<Boolean> res = new ResultBean<>();
@@ -64,7 +66,8 @@ public class ProductLibraryPreController {
      * @param       product
      * @return     : com.fpms.entity.ResultBean<java.lang.Boolean>
      */
-    @PostMapping("/product_pre")
+    @OperationLog(value = "新增预选库产品")
+    @PostMapping("/productPre")
     public ResultBean<Boolean> addProduct(@RequestBody ProductLibraryPre product){
         ResultBean<Boolean> res = new ResultBean<>();
         try{

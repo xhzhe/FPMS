@@ -27,6 +27,7 @@ public class ProductReviewController {
      * @param       productPreId
      * @return     : com.fpms.entity.pojo.ResultBean<java.lang.Boolean>
      */
+    @OperationLog(value = "新增产品评估")
     @PostMapping("/productPre/{productPreId}/review")
     public ResultBean<Boolean> addReview(@RequestBody ProductReview productReview,@PathVariable Integer productPreId){
         try{

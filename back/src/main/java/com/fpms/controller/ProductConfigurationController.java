@@ -1,5 +1,6 @@
 package com.fpms.controller;
 
+import com.fpms.annotation.OperationLog;
 import com.fpms.dao.ProductConfigurationDao;
 import com.fpms.entity.ProductConfiguration;
 import com.fpms.entity.pojo.ResultBean;
@@ -31,6 +32,7 @@ public class ProductConfigurationController {
      * @param       param
      * @return     : com.fpms.entity.pojo.ResultBean<java.lang.Boolean>
      */
+    @OperationLog(value = "删除配置中的产品")
     @DeleteMapping(value = "/configuration/production")
     public ResultBean<Boolean> deleteConfigurationProduction(@RequestBody Map<String,String> param){
         try {
@@ -51,6 +53,7 @@ public class ProductConfigurationController {
      * @param       productConfiguration
      * @return     : com.fpms.entity.pojo.ResultBean<java.lang.Boolean>
      */
+    @OperationLog(value = "增加配置中的产品")
     @PutMapping(value = "/configuration/production/actions/add")
     public ResultBean<Boolean> addConfigurationProduction(@RequestBody ProductConfiguration productConfiguration) {
         try {

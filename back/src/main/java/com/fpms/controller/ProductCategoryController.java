@@ -1,5 +1,6 @@
 package com.fpms.controller;
 
+import com.fpms.annotation.OperationLog;
 import com.fpms.entity.ProductCategory;
 import com.fpms.entity.pojo.ResultBean;
 import com.fpms.service.ProductCategoryService;
@@ -28,6 +29,7 @@ public class ProductCategoryController {
      * @param       productCategory
      * @return     : com.fpms.entity.pojo.ResultBean<java.lang.Boolean>
      */
+    @OperationLog(value = "增加目录")
     @PostMapping("/productCategory")
     public ResultBean<Boolean> addProductCategory(@RequestBody ProductCategory productCategory){
         try{
@@ -46,6 +48,7 @@ public class ProductCategoryController {
      * @param       productCategory
      * @return     : com.fpms.entity.pojo.ResultBean<java.lang.Boolean>
      */
+    @OperationLog(value = "修改目录")
     @PutMapping("/productCategory/{productCategoryId}")
     public ResultBean<Boolean> updateProductCategory(@RequestBody ProductCategory productCategory,@PathVariable Integer productCategoryId){
         try{
@@ -66,6 +69,7 @@ public class ProductCategoryController {
      * @param       productCategoryId
      * @return     : com.fpms.entity.pojo.ResultBean<java.lang.Boolean>
      */
+    @OperationLog(value = "删除目录")
     @DeleteMapping("/productCategory/{productCategoryId}")
     public  ResultBean<Boolean> delProductCategory(@RequestBody ProductCategory productCategory,@PathVariable Integer productCategoryId){
         try{

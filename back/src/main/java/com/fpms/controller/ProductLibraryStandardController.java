@@ -1,5 +1,6 @@
 package com.fpms.controller;
 
+import com.fpms.annotation.OperationLog;
 import com.fpms.entity.ProductLibraryPre;
 import com.fpms.entity.ResultBean;
 import com.fpms.service.ProductLibraryPreService;
@@ -38,6 +39,7 @@ public class ProductLibraryStandardController {
      * @param       productStdId
      * @return     : com.fpms.entity.ResultBean<java.lang.Boolean>
      */
+    @OperationLog(value = "下架产品")
     @DeleteMapping("/productStd/{productStdId}")
     public ResultBean<Boolean> productObtained(@PathVariable Integer productStdId){
         ResultBean<Boolean> res = new ResultBean<>();

@@ -1,5 +1,6 @@
 package com.fpms.controller;
 
+import com.fpms.annotation.OperationLog;
 import com.fpms.dto.ProductLibraryConfigurationDto;
 import com.fpms.entity.ProductLibraryConfiguration;
 import com.fpms.entity.pojo.ResultBean;
@@ -46,6 +47,7 @@ public class ProductLibraryConfigurationController {
      * @param       productConId
      * @return     : com.fpms.entity.pojo.ResultBean<java.lang.Boolean>
      */
+    @OperationLog(value = "删除配置")
     @DeleteMapping(value = "/configurations")
     public ResultBean<Boolean> deleteConfiguration(@RequestParam("productConId") Integer productConId){
         try {

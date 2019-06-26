@@ -1,5 +1,6 @@
 package com.fpms.controller;
 
+import com.fpms.annotation.OperationLog;
 import com.fpms.dto.ConfigDetail;
 import com.fpms.dto.ProductDetail;
 import com.fpms.dto.ProductsAndConfigs;
@@ -246,6 +247,7 @@ public class StaffController {
      * @parameter  : para
      * @return     : ResultBean<Boolean>
      */
+    @OperationLog(value = "新增员工")
     @PostMapping("/staff")
     public ResultBean<Boolean> addStaff(@RequestBody Map para) {
         ResultBean<Boolean> res = new ResultBean<>();
