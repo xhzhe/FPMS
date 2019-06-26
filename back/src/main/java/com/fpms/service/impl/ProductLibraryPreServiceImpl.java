@@ -95,6 +95,6 @@ public class ProductLibraryPreServiceImpl implements ProductLibraryPreService {
      */
     @Override
     public List<ProductLibraryPre> getAllProductPres() {
-        return null;
+        return productLibraryPreDao.getAllProductPres();
     }
 }
