@@ -36,15 +36,13 @@ public interface StaffService {
     ProductsAndConfigs getAllMall();
     /**
      *  添加员工
-     * @author     : HuiZhe Xu
-     * @date       : Created in 2019/6/25 11:00
-     * @param       name
-     * @param       pwd
-     * @param       depart
+     * @author     ：TianHong Liao
+     * @date       ：Created in 2019/6/26 14:50
+     * @param       staff
      * @param       roleName
      * @return     : boolean
      */
-    boolean addStaff(String name, String pwd, String depart, String roleName);
+    boolean addStaff(Staff staff, String roleName);
     /**
      *  获得单个员工的详细信息
      * @author     : HuiZhe Xu
