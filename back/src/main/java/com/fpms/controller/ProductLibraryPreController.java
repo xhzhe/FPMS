@@ -2,7 +2,7 @@ package com.fpms.controller;
 
 import com.fpms.annotation.OperationLog;
 import com.fpms.entity.ProductLibraryPre;
-import com.fpms.entity.ResultBean;
+import com.fpms.entity.pojo.ResultBean;
 import com.fpms.service.ProductLibraryPreService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;

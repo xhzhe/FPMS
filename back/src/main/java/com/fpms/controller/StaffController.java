@@ -5,11 +5,11 @@ import com.fpms.dto.ConfigDetail;
 import com.fpms.dto.ProductDetail;
 import com.fpms.dto.ProductsAndConfigs;
 import com.fpms.dto.StaffDto;
-import com.fpms.entity.ResultBean;
 
 import com.fpms.entity.Role;
 import com.fpms.entity.Staff;
 import com.fpms.entity.StaffRole;
+import com.fpms.entity.pojo.ResultBean;
 import com.fpms.service.RoleService;
 import com.fpms.service.StaffRoleService;
 import org.springframework.beans.factory.annotation.Autowired;

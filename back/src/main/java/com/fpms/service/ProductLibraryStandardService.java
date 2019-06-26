@@ -35,4 +35,13 @@ public interface ProductLibraryStandardService {
      * @return     : void
      */
     void updateProductStandard(ProductLibraryStandard productLibraryStandard);
+
+    /**
+     *  上架产品
+     * @author     : HuiZhe Xu
+     * @date       : Created in 2019/6/26 10:35
+     * @param       Id
+     * @return     : java.lang.Boolean
+     */
+    Boolean addProduct(Integer Id);
 }
