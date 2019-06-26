@@ -19,7 +19,7 @@ public class CorsConfig {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/**")
-                        .allowedOrigins("http://localhost:8080");//允许域名访问，如果*，代表所有域名
+                        .allowedOrigins("*");//允许域名访问，如果*，代表所有域名
             }
         };
     }
