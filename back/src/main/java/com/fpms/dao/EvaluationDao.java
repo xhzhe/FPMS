@@ -103,4 +103,13 @@ public interface EvaluationDao {
      * @return     : java.util.List<com.fpms.entity.Evaluation>
      */
     List<Evaluation> selectAllByProductConId(Integer productConId);
+
+    /**
+     *  获取所有记录
+     * @author     ：TianHong Liao
+     * @date       ：Created in 2019/6/26 15:45
+     * @param
+     * @return     : java.util.List<com.fpms.entity.Evaluation>
+     */
+    List<Evaluation> selectAll();
 }

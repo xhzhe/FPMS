@@ -56,4 +56,9 @@ public class EvaluationServiceImpl implements EvaluationService {
     public List<Evaluation> selectAllEvaluationByProductConId(Integer productConId) {
         return evaluationDao.selectAllByProductConId(productConId);
     }
+
+    @Override
+    public List<Evaluation> selectAll() {
+        return evaluationDao.selectAll();
+    }
 }

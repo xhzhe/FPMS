@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import com.fpms.service.StaffService;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -249,13 +250,14 @@ public class StaffController {
      */
     @OperationLog(value = "新增员工")
     @PostMapping("/staff")
-    public ResultBean<Boolean> addStaff(@RequestBody Map para) {
+    public ResultBean<Boolean> addStaff(HttpServletRequest request) {
         ResultBean<Boolean> res = new ResultBean<>();
+
         try {
-            String staffName = para.get("staffName").toString();
-            String staffPwd = para.get("staffPwd").toString();
-            String staffDepartment = para.get("staffDepartment").toString();
-            String staffGender = para.get("staffGender").toString();
+            String staffName = request.getParameter("staffName");
+            String staffPwd = request.getParameter("staffPwd");
+            String staffDepartment = request.getParameter("staffDepartment");
+            String staffGender = request.getParameter("staffGender");
             Staff staff = new Staff();
             staff.setStaffName(staffName);
             staff.setStaffDepartment(staffDepartment);
@@ -264,7 +266,7 @@ public class StaffController {
             if(staffName.length()==0||staffPwd.length()==0||staffDepartment.length()==0){
                 throw new Exception("缺少参数");
             }
-            String roleName = para.get("roleName").toString();
+            String roleName = request.getParameter("roleName");
             if(!staffService.addStaff(staff,roleName)){
                 throw new Exception("插入失败");
             }

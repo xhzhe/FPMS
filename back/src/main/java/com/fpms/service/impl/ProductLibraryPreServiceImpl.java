@@ -1,7 +1,9 @@
 package com.fpms.service.impl;
 
 import com.fpms.dao.ProductLibraryPreDao;
+import com.fpms.dao.ProductLibraryStandardDao;
 import com.fpms.entity.ProductLibraryPre;
+import com.fpms.entity.ProductLibraryStandard;
 import com.fpms.service.ProductLibraryPreService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,6 +22,9 @@ import java.util.List;
 public class ProductLibraryPreServiceImpl implements ProductLibraryPreService {
     @Autowired
     private ProductLibraryPreDao productLibraryPreDao;
+
+    @Autowired
+    private ProductLibraryStandardDao productLibraryStandardDao;
     /**
      *  修改产品属性
      * @author     : HuiZhe Xu
@@ -96,5 +101,18 @@ public class ProductLibraryPreServiceImpl implements ProductLibraryPreService {
     @Override
     public List<ProductLibraryPre> getAllProductPres() {
         return productLibraryPreDao.getAllProductPres();
+    }
+
+    /**
+     *  过标准库Id获得预选库的产品信息
+     * @author     ：TianHong Liao
+     * @date       ：Created in 2019/6/26 15:58
+     * @param       productStdId
+     * @return     : com.fpms.entity.ProductLibraryPre
+     */
+    @Override
+    public ProductLibraryPre selectByStdId(Integer productStdId) {
+        ProductLibraryStandard productLibraryStandard = productLibraryStandardDao.selectByPrimaryKey(productStdId);
+        return productLibraryPreDao.selectByPrimaryKey(productLibraryStandard.getProductPreId());
     }
 }

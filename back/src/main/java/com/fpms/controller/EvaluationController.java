@@ -1,9 +1,14 @@
 package com.fpms.controller;
 
 import com.fpms.annotation.OperationLog;
+import com.fpms.dto.EvaluationDto;
 import com.fpms.entity.Evaluation;
+import com.fpms.entity.ProductLibraryConfiguration;
+import com.fpms.entity.ProductLibraryPre;
 import com.fpms.entity.pojo.ResultBean;
 import com.fpms.service.EvaluationService;
+import com.fpms.service.ProductLibraryConfigurationService;
+import com.fpms.service.ProductLibraryPreService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,6 +27,11 @@ public class EvaluationController {
     @Autowired
     private EvaluationService evaluationService;
 
+    @Autowired
+    private ProductLibraryPreService productLibraryPreService;
+
+    @Autowired
+    private ProductLibraryConfigurationService productLibraryConfigurationService;
     /**
      *  获取用户对订单的评价
      * @author     ：TianHong Liao
@@ -31,15 +41,23 @@ public class EvaluationController {
      * @return     : com.fpms.entity.pojo.ResultBean<com.fpms.entity.Evaluation>
      */
     @GetMapping("/user/{userId}/order/{orderId}/evaluation")
-    public ResultBean<Evaluation> selectEvaluationByUsearIdAndOrderId(@PathVariable Integer userId, @PathVariable Integer orderId){
-        Evaluation evaluation = new Evaluation();
+    public ResultBean<EvaluationDto> selectEvaluationByUsearIdAndOrderId(@PathVariable Integer userId, @PathVariable Integer orderId){
+        EvaluationDto evaluationDto = new EvaluationDto();
         try{
-            evaluation = evaluationService.selectEvaluationByUserIdAndOrderId(userId,orderId);
+            Evaluation evaluation = evaluationService.selectEvaluationByUserIdAndOrderId(userId,orderId);
+            evaluationDto.setEvaluation(evaluation);
+            if(evaluation.getEvaluationType() == 1){
+                ProductLibraryPre productLibraryPre = productLibraryPreService.selectByStdId(evaluation.getProductStdId());
+                evaluationDto.setProductLibraryPre(productLibraryPre);
+            }else if(evaluation.getEvaluationType() == 2){
+                ProductLibraryConfiguration productLibraryConfiguration = productLibraryConfigurationService.selectById(evaluation.getProductConId());
+                evaluationDto.setProductLibraryConfiguration(productLibraryConfiguration);
+            }
         }
         catch (Exception e){
             return new ResultBean<>(e);
         }
-        return new ResultBean<>(evaluation);
+        return new ResultBean<>(evaluationDto);
     }
 
     /**
@@ -91,15 +109,28 @@ public class EvaluationController {
      * @return     : com.fpms.entity.pojo.ResultBean<java.util.List<com.fpms.entity.Evaluation>>
      */
     @GetMapping("/user/{userId}/evaluations")
-    public ResultBean<List<Evaluation>> selectAllEvaluationByUserId(@PathVariable Integer userId){
-        List<Evaluation> evaluationList = new ArrayList<>();
+    public ResultBean<List<EvaluationDto>> selectAllEvaluationByUserId(@PathVariable Integer userId){
+        List<EvaluationDto> evaluationDtoList = new ArrayList<>();
         try{
-            evaluationList = evaluationService.selectAllEvaluationByUserId(userId);
+            List<Evaluation> evaluationList = evaluationService.selectAllEvaluationByUserId(userId);
+            for(int i=0;i<evaluationList.size();i++){
+                Evaluation evaluation = evaluationList.get(i);
+                EvaluationDto evaluationDto = new EvaluationDto();
+                evaluationDto.setEvaluation(evaluation);
+                if(evaluation.getEvaluationType() == 1){
+                    ProductLibraryPre productLibraryPre = productLibraryPreService.selectByStdId(evaluation.getProductStdId());
+                    evaluationDto.setProductLibraryPre(productLibraryPre);
+                }else if(evaluation.getEvaluationType() == 2){
+                    ProductLibraryConfiguration productLibraryConfiguration = productLibraryConfigurationService.selectById(evaluation.getProductConId());
+                    evaluationDto.setProductLibraryConfiguration(productLibraryConfiguration);
+                }
+                evaluationDtoList.add(evaluationDto);
+            }
         }
         catch (Exception e){
             return new ResultBean<>(e);
         }
-        return new ResultBean<>(evaluationList);
+        return new ResultBean<>(evaluationDtoList);
     }
 
     /**
@@ -110,15 +141,23 @@ public class EvaluationController {
      * @return     : com.fpms.entity.pojo.ResultBean<java.util.List<com.fpms.entity.Evaluation>>
      */
     @GetMapping("/productStd/{productStdId}/evaluations")
-    public ResultBean<List<Evaluation>> selectAllEvaluationByProductStdId(@PathVariable Integer productStdId){
-        List<Evaluation> evaluationList = new ArrayList<>();
+    public ResultBean<List<EvaluationDto>> selectAllEvaluationByProductStdId(@PathVariable Integer productStdId){
+        List<EvaluationDto> evaluationDtoList = new ArrayList<>();
         try{
-            evaluationList = evaluationService.selectAllEvaluationByProductStdId(productStdId);
+            List<Evaluation> evaluationList = evaluationService.selectAllEvaluationByProductStdId(productStdId);
+            for(int i=0;i<evaluationList.size();i++){
+                Evaluation evaluation = evaluationList.get(i);
+                EvaluationDto evaluationDto = new EvaluationDto();
+                evaluationDto.setEvaluation(evaluation);
+                ProductLibraryPre productLibraryPre = productLibraryPreService.selectByStdId(evaluation.getProductStdId());
+                evaluationDto.setProductLibraryPre(productLibraryPre);
+                evaluationDtoList.add(evaluationDto);
+            }
         }
         catch (Exception e){
             return new ResultBean<>(e);
         }
-        return new ResultBean<>(evaluationList);
+        return new ResultBean<>(evaluationDtoList);
     }
 
     /**
@@ -129,10 +168,37 @@ public class EvaluationController {
      * @return     : com.fpms.entity.pojo.ResultBean<java.util.List<com.fpms.entity.Evaluation>>
      */
     @GetMapping("/productCon/{productConId}/evaluations")
-    public ResultBean<List<Evaluation>> selectAllEvaluationByProductConId(@PathVariable Integer productConId){
+    public ResultBean<List<EvaluationDto>> selectAllEvaluationByProductConId(@PathVariable Integer productConId){
+        List<EvaluationDto> evaluationDtoList = new ArrayList<>();
+        try{
+            List<Evaluation> evaluationList = evaluationService.selectAllEvaluationByProductConId(productConId);
+            for(int i=0;i<evaluationList.size();i++){
+                Evaluation evaluation = evaluationList.get(i);
+                EvaluationDto evaluationDto = new EvaluationDto();
+                evaluationDto.setEvaluation(evaluation);
+                ProductLibraryConfiguration productLibraryConfiguration = productLibraryConfigurationService.selectById(evaluation.getProductConId());
+                evaluationDto.setProductLibraryConfiguration(productLibraryConfiguration);
+                evaluationDtoList.add(evaluationDto);
+            }
+        }
+        catch (Exception e){
+            return new ResultBean<>(e);
+        }
+        return new ResultBean<>(evaluationDtoList);
+    }
+
+    /**
+     *  获取所有评价
+     * @author     ：TianHong Liao
+     * @date       ：Created in 2019/6/26 15:52
+     * @param
+     * @return     : com.fpms.entity.pojo.ResultBean<java.util.List<com.fpms.entity.Evaluation>>
+     */
+    @GetMapping("/evaluations")
+    public ResultBean<List<Evaluation>> selectAllEvaluation(){
         List<Evaluation> evaluationList = new ArrayList<>();
         try{
-            evaluationList = evaluationService.selectAllEvaluationByProductConId(productConId);
+            evaluationList = evaluationService.selectAll();
         }
         catch (Exception e){
             return new ResultBean<>(e);

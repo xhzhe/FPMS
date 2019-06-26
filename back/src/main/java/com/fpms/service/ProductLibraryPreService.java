@@ -54,4 +54,13 @@ public interface ProductLibraryPreService {
      * @return     : java.util.List<com.fpms.entity.ProductLibraryPre>
      */
     List<ProductLibraryPre> getAllProductPres();
+
+    /**
+     *  通过标准库Id获得预选库的产品信息
+     * @author     ：TianHong Liao
+     * @date       ：Created in 2019/6/26 15:58
+     * @param       productStdId
+     * @return     : com.fpms.entity.ProductLibraryPre
+     */
+    ProductLibraryPre selectByStdId(Integer productStdId);
 }

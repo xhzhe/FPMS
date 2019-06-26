@@ -15,7 +15,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
+import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import java.lang.reflect.Method;
 import java.util.*;
@@ -69,9 +72,29 @@ public class OperateLogAspect {
 
         HashMap<String,String> content = new LinkedHashMap<>();
         content.put("HTTP_REQUEST_METHOD", request.getMethod());
-        content.put("HTTP_REQUEST_BODY", JSONObject.toJSONString(joinPoint.getArgs()));
-        content.put("CLASS_METHOD", joinPoint.getSignature().getDeclaringTypeName() + "." + joinPoint.getSignature().getName());
-        content.put("ClASS_ARGS", JSON.toJSONString(joinPoint.getArgs()) );
+        content.put("CLASS_METHOD", signature.getDeclaringTypeName() + "." + signature.getName());
+
+        //处理args，因为获取入参的时候，args还包含了一些其他的内容，比如ServletRequest等，而这些入参并不能进行序列化，所以JSON.toJSONString时报错；
+        Object[] args = joinPoint.getArgs();
+        Object[] arguments  = new Object[args.length];
+        for (int i = 0; i < args.length; i++) {
+            if (args[i] instanceof ServletRequest || args[i] instanceof ServletResponse || args[i] instanceof MultipartFile) {
+                //ServletRequest不能序列化，从入参里排除，否则报异常：java.lang.IllegalStateException: It is illegal to call this method if the current request is not in asynchronous mode (i.e. isAsyncStarted() returns false)
+                //ServletResponse不能序列化 从入参里排除，否则报异常：java.lang.IllegalStateException: getOutputStream() has already been called for this response
+                continue;
+            }
+            arguments[i] = args[i];
+        }
+        String paramter = "";
+        if (arguments != null) {
+            try {
+                paramter = JSONObject.toJSONString(arguments);
+            } catch (Exception e) {
+                paramter = arguments.toString();
+            }
+        }
+        content.put("ClASS_ARGS", paramter );
+
         logOperate.setContent(content.toString());
         TimeZone time = TimeZone.getTimeZone("ETC/GMT-8");
         TimeZone.setDefault(time);
