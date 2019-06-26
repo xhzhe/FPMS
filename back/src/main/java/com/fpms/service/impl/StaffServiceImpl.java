@@ -86,21 +86,15 @@ public class StaffServiceImpl implements StaffService {
     }
     /**
      *  添加员工
-     * @author     : HuiZhe Xu
-     * @date       : Created in 2019/6/25 11:00
-     * @param       name
-     * @param       pwd
-     * @param       depart
+     * @author     ：TianHong Liao
+     * @date       ：Created in 2019/6/26 14:50
+     * @param       staff
      * @param       roleName
      * @return     : boolean
      */
     @Override
-    public boolean addStaff(String name, String pwd, String depart, String roleName) {
+    public boolean addStaff(Staff staff, String roleName) {
         //添加职工
-        Staff staff=new Staff();
-        staff.setStaffName(name);
-        staff.setStaffPwd(pwd);
-        staff.setStaffDepartment(depart);
         staffDao.insertSelective(staff);
         //添加职工与角色的关联
         Role role = roleDao.selectByRoleName(roleName);

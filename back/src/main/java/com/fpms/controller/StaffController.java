@@ -255,11 +255,17 @@ public class StaffController {
             String staffName = para.get("staffName").toString();
             String staffPwd = para.get("staffPwd").toString();
             String staffDepartment = para.get("staffDepartment").toString();
+            String staffGender = para.get("staffGender").toString();
+            Staff staff = new Staff();
+            staff.setStaffName(staffName);
+            staff.setStaffDepartment(staffDepartment);
+            staff.setStaffPwd(staffPwd);
+            staff.setStaffGender(staffGender);
             if(staffName.length()==0||staffPwd.length()==0||staffDepartment.length()==0){
                 throw new Exception("缺少参数");
             }
             String roleName = para.get("roleName").toString();
-            if(!staffService.addStaff(staffName,staffPwd,staffDepartment,roleName)){
+            if(!staffService.addStaff(staff,roleName)){
                 throw new Exception("插入失败");
             }
             res.setData(true);
@@ -323,6 +329,7 @@ public class StaffController {
      * @param       staff
      * @return     : com.fpms.entity.pojo.ResultBean<java.lang.Boolean>
      */
+    @OperationLog(value = "修改员工信息")
     @PutMapping("/staff/{staffId}")
     public ResultBean<Boolean> modifyStaffInfo(@PathVariable Integer staffId, @RequestBody Staff staff){
         try{
