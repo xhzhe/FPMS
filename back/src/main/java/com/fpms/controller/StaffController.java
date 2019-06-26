@@ -21,7 +21,7 @@ import java.util.regex.Pattern;
  * @modified :
  */
 @RestController
-@RequestMapping("/staff")
+@CrossOrigin
 public class StaffController {
 
     @Autowired
@@ -35,7 +35,7 @@ public class StaffController {
      * @parameter      ：productConId
      * @return     : ResultBean<ConfigDetail>
      */
-    @GetMapping("/configurations/{productConId}")
+    @GetMapping("/staff/configurations/{productConId}")
     public ResultBean<ConfigDetail> getConfigDetail(@PathVariable Integer productConId) {
         ResultBean<ConfigDetail> res = new ResultBean<>();
         try {
@@ -69,7 +69,7 @@ public class StaffController {
      * @date       ：Created in 2019/6/14 16:29
      * @return     : ResultBean<ProductsAndConfigs>
      */
-    @GetMapping("/mall")
+    @GetMapping("/staff/mall")
     public ResultBean<ProductsAndConfigs> getMall() {
         ResultBean<ProductsAndConfigs> res = new ResultBean<>();
         try {
@@ -96,7 +96,7 @@ public class StaffController {
      * @parameter      : staffId
      * @return     : ResultBean<Staff>
      */
-    @GetMapping("/{staffId}")
+    @GetMapping("/staff/{staffId}")
     public ResultBean<Staff> getSingleStaff(@PathVariable String staffId) {
         ResultBean<Staff> res = new ResultBean<>();
         if (staffId == null || staffId.length() <= 0) {
@@ -131,7 +131,7 @@ public class StaffController {
      * @parameter      : productStdId
      * @return     : ResultBean<ProductDetail>
      */
-    @GetMapping("productions/{productStdId}")
+    @GetMapping("/staff/productions/{productStdId}")
     public ResultBean<ProductDetail> getSingleProduct(@PathVariable String productStdId) {
         ResultBean<ProductDetail> res = new ResultBean<>();
         if (productStdId == null || productStdId.length() <= 0) {
@@ -165,7 +165,7 @@ public class StaffController {
      * @date       ：Created in 2019/6/14 16:29
      * @return     : ResultBean<ArrayList<Staff>>
      */
-    @GetMapping
+    @GetMapping("/staffs")
     public ResultBean<ArrayList<Staff>> getAllStuff() {
         ResultBean<ArrayList<Staff>> res = new ResultBean<>();
         try {
@@ -200,7 +200,7 @@ public class StaffController {
      * @parameter  : para
      * @return     : ResultBean<Boolean>
      */
-    @PostMapping
+    @PostMapping("/staff")
     public ResultBean<Boolean> addStaff(@RequestBody Map para) {
         ResultBean<Boolean> res = new ResultBean<>();
         try {
