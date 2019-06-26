@@ -57,6 +57,7 @@ public class ProductLibraryConfigurationController {
         }
         return new ResultBean<>(true);
     }
+
     /**
      *  获取未评估的配置产品列表
      * @author     ：TianHong Liao
@@ -74,4 +75,6 @@ public class ProductLibraryConfigurationController {
         }
         return new ResultBean<>(unReviewProductList);
     }
+
+
 }

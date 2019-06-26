@@ -100,4 +100,22 @@ public class ProductLibraryPreController {
         }
         return new ResultBean<>(unReviewProductList);
     }
+
+    /**
+     * 获取预选库的所有产品
+     * @author     ：YongBiao Liao
+     * @date       ：Created in 2019/6/26 11:46
+     * @param
+     * @return     : com.fpms.entity.pojo.ResultBean<java.util.List<com.fpms.entity.ProductLibraryPre>>
+     */
+    @GetMapping(value = "/productPres")
+    public ResultBean<List<ProductLibraryPre>> getAllProductPres(){
+        List<ProductLibraryPre> productLibraryPres = new ArrayList<>();
+        try {
+            productLibraryPres = productLibraryPreService.getAllProductPres();
+        }catch (Exception e){
+            return new ResultBean<>(e);
+        }
+        return new ResultBean<>(productLibraryPres);
+    }
 }

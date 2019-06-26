@@ -28,4 +28,13 @@ public interface ProductLibraryPreDao {
     List<ProductLibraryPre> getAll();
 
     List<ProductLibraryPre> selectByProductStatus(Byte productStatus);
+
+    /**
+     * 获取预选库的所有产品
+     * @author     ：YongBiao Liao
+     * @date       ：Created in 2019/6/26 11:43
+     * @param
+     * @return     : java.util.List<com.fpms.entity.ProductLibraryPre>
+     */
+    List<ProductLibraryPre> getAllProductPres();
 }

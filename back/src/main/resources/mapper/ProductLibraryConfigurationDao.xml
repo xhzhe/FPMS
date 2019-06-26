@@ -211,7 +211,7 @@
       create_time = #{createTime,jdbcType=TIMESTAMP}
     where product_con_id = #{productConId,jdbcType=INTEGER}
   </update>
-  <select id="selectAll" resultMap="resultMap">
+  <select id="selectAll" resultMap="BaseResultMap">
     select * from product_library_configuration
   </select>
 </mapper>

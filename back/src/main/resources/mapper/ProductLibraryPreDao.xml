@@ -292,4 +292,7 @@
       crate_time = #{crateTime,jdbcType=TIMESTAMP}
     where product_pre_id = #{productPreId,jdbcType=INTEGER}
   </update>
+  <select id="getAllProductPres" resultMap="BaseResultMap">
+    select * from roduct_library_pre
+  </select>
 </mapper>

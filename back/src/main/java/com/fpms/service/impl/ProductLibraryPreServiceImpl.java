@@ -85,4 +85,16 @@ public class ProductLibraryPreServiceImpl implements ProductLibraryPreService {
     public List<ProductLibraryPre> getUnReviewProductList() {
         return productLibraryPreDao.selectByProductStatus(Byte.valueOf("0"));
     }
+
+    /**
+     * 获取所有预选库产品
+     * @author     ：YongBiao Liao
+     * @date       ：Created in 2019/6/26 11:41
+     * @param
+     * @return     : java.util.List<com.fpms.entity.ProductLibraryPre>
+     */
+    @Override
+    public List<ProductLibraryPre> getAllProductPres() {
+        return null;
+    }
 }

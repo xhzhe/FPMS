@@ -45,4 +45,13 @@ public interface ProductLibraryPreService {
      * @return     : java.util.List<com.fpms.entity.ProductLibraryPre>
      */
     List<ProductLibraryPre> getUnReviewProductList();
+
+    /**
+     * 获取所有预选库的产品
+     * @author     ：YongBiao Liao
+     * @date       ：Created in 2019/6/26 11:40
+     * @param
+     * @return     : java.util.List<com.fpms.entity.ProductLibraryPre>
+     */
+    List<ProductLibraryPre> getAllProductPres();
 }
