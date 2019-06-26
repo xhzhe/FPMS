@@ -80,7 +80,7 @@ public class ProductLibraryStandardController {
             return res;
         }
         try{
-            boolean success=productLibraryStandardService.addProduct(productStdId);
+            boolean success=productLibraryStandardService.uploadProduct(productStdId);
             if(success){
                 setSuccess("成功上架",success,res);
             }else {

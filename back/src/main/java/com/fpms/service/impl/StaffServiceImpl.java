@@ -198,5 +198,22 @@ public class StaffServiceImpl implements StaffService {
     public void updateStaff(Staff staff) {
         staffDao.insertSelective(staff);
     }
+
+    /**
+     * 删除员工
+     *
+     * @param id
+     * @return : boolean
+     * @author : HuiZhe Xu
+     * @date : Created in 2019/6/26 14:31
+     */
+    @Override
+    public boolean delStaff(Integer id) {
+        int count=staffDao.deleteByPrimaryKey(id);
+        if(count>0){
+            return true;
+        }
+        return false;
+    }
 }
 

@@ -43,5 +43,5 @@ public interface ProductLibraryStandardService {
      * @param       Id
      * @return     : java.lang.Boolean
      */
-    Boolean addProduct(Integer Id);
+    Boolean uploadProduct(Integer Id);
 }

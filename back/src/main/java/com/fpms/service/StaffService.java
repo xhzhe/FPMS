@@ -78,4 +78,12 @@ public interface StaffService {
      * @return     : void
      */
     void updateStaff(Staff staff);
+    /**
+     *  删除员工
+     * @author     : HuiZhe Xu
+     * @date       : Created in 2019/6/26 14:31
+     * @param       id
+     * @return     : boolean
+     */
+    boolean delStaff(Integer id);
 }

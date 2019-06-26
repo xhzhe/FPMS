@@ -68,7 +68,7 @@ public class ProductLibraryStandardServiceImpl implements ProductLibraryStandard
      * @date : Created in 2019/6/26 10:35
      */
     @Override
-    public Boolean addProduct(Integer id) {
+    public Boolean uploadProduct(Integer id) {
         ProductLibraryStandard productLibraryStandard=productLibraryStandardDao.selectByPrimaryKey(id);
         if(productLibraryStandard==null){
             return false;

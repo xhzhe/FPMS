@@ -275,6 +275,47 @@ public class StaffController {
     }
 
     /**
+     *  删除员工
+     * @author     : HuiZhe Xu
+     * @date       : Created in 2019/6/26 14:36
+     * @param       staffId
+     * @return     : com.fpms.entity.pojo.ResultBean<java.lang.Boolean>
+     */
+    @OperationLog("删除员工")
+    @DeleteMapping("/staff/{staffId}")
+    public ResultBean<Boolean> deleteStaff(@PathVariable Integer staffId){
+        ResultBean<Boolean> res = new ResultBean<>();
+        if(staffId==null){
+            res.setState(ResultBean.FAIL);
+            res.setMsg(ResultBean.FAIL_MSG);
+            res.setData(false);
+            return res;
+        }
+        if(staffId<0){
+            res.setData(false);
+            res.setMsg(ResultBean.FAIL_MSG);
+            res.setState(ResultBean.FAIL);
+            return res;
+        }
+        try{
+            boolean success=staffService.delStaff(staffId);
+            if(success){
+                res.setData(true);
+                res.setMsg(ResultBean.SUCC_MSG);
+                res.setState(ResultBean.SUCCESS);
+            }else{
+                throw new Exception("删除失败");
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+            res.setData(false);
+            res.setMsg(ResultBean.FAIL_MSG);
+            res.setState(ResultBean.FAIL);
+            return res;
+        }
+        return res;
+    }
+    /**
      *  修改员工信息
      * @author     ：TianHong Liao
      * @date       ：Created in 2019/6/26 13:32
