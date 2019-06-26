@@ -1,5 +1,6 @@
 package com.fpms.controller;
 
+import com.fpms.annotation.OperationLog;
 import com.fpms.dao.ProductLibraryConfigurationDao;
 import com.fpms.entity.ConfigurationReview;
 import com.fpms.entity.ProductLibraryConfiguration;
@@ -34,6 +35,7 @@ public class ConfigurationReviewController {
      * @return     : com.fpms.entity.pojo.ResultBean<java.lang.Boolean>
      * @modifiedby: YongBiao Liao
      */
+    @OperationLog(value = "新增配置评估")
     @PostMapping("/productCon/{productConId}/actions/review")
     public ResultBean<Boolean> addConfigurationReview(@RequestBody Map<String,String> param, @PathVariable Integer productConId){
         try{

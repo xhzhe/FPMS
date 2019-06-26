@@ -26,17 +26,24 @@ import java.util.*;
  * @description:操作日志切面
  * @modified :
  */
-
+@Aspect
+@Component
 public class OperateLogAspect {
     @Autowired
     private LogOperateService logOperateService;
 
-    //切入点
+    /**
+     *  切入点
+     * @author     ：TianHong Liao
+     * @date       ：Created in 2019/6/26 11:59
+     * @param
+     * @return     : void
+     */
     @Pointcut("@annotation(com.fpms.annotation.OperationLog)")
-    public void logPoinCut() {
+    public void logPointCut() {
     }
 
-    @Before("logPoinCut()")
+    @Before("logPointCut()")
     public void doBefore(JoinPoint joinPoint) throws Throwable {
 
         LogOperate logOperate = new LogOperate();
