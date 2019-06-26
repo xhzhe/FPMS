@@ -20,12 +20,12 @@ public class ProductLibraryStandardServiceImpl implements ProductLibraryStandard
      *  下架产品
      * @author     : HuiZhe Xu
      * @date       : Created in 2019/6/25 11:05
-     * @param       ID
+     * @param       id
      * @return     : java.lang.Boolean
      */
     @Override
-    public Boolean obetainProducts(Integer ID){
-        ProductLibraryStandard productLibraryStandard=productLibraryStandardDao.selectByPrimaryKey(ID);
+    public Boolean obetainProducts(Integer id){
+        ProductLibraryStandard productLibraryStandard=productLibraryStandardDao.selectByPrimaryKey(id);
         if(productLibraryStandard==null){
             return false;
         }
@@ -57,5 +57,27 @@ public class ProductLibraryStandardServiceImpl implements ProductLibraryStandard
     @Override
     public synchronized void updateProductStandard(ProductLibraryStandard productLibraryStandard) {
         productLibraryStandardDao.updateByPrimaryKeySelective(productLibraryStandard);
+    }
+
+    /**
+     * 上架产品
+     *
+     * @param id
+     * @return : java.lang.Boolean
+     * @author : HuiZhe Xu
+     * @date : Created in 2019/6/26 10:35
+     */
+    @Override
+    public Boolean addProduct(Integer id) {
+        ProductLibraryStandard productLibraryStandard=productLibraryStandardDao.selectByPrimaryKey(id);
+        if(productLibraryStandard==null){
+            return false;
+        }
+        productLibraryStandard.setIsSale(Byte.parseByte("1"));
+        int count=productLibraryStandardDao.updateByPrimaryKeySelective(productLibraryStandard);
+        if(count>0){
+            return true;
+        }
+        return false;
     }
 }

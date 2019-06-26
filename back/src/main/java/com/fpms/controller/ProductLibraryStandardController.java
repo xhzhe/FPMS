@@ -1,14 +1,10 @@
 package com.fpms.controller;
 
 import com.fpms.annotation.OperationLog;
-import com.fpms.entity.ProductLibraryPre;
-import com.fpms.entity.ResultBean;
-import com.fpms.service.ProductLibraryPreService;
+import com.fpms.entity.pojo.ResultBean;
 import com.fpms.service.ProductLibraryStandardService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.Map;
 
 /**
  * @author : HuiZhe Xu
@@ -45,9 +41,11 @@ public class ProductLibraryStandardController {
         ResultBean<Boolean> res = new ResultBean<>();
         if(productStdId==null){
             setFail(res);
+            return res;
         }
         if(productStdId<0){
             setFail(res);
+            return res;
         }
         try{
             boolean success=productLibraryStandardService.obetainProducts(productStdId);
@@ -61,6 +59,37 @@ public class ProductLibraryStandardController {
         }
         return res;
 
+    }
+    /**
+     *  上架产品
+     * @author     : HuiZhe Xu
+     * @date       : Created in 2019/6/26 10:32
+     * @param       productStdId
+     * @return     : com.fpms.entity.ResultBean<java.lang.Boolean>
+     */
+    @OperationLog(value="上架产品")
+    @PostMapping("/productStd/{productStdId}")
+    public ResultBean<Boolean> postProduct(@PathVariable Integer productStdId){
+        ResultBean<Boolean> res = new ResultBean<>();
+        if(productStdId==null){
+            setFail(res);
+            return res;
+        }
+        if(productStdId<0){
+            setFail(res);
+            return res;
+        }
+        try{
+            boolean success=productLibraryStandardService.addProduct(productStdId);
+            if(success){
+                setSuccess("成功上架",success,res);
+            }else {
+                setFail(res);
+            }
+        }catch (Exception e){
+            setFail(res);
+        }
+        return res;
     }
 
 }
