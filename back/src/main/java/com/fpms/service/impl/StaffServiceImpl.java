@@ -189,8 +189,12 @@ public class StaffServiceImpl implements StaffService {
      * @return     : void
      */
     @Override
-    public void updateStaff(Staff staff) {
-        staffDao.insertSelective(staff);
+    public boolean updateStaff(Staff staff) {
+        int count=staffDao.updateByPrimaryKeySelective(staff);
+        if(count>0){
+            return true;
+        }
+        return false;
     }
 
     /**
