@@ -346,7 +346,15 @@ public class StaffController {
         }
         return new ResultBean<>(true);
     }
-
+    /**
+     *  修改密码
+     * @author     : HuiZhe Xu
+     * @date       : Created in 2019/6/27 20:31
+     * @param       staffId
+     * @param       oldPassword
+     * @param       password
+     * @return     : com.fpms.entity.pojo.ResultBean<java.lang.Boolean>
+     */
     @OperationLog("修改密码")
     @PutMapping("/staff/{staffId}/password")
     public ResultBean<Boolean> modifyPassword(@PathVariable Integer staffId,String oldPassword,String password){

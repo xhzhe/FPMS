@@ -186,7 +186,7 @@ public class StaffServiceImpl implements StaffService {
      * @author     ：TianHong Liao
      * @date       ：Created in 2019/6/26 13:47
      * @param       staff
-     * @return     : void
+     * @return     : boolean
      */
     @Override
     public boolean updateStaff(Staff staff) {
