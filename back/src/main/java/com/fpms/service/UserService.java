@@ -19,7 +19,7 @@ public interface UserService {
      int register(User user);
 
     /**
-     * 用户注册，返回0表示用户已存在，返回1表示成功注册,返回2表示失败
+     * 通过userId获取user
      * @author     ：YongBiao Liao
      * @date       ：Created in 2019/6/19 9:49
      * @param       userId
