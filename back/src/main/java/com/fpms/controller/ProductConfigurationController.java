@@ -120,5 +120,6 @@ public class ProductConfigurationController {
             return new ResultBean<>(e);
         }
         return res;
+
     }
 }
