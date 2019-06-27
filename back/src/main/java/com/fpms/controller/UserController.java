@@ -86,16 +86,15 @@ public class UserController {
 
     /**
      *  修改用户密码
-     * @author     ：TianHong Liao
+     * @author     ：YongBiao Liao
      * @date       ：Created in 2019/6/19 16:21
-     * @param       param
+     * @param       userPwd
      * @param       userId
      * @return     : com.fpms.entity.pojo.ResultBean<java.lang.Boolean>
      */
     @PutMapping(value = "/user/{userId}/userPwd/actions/modify")
-    public ResultBean<Boolean> modifyUserPwd(@RequestBody Map<String,String> param, @PathVariable Integer userId){
+    public ResultBean<Boolean> modifyUserPwd(@RequestParam("userPwd") String userPwd, @PathVariable Integer userId){
         try{
-            String userPwd = param.get("userPwd");
             User user = new User();
             user.setUserId(userId);
             user.setUserPwd(userPwd);
@@ -134,14 +133,13 @@ public class UserController {
      * 用户修改支付密码
      * @author     ：YongBiao Liao
      * @date       ：Created in 2019/6/19 23:59
-     * @param       param
+     * @param       payPwd
      * @param       userId
      * @return     : com.fpms.entity.pojo.ResultBean<java.lang.Boolean>
      */
     @PutMapping(value = "/user/{userId}/payPwd/actions/modify")
-    public ResultBean<Boolean> modifyPayPwd(@RequestBody Map<String,String> param, @PathVariable Integer userId){
+    public ResultBean<Boolean> modifyPayPwd(@RequestParam("payPwd") String payPwd, @PathVariable Integer userId){
         try{
-            String payPwd = param.get("payPwd");
             User user = new User();
             user.setUserId(userId);
             user.setPayPwd(payPwd);
@@ -151,5 +149,25 @@ public class UserController {
             return new ResultBean<>(e);
         }
         return new ResultBean<>(true);
+    }
+
+    /**
+     * 获取用户的支付密码
+     * @author     ：YongBiao Liao
+     * @date       ：Created in 2019/6/27 14:51
+     * @param       userId
+     * @return     : com.fpms.entity.pojo.ResultBean<java.lang.String>
+     */
+    @GetMapping(value = "/user/{userId}/payPwd")
+    public ResultBean<String> getPayPwd(@PathVariable Integer userId){
+        try{
+            User user = userService.getUserById(userId);
+            String payPwd = user.getPayPwd();
+            ResultBean<String> resultBean = new ResultBean<>();
+            resultBean.setData(payPwd);
+            return resultBean;
+        }catch (Exception e){
+            return new ResultBean<>(e);
+        }
     }
 }
