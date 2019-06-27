@@ -94,7 +94,15 @@ public class ProductConfigurationController {
         }
         return res;
     }
-
+    /**
+     * 修改配置比例
+     * @author     : HuiZhe Xu
+     * @date       : Created in 2019/6/27 18:40
+     * @param       configId
+     * @param       productStdId
+     * @param       rate
+     * @return     : com.fpms.entity.pojo.ResultBean<java.lang.Boolean>
+     */
     @OperationLog(value = "修改产品比例")
     @PutMapping("/configuration/{configId}/{productStdId}/{rate}")
     public ResultBean<Boolean> modifyConfigRate(@PathVariable Integer configId, @PathVariable Integer productStdId, @PathVariable double rate) {
