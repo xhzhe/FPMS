@@ -56,7 +56,7 @@ public class OrderController {
                 orderDto.setCreateTime(order.getCreateTime());
                 orderDto.setOrderMoney(order.getOrderMoney());
                 orderDto.setOrderStatus(order.getOrderStatus());
-                User user = (User)request.getSession().getAttribute("user");
+                User user = userService.getUserById(userId);
                 orderDto.setUserName(user.getUserName());
                 if(order.getOrderType() == 1){
                     Integer ProductPreId = productLibraryStandardService.selectById(order.getProductStdId()).getProductPreId();

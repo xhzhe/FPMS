@@ -195,14 +195,27 @@ public class EvaluationController {
      * @return     : com.fpms.entity.pojo.ResultBean<java.util.List<com.fpms.entity.Evaluation>>
      */
     @GetMapping("/evaluations")
-    public ResultBean<List<Evaluation>> selectAllEvaluation(){
-        List<Evaluation> evaluationList = new ArrayList<>();
+    public ResultBean<List<EvaluationDto>> selectAllEvaluation(){
+        List<EvaluationDto> evaluationDtoList = new ArrayList<>();
         try{
-            evaluationList = evaluationService.selectAll();
+            List<Evaluation> evaluationList = evaluationService.selectAll();
+            for(int i=0;i<evaluationList.size();i++){
+                Evaluation evaluation = evaluationList.get(i);
+                EvaluationDto evaluationDto = new EvaluationDto();
+                evaluationDto.setEvaluation(evaluation);
+                if(evaluation.getEvaluationType() == 1){
+                    ProductLibraryPre productLibraryPre = productLibraryPreService.selectByStdId(evaluation.getProductStdId());
+                    evaluationDto.setProductLibraryPre(productLibraryPre);
+                }else if(evaluation.getEvaluationType() == 2){
+                    ProductLibraryConfiguration productLibraryConfiguration = productLibraryConfigurationService.selectById(evaluation.getProductConId());
+                    evaluationDto.setProductLibraryConfiguration(productLibraryConfiguration);
+                }
+                evaluationDtoList.add(evaluationDto);
+            }
         }
         catch (Exception e){
             return new ResultBean<>(e);
         }
-        return new ResultBean<>(evaluationList);
+        return new ResultBean<>(evaluationDtoList);
     }
 }
