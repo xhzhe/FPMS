@@ -85,15 +85,15 @@ public class OperateLogAspect {
             }
             arguments[i] = args[i];
         }
-        String paramter = "";
+        String parameter = "";
         if (arguments != null) {
             try {
-                paramter = JSONObject.toJSONString(arguments);
+                parameter = JSONObject.toJSONString(arguments);
             } catch (Exception e) {
-                paramter = arguments.toString();
+                parameter = arguments.toString();
             }
         }
-        content.put("ClASS_ARGS", paramter );
+        content.put("ClASS_ARGS", parameter );
 
         logOperate.setContent(content.toString());
         TimeZone time = TimeZone.getTimeZone("ETC/GMT-8");

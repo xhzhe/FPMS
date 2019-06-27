@@ -9,6 +9,7 @@ import com.fpms.service.ProductLibraryConfigurationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -88,5 +89,51 @@ public class ProductLibraryConfigurationServiceImpl implements ProductLibraryCon
     @Override
     public List<ProductConfiguration> getProductConfigurationByproductConId(Integer productConId) {
         return productConfigurationDao.getProductConfigurationByproductConId(productConId);
+    }
+
+    /**
+     * 修改配置信息
+     *
+     * @param productLibraryConfiguration
+     * @return : boolean
+     * @author : HuiZhe Xu
+     * @date : Created in 2019/6/27 17:35
+     */
+    @Override
+    public boolean modifyConfiguration(ProductLibraryConfiguration productLibraryConfiguration) {
+        Integer id = productLibraryConfiguration.getProductConId();
+        ProductLibraryConfiguration productLibraryConfigurationTemp = productLibraryConfigurationDao.selectByPrimaryKey(id);
+        if(productLibraryConfigurationTemp==null){
+            return false;
+        }
+        int count=productLibraryConfigurationDao.updateByPrimaryKeySelective(productLibraryConfiguration);
+        if(count>0){
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * 修改配置中产品比率
+     *
+     * @param productConId
+     * @param productStdId
+     * @param rate
+     * @return : boolean
+     * @author : HuiZhe Xu
+     * @date : Created in 2019/6/27 17:54
+     */
+    @Override
+    public boolean modifyConfigurationRate(Integer productConId, Integer productStdId, double rate) {
+        ProductConfiguration productConfiguration=productConfigurationDao.selectByPCIAndPSI(productConId,productStdId);
+        if(productConfiguration==null){
+            return false;
+        }
+        productConfiguration.setPercentage(BigDecimal.valueOf(rate));
+        int count = productConfigurationDao.updateByPrimaryKeySelective(productConfiguration);
+        if(count>0){
+            return true;
+        }
+        return false;
     }
 }

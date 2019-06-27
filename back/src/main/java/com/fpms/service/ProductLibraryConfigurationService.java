@@ -16,64 +16,92 @@ public interface ProductLibraryConfigurationService {
 
     /**
      * 获取所有配置的信息
-     * @author     ：YongBiao Liao
-     * @date       ：Created in 2019/6/20 14:37
+     *
      * @param
-     * @return     : java.util.List<com.fpms.entity.ProductLibraryConfiguration>
+     * @return : java.util.List<com.fpms.entity.ProductLibraryConfiguration>
+     * @author ：YongBiao Liao
+     * @date ：Created in 2019/6/20 14:37
      */
     List<ProductLibraryConfiguration> getAllConfiguration();
 
     /**
      * 向配置中增加产品
-     * @author     ：YongBiao Liao
-     * @date       ：Created in 2019/6/24 16:40
-     * @param       productConfiguration
-     * @return     : void
+     *
+     * @param productConfiguration
+     * @return : void
+     * @author ：YongBiao Liao
+     * @date ：Created in 2019/6/24 16:40
      */
-    void addConfigurationProduction(ProductConfiguration productConfiguration) ;
+    void addConfigurationProduction(ProductConfiguration productConfiguration);
 
     /**
      * 通过配置id删除配置
-     * @author     ：YongBiao Liao
-     * @date       ：Created in 2019/6/24 21:04
-     * @param       productConId
-     * @return     : void
+     *
+     * @param productConId
+     * @return : void
+     * @author ：YongBiao Liao
+     * @date ：Created in 2019/6/24 21:04
      */
     void deleteConfiguration(Integer productConId);
 
     /**
-     *  通过配置Id获取配置
-     * @author     ：TianHong Liao
-     * @date       ：Created in 2019/6/25 10:38
-     * @param       productConId
-     * @return     : com.fpms.entity.ProductLibraryConfiguration
+     * 通过配置Id获取配置
+     *
+     * @param productConId
+     * @return : com.fpms.entity.ProductLibraryConfiguration
+     * @author ：TianHong Liao
+     * @date ：Created in 2019/6/25 10:38
      */
     ProductLibraryConfiguration selectById(Integer productConId);
 
     /**
-     *  通过配置Id更新配置
-     * @author     ：TianHong Liao
-     * @date       ：Created in 2019/6/25 10:42
-     * @param       productLibraryConfiguration
-     * @return     : void
+     * 通过配置Id更新配置
+     *
+     * @param productLibraryConfiguration
+     * @return : void
+     * @author ：TianHong Liao
+     * @date ：Created in 2019/6/25 10:42
      */
     void updateProductConfiguration(ProductLibraryConfiguration productLibraryConfiguration);
 
     /**
      * 返回未评估的产品列表
-     * @author     ：TianHong Liao
-     * @date       ：Created in 2019/6/25 14:02
+     *
      * @param
-     * @return     : java.util.List<com.fpms.entity.ProductLibraryConfiguration>
+     * @return : java.util.List<com.fpms.entity.ProductLibraryConfiguration>
+     * @author ：TianHong Liao
+     * @date ：Created in 2019/6/25 14:02
      */
     List<ProductLibraryConfigurationDto> getUnReviewProductList();
 
     /**
      * 通过配置id获取该配置中的所有产品
-     * @author     ：YongBiao Liao
-     * @date       ：Created in 2019/6/26 16:43
-     * @param       productConId
-     * @return     : java.util.List<com.fpms.entity.ProductConfiguration>
+     *
+     * @param productConId
+     * @return : java.util.List<com.fpms.entity.ProductConfiguration>
+     * @author ：YongBiao Liao
+     * @date ：Created in 2019/6/26 16:43
      */
     List<ProductConfiguration> getProductConfigurationByproductConId(Integer productConId);
+
+    /**
+     * 修改配置信息
+     *
+     * @param productLibraryConfiguration
+     * @return : boolean
+     * @author : HuiZhe Xu
+     * @date : Created in 2019/6/27 17:35
+     */
+    boolean modifyConfiguration(ProductLibraryConfiguration productLibraryConfiguration);
+
+    /**
+     *  修改配置中产品比率
+     * @author     : HuiZhe Xu
+     * @date       : Created in 2019/6/27 17:54
+     * @param       configId
+     * @param       productStdId
+     * @param       rate
+     * @return     : boolean
+     */
+    boolean modifyConfigurationRate(Integer configId, Integer productStdId, double rate);
 }
