@@ -43,4 +43,9 @@ public class OrderServiceImpl implements OrderService {
     public Order selectOrderByOrderId(Integer orderId) {
         return orderDao.selectByPrimaryKey(orderId);
     }
+
+    @Override
+    public List<Order> selectAll() {
+        return orderDao.selectAll();
+    }
 }

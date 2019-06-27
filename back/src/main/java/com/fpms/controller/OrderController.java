@@ -45,26 +45,25 @@ public class OrderController {
      * @return     : com.fpms.entity.pojo.ResultBean<java.util.List<com.fpms.entity.Order>>
      */
     @GetMapping("/user/{userId}/orders")
-    public ResultBean<List<OrderDto> > selectOrdersByUser(HttpServletRequest request,@PathVariable Integer userId){
+    public ResultBean<List<OrderDto> > selectOrdersByUser(@PathVariable Integer userId){
         List<OrderDto> orderDtoList = new ArrayList<>();
         try{
             List<Order> orderList = orderService.selectOrdersByUserId(userId);
             for(int i=0;i<orderList.size();i++){
                 Order order = orderList.get(i);
                 OrderDto orderDto = new OrderDto();
-                orderDto.setOrderId(order.getOrderId());
-                orderDto.setCreateTime(order.getCreateTime());
-                orderDto.setOrderMoney(order.getOrderMoney());
-                orderDto.setOrderStatus(order.getOrderStatus());
+                orderDto.setOrder(order);
                 User user = userService.getUserById(userId);
                 orderDto.setUserName(user.getUserName());
                 if(order.getOrderType() == 1){
-                    Integer ProductPreId = productLibraryStandardService.selectById(order.getProductStdId()).getProductPreId();
-                    ProductLibraryPre productLibraryPre = productLibraryPreService.selectById(ProductPreId);
+                    ProductLibraryStandard productLibraryStandard = productLibraryStandardService.selectById(order.getProductStdId());
+                    ProductLibraryPre productLibraryPre = productLibraryPreService.selectById(productLibraryStandard.getProductPreId());
                     orderDto.setProductName(productLibraryPre.getProductName());
+                    orderDto.setProductLibraryStandard(productLibraryStandard);
                 }else if(order.getOrderType() == 2){
                     ProductLibraryConfiguration productLibraryConfiguration = productLibraryConfigurationService.selectById(order.getProductConId());
                     orderDto.setProductName(productLibraryConfiguration.getProductConName());
+                    orderDto.setProductLibraryConfiguration(productLibraryConfiguration);
                 }
                 orderDtoList.add(orderDto);
             }
@@ -167,5 +166,36 @@ public class OrderController {
             return new ResultBean<>(e);
         }
         return new ResultBean<>(true);
+    }
+
+
+    @GetMapping("/orders")
+    public ResultBean<List<OrderDto> > selectAllOrders(){
+        List<OrderDto> orderDtoList = new ArrayList<>();
+        try{
+            List<Order> orderList = orderService.selectAll();
+            for(int i=0;i<orderList.size();i++){
+                Order order = orderList.get(i);
+                OrderDto orderDto = new OrderDto();
+                orderDto.setOrder(order);
+                User user = userService.getUserById(order.getUserId());
+                orderDto.setUserName(user.getUserName());
+                if(order.getOrderType() == 1){
+                    ProductLibraryStandard productLibraryStandard = productLibraryStandardService.selectById(order.getProductStdId());
+                    ProductLibraryPre productLibraryPre = productLibraryPreService.selectById(productLibraryStandard.getProductPreId());
+                    orderDto.setProductName(productLibraryPre.getProductName());
+                    orderDto.setProductLibraryStandard(productLibraryStandard);
+                }else if(order.getOrderType() == 2){
+                    ProductLibraryConfiguration productLibraryConfiguration = productLibraryConfigurationService.selectById(order.getProductConId());
+                    orderDto.setProductName(productLibraryConfiguration.getProductConName());
+                    orderDto.setProductLibraryConfiguration(productLibraryConfiguration);
+                }
+                orderDtoList.add(orderDto);
+            }
+        }
+        catch (Exception e){
+            return new ResultBean<>(e);
+        }
+        return new ResultBean<>(orderDtoList);
     }
 }

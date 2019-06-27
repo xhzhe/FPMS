@@ -55,4 +55,13 @@ public interface OrderService {
      * @return     : com.fpms.entity.Order
      */
     Order selectOrderByOrderId(Integer orderId);
+
+    /**
+     *  获取所有订单列表
+     * @author     ：TianHong Liao
+     * @date       ：Created in 2019/6/27 23:14
+     * @param
+     * @return     : java.util.List<com.fpms.entity.Order>
+     */
+    List<Order> selectAll();
 }

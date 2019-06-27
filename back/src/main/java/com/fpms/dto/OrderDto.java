@@ -1,5 +1,10 @@
 package com.fpms.dto;
 
+import com.fpms.entity.Order;
+import com.fpms.entity.ProductLibraryConfiguration;
+import com.fpms.entity.ProductLibraryStandard;
+import com.fpms.entity.User;
+
 import java.math.BigDecimal;
 import java.util.Date;
 
@@ -10,19 +15,17 @@ import java.util.Date;
  * @modified :
  */
 public class OrderDto {
-    private Integer orderId;
+    private Order order;
     private String userName;
-    private BigDecimal orderMoney;
-    private Byte orderStatus;
-    private Date createTime;
+    private ProductLibraryConfiguration productLibraryConfiguration;
+    private ProductLibraryStandard productLibraryStandard;
     private String productName;
-
-    public Integer getOrderId() {
-        return orderId;
+    public Order getOrder() {
+        return order;
     }
 
-    public void setOrderId(Integer orderId) {
-        this.orderId = orderId;
+    public void setOrder(Order order) {
+        this.order = order;
     }
 
     public String getUserName() {
@@ -33,28 +36,20 @@ public class OrderDto {
         this.userName = userName;
     }
 
-    public BigDecimal getOrderMoney() {
-        return orderMoney;
+    public ProductLibraryConfiguration getProductLibraryConfiguration() {
+        return productLibraryConfiguration;
     }
 
-    public void setOrderMoney(BigDecimal orderMoney) {
-        this.orderMoney = orderMoney;
+    public void setProductLibraryConfiguration(ProductLibraryConfiguration productLibraryConfiguration) {
+        this.productLibraryConfiguration = productLibraryConfiguration;
     }
 
-    public Byte getOrderStatus() {
-        return orderStatus;
+    public ProductLibraryStandard getProductLibraryStandard() {
+        return productLibraryStandard;
     }
 
-    public void setOrderStatus(Byte orderStatus) {
-        this.orderStatus = orderStatus;
-    }
-
-    public Date getCreateTime() {
-        return createTime;
-    }
-
-    public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
+    public void setProductLibraryStandard(ProductLibraryStandard productLibraryStandard) {
+        this.productLibraryStandard = productLibraryStandard;
     }
 
     public String getProductName() {
