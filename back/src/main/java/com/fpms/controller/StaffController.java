@@ -250,14 +250,11 @@ public class StaffController {
      */
     @OperationLog(value = "新增员工")
     @PostMapping("/staff")
-    public ResultBean<Boolean> addStaff(HttpServletRequest request) {
+    public ResultBean<Boolean> addStaff(@RequestParam String staffName,@RequestParam String staffPwd,@RequestParam String staffDepartment,
+                                        @RequestParam String staffGender,@RequestParam String roleName) {
         ResultBean<Boolean> res = new ResultBean<>();
 
         try {
-            String staffName = request.getParameter("staffName");
-            String staffPwd = request.getParameter("staffPwd");
-            String staffDepartment = request.getParameter("staffDepartment");
-            String staffGender = request.getParameter("staffGender");
             Staff staff = new Staff();
             staff.setStaffName(staffName);
             staff.setStaffDepartment(staffDepartment);
@@ -266,7 +263,6 @@ public class StaffController {
             if(staffName.length()==0||staffPwd.length()==0||staffDepartment.length()==0){
                 throw new Exception("缺少参数");
             }
-            String roleName = request.getParameter("roleName");
             if(!staffService.addStaff(staff,roleName)){
                 throw new Exception("插入失败");
             }
