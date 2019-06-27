@@ -19,7 +19,6 @@ import com.fpms.service.StaffService;
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.regex.Pattern;
 
 /**
@@ -329,12 +328,56 @@ public class StaffController {
      */
     @OperationLog(value = "修改员工信息")
     @PutMapping("/staff/{staffId}")
-    public ResultBean<Boolean> modifyStaffInfo(@PathVariable Integer staffId, @RequestBody Staff staff){
+    public ResultBean<Boolean> modifyStaffInfo(@PathVariable Integer staffId, Staff staff){
         try{
-            staff.setStaffId(staffId);
-            staffService.updateStaff(staff);
+
+            Staff staffTemp = staffService.getSingleStaffDetail(staffId);
+
+            if(staffTemp==null){
+                throw new Exception("找不到该员工");
+            }
+            boolean success=staffService.updateStaff(staff);
+            if(!success){
+                throw new Exception("修改失败");
+            }
         }
         catch (Exception e){
+            return new ResultBean<>(e);
+        }
+        return new ResultBean<>(true);
+    }
+    /**
+     *  修改密码
+     * @author     : HuiZhe Xu
+     * @date       : Created in 2019/6/27 20:31
+     * @param       staffId
+     * @param       oldPassword
+     * @param       password
+     * @return     : com.fpms.entity.pojo.ResultBean<java.lang.Boolean>
+     */
+    @OperationLog("修改密码")
+    @PutMapping("/staff/{staffId}/password")
+    public ResultBean<Boolean> modifyPassword(@PathVariable Integer staffId,String oldPassword,String password){
+        try{
+            Staff staffTemp = staffService.getSingleStaffDetail(staffId);
+
+            if(staffTemp==null){
+                throw new Exception("找不到该员工");
+            }
+
+            if(oldPassword==null){
+                throw new Exception("没有旧密码传入");
+            }
+            if(oldPassword.equals(staffTemp.getStaffPwd())){
+                staffTemp.setStaffPwd(password);
+                boolean success = staffService.updateStaff(staffTemp);
+                if(!success){
+                    throw new Exception("修改密码失败");
+                }
+            }else{
+                throw new Exception("旧密码不正确");
+            }
+        }catch (Exception e){
             return new ResultBean<>(e);
         }
         return new ResultBean<>(true);

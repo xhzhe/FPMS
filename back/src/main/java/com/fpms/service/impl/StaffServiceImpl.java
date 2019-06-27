@@ -186,11 +186,15 @@ public class StaffServiceImpl implements StaffService {
      * @author     ：TianHong Liao
      * @date       ：Created in 2019/6/26 13:47
      * @param       staff
-     * @return     : void
+     * @return     : boolean
      */
     @Override
-    public void updateStaff(Staff staff) {
-        staffDao.insertSelective(staff);
+    public boolean updateStaff(Staff staff) {
+        int count=staffDao.updateByPrimaryKeySelective(staff);
+        if(count>0){
+            return true;
+        }
+        return false;
     }
 
     /**

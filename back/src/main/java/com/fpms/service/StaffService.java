@@ -73,9 +73,9 @@ public interface StaffService {
      * @author     ：TianHong Liao
      * @date       ：Created in 2019/6/26 13:42
      * @param       staff
-     * @return     : void
+     * @return     : boolean
      */
-    void updateStaff(Staff staff);
+    boolean updateStaff(Staff staff);
     /**
      *  删除员工
      * @author     : HuiZhe Xu

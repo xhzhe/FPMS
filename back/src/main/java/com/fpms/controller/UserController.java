@@ -7,6 +7,8 @@ import com.fpms.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Map;
 
 /**
@@ -26,23 +28,25 @@ public class UserController {
      * 注册用户
      * @author     ：YongBiao Liao
      * @date       ：Created in 2019/6/19 19:38
-     * @param       userRegisterDto
+     * @param
      * @return     : com.fpms.entity.pojo.ResultBean<java.lang.Boolean>
      */
     @PostMapping(value = "/user/actions/register")
-    public ResultBean<Boolean> register(@RequestBody UserRegisterDto userRegisterDto){
+    public ResultBean<Boolean> register(String userName, String userPwd, String userGender, String userBrithday, String userPhone,
+                                        String userEmail, String certificateType, String certificateNum, String career){
         ResultBean<Boolean> resultBean = new ResultBean<>();
         try{
             User user = new User();
-            user.setUserName(userRegisterDto.getUserName());
-            user.setUserPwd(userRegisterDto.getUserPwd());
-            user.setUserGender(userRegisterDto.getUserGender());
-            user.setUserBrithday(userRegisterDto.getUserBrithday());
-            user.setUserPhone(userRegisterDto.getUserPhone());
-            user.setUserEmail(userRegisterDto.getUserEmail());
-            user.setCertificateType(userRegisterDto.getCertificateType());
-            user.setCertificateNum(userRegisterDto.getCertificateNum());
-            user.setCareer(userRegisterDto.getCareer());
+            user.setUserName(userName);
+            user.setUserPwd(userPwd);
+            user.setUserGender(userGender);
+            SimpleDateFormat formatter = new SimpleDateFormat( "yyyy-MM-dd HH:mm:ss");
+            user.setUserBrithday(formatter.parse(userBrithday));
+            user.setUserPhone(userPhone);
+            user.setUserEmail(userEmail);
+            user.setCertificateType(Byte.valueOf(certificateType));
+            user.setCertificateNum(certificateNum);
+            user.setCareer(career);
             int result = userService.register(user);
             if(result == 0){
                 resultBean.setState(1);
