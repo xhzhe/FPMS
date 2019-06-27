@@ -93,12 +93,15 @@ public class UserController {
      * @return     : com.fpms.entity.pojo.ResultBean<java.lang.Boolean>
      */
     @PutMapping(value = "/user/{userId}/userPwd/actions/modify")
-    public ResultBean<Boolean> modifyUserPwd(@RequestParam("userPwd") String userPwd, @PathVariable Integer userId){
+    public ResultBean<Boolean> modifyUserPwd(@RequestParam("userPwd") String userPwd, @RequestParam("oldUserPwd") String oldUserPwd ,@PathVariable Integer userId){
         try{
-            User user = new User();
-            user.setUserId(userId);
-            user.setUserPwd(userPwd);
-            userService.updateUser(user);
+            User user = userService.getUserById(userId);
+            if(user.getUserPwd().equals(oldUserPwd)) {
+                user.setUserPwd(userPwd);
+                userService.updateUser(user);
+            }else {
+                return new ResultBean<>("原密码错误！");
+            }
         }
         catch (Exception e){
             return new ResultBean<>(e);
