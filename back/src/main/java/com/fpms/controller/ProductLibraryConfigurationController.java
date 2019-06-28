@@ -144,4 +144,32 @@ public class ProductLibraryConfigurationController {
             return new ResultBean<>(e);
         }
     }
+
+    /**
+     *  添加配置
+     * @author     : HuiZhe Xu
+     * @date       : Created in 2019/6/28 10:31
+     * @param       configName
+     * @return     : com.fpms.entity.pojo.ResultBean<java.lang.Integer>
+     */
+    @OperationLog(value="添加配置")
+    @PostMapping("/config/{configName}")
+    public ResultBean<Integer> addConfig(@PathVariable String configName){
+        ResultBean<Integer> res = new ResultBean<>();
+        try{
+            ProductLibraryConfiguration productLibraryConfiguration=new ProductLibraryConfiguration();
+            productLibraryConfiguration.setProductConName(configName);
+            Integer id = productLibraryConfigurationService.addConfig(configName);
+            if(id==null){
+                throw new Exception("添加失败");
+            }else{
+                res.setData(id);
+                res.setState(ResultBean.SUCCESS);
+                res.setMsg(ResultBean.SUCC_MSG);
+            }
+        }catch (Exception e){
+            return new ResultBean<>(e);
+        }
+        return res;
+    }
 }

@@ -117,14 +117,20 @@ public class UserController {
      * 用户修改信息
      * @author     ：YongBiao Liao
      * @date       ：Created in 2019/6/19 23:29
-     * @param       user
+     * @param
      * @param       userId
      * @return     : com.fpms.entity.pojo.ResultBean<java.lang.Boolean>
      */
     @PutMapping(value = "/user/{userId}")
-    public ResultBean<Boolean> modifyUser(@RequestBody User user, @PathVariable Integer userId){
+    public ResultBean<Boolean> modifyUser(String userEmail,String userPhone ,
+                                          String userAddress,String career, @PathVariable Integer userId){
         try{
-            if(userService.getUserById(userId) != null ) {
+            User user = userService.getUserById(userId);
+            if(user != null ) {
+                user.setUserEmail(userEmail);
+                user.setUserPhone(userPhone);
+                user.setUserAddress(userAddress);
+                user.setCareer(career);
                 userService.updateUser(user);
                 return new ResultBean<>();
             }else {
@@ -145,12 +151,15 @@ public class UserController {
      * @return     : com.fpms.entity.pojo.ResultBean<java.lang.Boolean>
      */
     @PutMapping(value = "/user/{userId}/payPwd/actions/modify")
-    public ResultBean<Boolean> modifyPayPwd(@RequestParam("payPwd") String payPwd, @PathVariable Integer userId){
+    public ResultBean<Boolean> modifyPayPwd(@RequestParam("payPwd") String payPwd, @RequestParam("oldPayPwd") String oldPayPwd, @PathVariable Integer userId){
         try{
-            User user = new User();
-            user.setUserId(userId);
-            user.setPayPwd(payPwd);
-            userService.updateUser(user);
+            User user = userService.getUserById(userId);
+            if(user.getPayPwd().equals(oldPayPwd)) {
+                user.setUserPwd(payPwd);
+                userService.updateUser(user);
+            }else {
+                return new ResultBean<>("原支付密码错误！");
+            }
         }
         catch (Exception e){
             return new ResultBean<>(e);
@@ -177,4 +186,28 @@ public class UserController {
             return new ResultBean<>(e);
         }
     }
+
+    /**
+     * 用户设置支付密码
+     * @author     ：YongBiao Liao
+     * @date       ：Created in 2019/6/28 11:23
+     * @param       userId
+     * @param       payPwd
+     * @return     : com.fpms.entity.pojo.ResultBean<java.lang.Boolean>
+     */
+    @PutMapping(value = "/user/{userId}/payPwd")
+    public ResultBean<Boolean> setPayPwd(@PathVariable Integer userId, @RequestParam("payPwd") String payPwd){
+        try{
+            User user = new User();
+            user.setUserId(userId);
+            user.setPayPwd(payPwd);
+            userService.updateUser(user);
+        }
+        catch (Exception e){
+            return new ResultBean<>(e);
+        }
+        return new ResultBean<>(true);
+    }
+
+
 }

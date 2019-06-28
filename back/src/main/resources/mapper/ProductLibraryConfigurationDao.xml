@@ -58,7 +58,7 @@
       #{saleNum,jdbcType=INTEGER}, #{stock,jdbcType=INTEGER}, #{evalutionAvgScore,jdbcType=DECIMAL}, 
       #{evalutionNum,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP})
   </insert>
-  <insert id="insertSelective" parameterType="com.fpms.entity.ProductLibraryConfiguration">
+  <insert id="insertSelective" useGeneratedKeys="true" keyProperty="productConId" parameterType="com.fpms.entity.ProductLibraryConfiguration">
     insert into product_library_configuration
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="productConId != null">
