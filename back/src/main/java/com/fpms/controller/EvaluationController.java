@@ -233,4 +233,22 @@ public class EvaluationController {
         }
         return new ResultBean<>(evaluationDtoList);
     }
+
+    /**
+     *  通过evluationId删除评价
+     * @author     ：TianHong Liao
+     * @date       ：Created in 2019/6/28 10:22
+     * @param       evaluationId
+     * @return     : com.fpms.entity.pojo.ResultBean<java.lang.Boolean>
+     */
+    @DeleteMapping("/evalution/{evaluationId}")
+    public ResultBean<Boolean> delEvalutionById(@PathVariable Integer evaluationId){
+        try{
+            evaluationService.delEvaluationByEvaluationId(evaluationId);
+        }
+        catch (Exception e){
+            return new ResultBean<>(e);
+        }
+        return new ResultBean<>(true);
+    }
 }

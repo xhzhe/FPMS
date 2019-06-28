@@ -136,4 +136,22 @@ public class ProductLibraryConfigurationServiceImpl implements ProductLibraryCon
         }
         return false;
     }
+
+    /**
+     *  添加配置
+     * @author     : HuiZhe Xu
+     * @date       : Created in 2019/6/28 10:22
+     * @param       configName
+     * @return     : Integer
+     */
+    @Override
+    public Integer addConfig(String configName) {
+        ProductLibraryConfiguration productLibraryConfiguration=new ProductLibraryConfiguration();
+        productLibraryConfiguration.setProductConName(configName);
+        int count = productLibraryConfigurationDao.insertSelective(productLibraryConfiguration);
+        if(count>0){
+            return productLibraryConfiguration.getProductConId();
+        }
+        return null;
+    }
 }

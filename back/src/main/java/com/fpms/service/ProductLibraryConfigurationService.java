@@ -104,4 +104,13 @@ public interface ProductLibraryConfigurationService {
      * @return     : boolean
      */
     boolean modifyConfigurationRate(Integer configId, Integer productStdId, double rate);
+
+    /**
+     *  添加配置
+     * @author     : HuiZhe Xu
+     * @date       : Created in 2019/6/28 10:22
+     * @param       configName
+     * @return     : Integer
+     */
+    Integer addConfig(String configName);
 }
