@@ -1,6 +1,7 @@
 package com.fpms.controller;
 
 import com.fpms.dto.OrderDto;
+import com.fpms.dto.Product;
 import com.fpms.entity.*;
 import com.fpms.entity.pojo.ResultBean;
 import com.fpms.service.*;
@@ -37,6 +38,9 @@ public class OrderController {
 
     @Autowired
     private LogMoneyService logMoneyService;
+
+    @Autowired
+    private ProductUserService productUserService;
     /**
      *  获取用户的订单列表
      * @author     ：TianHong Liao
@@ -112,20 +116,23 @@ public class OrderController {
     /**
      *  结算订单
      * @author     ：TianHong Liao
-     * @date       ：Created in 2019/6/21 10:45
+     * @date       ：Created in 2019/6/28 9:39
      * @param       orderId
-     * @param       order
      * @return     : com.fpms.entity.pojo.ResultBean<java.lang.Boolean>
      */
     @PutMapping("/order/{orderId}")
-    public  ResultBean<Boolean> updateOrder(@PathVariable Integer orderId,@RequestBody Order order){
+    public  ResultBean<Boolean> updateOrder(@PathVariable Integer orderId){
+
+        Order order1 = orderService.selectOrderByOrderId(orderId);
+        if(order1.getOrderStatus() == 2){
+            return new ResultBean<>("订单已支付，请勿重复支付！");
+        }
         try{
             //更改订单状态
+            Order order = new Order();
             order.setOrderId(orderId);
             order.setOrderStatus(Byte.valueOf("2"));
             orderService.updateOrder(order);
-
-            Order order1 = orderService.selectOrderByOrderId(orderId);
             if(order1.getOrderType() == 1){
                 //减少库存
                 ProductLibraryStandard productLibraryStandard = productLibraryStandardService.selectById(order1.getProductStdId());
@@ -135,9 +142,17 @@ public class OrderController {
                 User user = userService.getUserById(order1.getUserId());
                 user.setUserMoney(user.getUserMoney().subtract(order1.getOrderMoney()));
                 userService.updateUser(user);
+                //放入个人产品库中
+                ProductUser productUser = new ProductUser();
+                productUser.setProductUserType(order1.getOrderType());
+                productUser.setProductStdId(order1.getProductStdId());
+                productUser.setUserId(order1.getUserId());
+                //productUser.setTermDate();
+                productUser.setPayMoney(order1.getOrderMoney());
+                productUserService.addProductUser(productUser);
                 //资金变动记录
                 LogMoney logMoney = new LogMoney();
-                logMoney.setMoneyType(Byte.valueOf("1"));
+                logMoney.setMoneyType(order1.getOrderType());
                 logMoney.setUserId(user.getUserId());
                 logMoney.setMoney(order1.getOrderMoney());
                 logMoney.setUserMoney(user.getUserMoney());
@@ -152,9 +167,18 @@ public class OrderController {
                 //支付
                 User user = userService.getUserById(order1.getUserId());
                 user.setUserMoney(user.getUserMoney().subtract(order1.getOrderMoney()));
+                userService.updateUser(user);
+                //放入个人产品库中
+                ProductUser productUser = new ProductUser();
+                productUser.setProductUserType(order1.getOrderType());
+                productUser.setProductConId(order1.getProductConId());
+                productUser.setUserId(order1.getUserId());
+                //productUser.setTermDate();
+                productUser.setPayMoney(order1.getOrderMoney());
+                productUserService.addProductUser(productUser);
                 //资金变动记录
                 LogMoney logMoney = new LogMoney();
-                logMoney.setMoneyType(Byte.valueOf("1"));
+                logMoney.setMoneyType(order1.getOrderType());
                 logMoney.setUserId(user.getUserId());
                 logMoney.setRemark(order1.getProductConId().toString());
                 logMoney.setMoney(order1.getOrderMoney());
