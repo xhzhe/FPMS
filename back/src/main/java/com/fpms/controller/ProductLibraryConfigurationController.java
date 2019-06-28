@@ -1,6 +1,7 @@
 package com.fpms.controller;
 
 import com.fpms.annotation.OperationLog;
+import com.fpms.dto.ConProDto;
 import com.fpms.dto.ConfigurationDto;
 import com.fpms.dto.ProductLibraryConfigurationDto;
 import com.fpms.entity.ProductConfiguration;
@@ -14,6 +15,7 @@ import com.fpms.service.ProductLibraryStandardService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -108,5 +110,38 @@ public class ProductLibraryConfigurationController {
         return new ResultBean<>(unReviewProductList);
     }
 
-
+    /**
+     * 通过productConId获取配置的所有产品的名字和比例
+     * @author     ：YongBiao Liao
+     * @date       ：Created in 2019/6/28 10:05
+     * @param       productConId
+     * @return     : com.fpms.entity.pojo.ResultBean<com.fpms.dto.ConProDto>
+     */
+    @GetMapping(value = "/configuration/{productConId}")
+    public ResultBean<ConProDto> getConfiguration(@PathVariable Integer productConId){
+        ConProDto conProDto = new ConProDto();
+        try {
+            List<ProductConfiguration> productConfigurationList = productLibraryConfigurationService.getProductConfigurationByproductConId(productConId);
+            if(productConfigurationList == null){
+                return new ResultBean<>("该配置没有产品");
+            }else {
+                List<String> productName = new ArrayList<>();
+                List<BigDecimal> productPercentage = new ArrayList<>();
+                for(int i = 0; i < productConfigurationList.size(); i++){
+                    Integer productStdId = productConfigurationList.get(i).getProductStdId();
+                    ProductLibraryStandard productLibraryStandard = productLibraryStandardService.selectById(productStdId);
+                    Integer productPreId = productLibraryStandard.getProductPreId();
+                    ProductLibraryPre productLibraryPre = productLibraryPreService.selectById(productPreId);
+                    productName.add(productLibraryPre.getProductName());
+                    productPercentage.add(productConfigurationList.get(i).getPercentage());
+                }
+                conProDto.setProductConId(productConId);
+                conProDto.setProductName(productName);
+                conProDto.setPercentage(productPercentage);
+                return new ResultBean<>(conProDto);
+            }
+        }catch (Exception e){
+            return new ResultBean<>(e);
+        }
+    }
 }
