@@ -241,7 +241,7 @@ public class EvaluationController {
      * @param       evaluationId
      * @return     : com.fpms.entity.pojo.ResultBean<java.lang.Boolean>
      */
-    @DeleteMapping("/evalution/{evaluationId}")
+    @DeleteMapping("/evaluation/{evaluationId}")
     public ResultBean<Boolean> delEvalutionById(@PathVariable Integer evaluationId){
         try{
             evaluationService.delEvaluationByEvaluationId(evaluationId);
