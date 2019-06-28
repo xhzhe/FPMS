@@ -32,7 +32,7 @@ public class UserController {
      * @return     : com.fpms.entity.pojo.ResultBean<java.lang.Boolean>
      */
     @PostMapping(value = "/user/actions/register")
-    public ResultBean<Boolean> register(String userName, String userPwd, String userGender, String userBrithday, String userPhone,
+    public ResultBean<Boolean> register(String userName, String userPwd, String userGender, /*String userBrithday,*/ String userPhone,
                                         String userEmail, String certificateType, String certificateNum, String career){
         ResultBean<Boolean> resultBean = new ResultBean<>();
         try{
@@ -40,8 +40,8 @@ public class UserController {
             user.setUserName(userName);
             user.setUserPwd(userPwd);
             user.setUserGender(userGender);
-            SimpleDateFormat formatter = new SimpleDateFormat( "yyyy-MM-dd HH:mm:ss");
-            user.setUserBrithday(formatter.parse(userBrithday));
+            //SimpleDateFormat formatter = new SimpleDateFormat( "yyyy-MM-dd");
+            //user.setUserBrithday(formatter.parse(userBrithday));
             user.setUserPhone(userPhone);
             user.setUserEmail(userEmail);
             user.setCertificateType(Byte.valueOf(certificateType));
