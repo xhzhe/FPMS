@@ -1,10 +1,14 @@
 package com.fpms.controller;
 
 import com.fpms.annotation.OperationLog;
+import com.fpms.entity.ProductLibraryStandard;
 import com.fpms.entity.pojo.ResultBean;
 import com.fpms.service.ProductLibraryStandardService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author : HuiZhe Xu
@@ -92,4 +96,21 @@ public class ProductLibraryStandardController {
         return res;
     }
 
+    /**
+     *  获取所有标准库产品
+     * @author     ：TianHong Liao
+     * @date       ：Created in 2019/6/28 16:52
+     * @param
+     * @return     : com.fpms.entity.pojo.ResultBean<java.util.List<com.fpms.entity.ProductLibraryStandard>>
+     */
+    @GetMapping("/productStds")
+    public ResultBean<List<ProductLibraryStandard>> getAllProductStd(){
+        List<ProductLibraryStandard> productLibraryStandardList;
+        try{
+            productLibraryStandardList = productLibraryStandardService.getAll();
+        }catch (Exception e){
+            return new ResultBean<>(e);
+        }
+        return new ResultBean<>(productLibraryStandardList);
+    }
 }
