@@ -177,4 +177,18 @@ public class UserController {
             return new ResultBean<>(e);
         }
     }
+
+    @PutMapping(value = "/user/{userId}/payPwd")
+    public ResultBean<Boolean> setPayPwd(@PathVariable Integer userId, @RequestParam("payPwd") String payPwd){
+        try{
+            User user = new User();
+            user.setUserId(userId);
+            user.setPayPwd(payPwd);
+            userService.updateUser(user);
+        }
+        catch (Exception e){
+            return new ResultBean<>(e);
+        }
+        return new ResultBean<>(true);
+    }
 }
