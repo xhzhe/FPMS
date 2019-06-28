@@ -50,23 +50,27 @@ public class ProductLibraryConfigurationController {
         ArrayList<ConfigurationDto> configurationDtoArrayList = new ArrayList<>();
         try{
             List<ProductLibraryConfiguration> productLibraryConfigurationList = productLibraryConfigurationService.getAllConfiguration();
-            for(int i = 0; i < productLibraryConfigurationList.size();i++){
+            for(int i = 0; i < productLibraryConfigurationList.size(); i++){
                 ConfigurationDto configurationDto = new ConfigurationDto();
                 configurationDto.setProductLibraryConfiguration(productLibraryConfigurationList.get(i));
                 List<ProductConfiguration> productConfigurationList = productLibraryConfigurationService.getProductConfigurationByproductConId(productLibraryConfigurationList.get(i).getProductConId());
-                ArrayList<ProductLibraryStandard> productLibraryStandardArrayList = new ArrayList<>();
-                ArrayList<ProductLibraryPre> productLibraryPreArrayList = new ArrayList<>();
-                for(int j = 0; j < productConfigurationList.size(); j++){
-                    Integer productStdId = productConfigurationList.get(i).getProductStdId();
-                    ProductLibraryStandard productLibraryStandard = productLibraryStandardService.selectById(productStdId);
-                    Integer productPreId = productLibraryStandard.getProductPreId();
-                    productLibraryStandardArrayList.add(productLibraryStandard);
-                    ProductLibraryPre productLibraryPre = productLibraryPreService.selectById(productPreId);
-                    productLibraryPreArrayList.add(productLibraryPre);
+                if(productConfigurationList != null){
+                    ArrayList<ProductLibraryStandard> productLibraryStandardArrayList = new ArrayList<>();
+                    ArrayList<ProductLibraryPre> productLibraryPreArrayList = new ArrayList<>();
+                    for(int j = 0; j < productConfigurationList.size(); j++){
+                        Integer productStdId = productConfigurationList.get(i).getProductStdId();
+                        ProductLibraryStandard productLibraryStandard = productLibraryStandardService.selectById(productStdId);
+                        Integer productPreId = productLibraryStandard.getProductPreId();
+                        productLibraryStandardArrayList.add(productLibraryStandard);
+                        ProductLibraryPre productLibraryPre = productLibraryPreService.selectById(productPreId);
+                        productLibraryPreArrayList.add(productLibraryPre);
+                    }
+                    configurationDto.setProductLibraryPreList(productLibraryPreArrayList);
+                    configurationDto.setProductLibraryStandardList(productLibraryStandardArrayList);
+                    configurationDtoArrayList.add(configurationDto);
+                }else {
+                    continue;
                 }
-                configurationDto.setProductLibraryPreList(productLibraryPreArrayList);
-                configurationDto.setProductLibraryStandardList(productLibraryStandardArrayList);
-                configurationDtoArrayList.add(configurationDto);
             }
         }catch (Exception e){
             return new ResultBean<>(e.getMessage());
