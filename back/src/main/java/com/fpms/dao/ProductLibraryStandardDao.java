@@ -22,4 +22,13 @@ public interface ProductLibraryStandardDao {
     int updateByPrimaryKeySelective(ProductLibraryStandard record);
 
     int updateByPrimaryKey(ProductLibraryStandard record);
+
+    /**
+     * 通过产品预选id选择标准库产品
+     * @author     ：YongBiao Liao
+     * @date       ：Created in 2019/6/28 16:47
+     * @param       productPreId
+     * @return     : com.fpms.entity.ProductLibraryStandard
+     */
+    ProductLibraryStandard selectByProductPreId(Integer productPreId);
 }

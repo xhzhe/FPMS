@@ -37,4 +37,13 @@ public interface ProductLibraryPreDao {
      * @return     : java.util.List<com.fpms.entity.ProductLibraryPre>
      */
     List<ProductLibraryPre> getAllProductPres();
+
+    /**
+     * 通过产品名查找产品
+     * @author     ：YongBiao Liao
+     * @date       ：Created in 2019/6/28 16:36
+     * @param       productName
+     * @return     : com.fpms.entity.ProductLibraryPre
+     */
+    ProductLibraryPre selectByProductName(String productName);
 }

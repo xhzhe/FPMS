@@ -63,4 +63,13 @@ public interface ProductLibraryPreService {
      * @return     : com.fpms.entity.ProductLibraryPre
      */
     ProductLibraryPre selectByStdId(Integer productStdId);
+
+    /**
+     * 通过产品名查找产品
+     * @author     ：YongBiao Liao
+     * @date       ：Created in 2019/6/28 16:36
+     * @param       productName
+     * @return     : com.fpms.entity.ProductLibraryPre
+     */
+    ProductLibraryPre selectByProductName(String productName);
 }

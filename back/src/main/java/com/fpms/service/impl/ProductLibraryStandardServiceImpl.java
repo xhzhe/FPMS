@@ -80,4 +80,16 @@ public class ProductLibraryStandardServiceImpl implements ProductLibraryStandard
         }
         return false;
     }
+
+    /**
+     * 通过产品预选id选择标准库产品
+     * @author     ：YongBiao Liao
+     * @date       ：Created in 2019/6/28 16:45
+     * @param       productPreId
+     * @return     : com.fpms.entity.ProductLibraryStandard
+     */
+    @Override
+    public ProductLibraryStandard selectByProductPreId(Integer productPreId) {
+        return productLibraryStandardDao.selectByProductPreId(productPreId);
+    }
 }

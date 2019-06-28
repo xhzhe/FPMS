@@ -2,10 +2,15 @@ package com.fpms.controller;
 
 import com.fpms.annotation.OperationLog;
 import com.fpms.dao.ProductConfigurationDao;
+import com.fpms.dto.AddConProDto;
 import com.fpms.entity.ProductConfiguration;
 import com.fpms.entity.ProductLibraryConfiguration;
+import com.fpms.entity.ProductLibraryPre;
+import com.fpms.entity.ProductLibraryStandard;
 import com.fpms.entity.pojo.ResultBean;
 import com.fpms.service.ProductLibraryConfigurationService;
+import com.fpms.service.ProductLibraryPreService;
+import com.fpms.service.ProductLibraryStandardService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,6 +31,12 @@ public class ProductConfigurationController {
 
     @Autowired
     private ProductLibraryConfigurationService productLibraryConfigurationService;
+
+    @Autowired
+    private ProductLibraryPreService productLibraryPreService;
+
+    @Autowired
+    private ProductLibraryStandardService productLibraryStandardService;
 
     /**
      * 通过产品标准库id和产品配置删除配置中某一产品
@@ -51,17 +62,31 @@ public class ProductConfigurationController {
 
     /**
      * 向配置中增加产品
-     *
-     * @param productConfiguration
+     * @param addConProDto
      * @return : com.fpms.entity.pojo.ResultBean<java.lang.Boolean>
      * @author ：YongBiao Liao
      * @date ：Created in 2019/6/24 16:38
      */
     @OperationLog(value = "增加配置中的产品")
     @PutMapping(value = "/configuration/production/actions/add")
-    public ResultBean<Boolean> addConfigurationProduction(@RequestBody ProductConfiguration productConfiguration) {
+    public ResultBean<Boolean> addConfigurationProduction(@RequestBody AddConProDto addConProDto) {
         try {
-            productLibraryConfigurationService.addConfigurationProduction(productConfiguration);
+            ProductConfiguration productConfiguration = new ProductConfiguration();
+            ProductLibraryPre productLibraryPre = productLibraryPreService.selectByProductName(addConProDto.getProductName());
+            if(productLibraryPre == null){
+                return  new ResultBean<>("预选库中不存在此产品！");
+            }else {
+                Integer productPreId = productLibraryPre.getProductPreId();
+                ProductLibraryStandard productLibraryStandard = productLibraryStandardService.selectByProductPreId(productPreId);
+                if(productLibraryStandard == null){
+                    return new ResultBean<>("标准中不存在此产品");
+                }else {
+                    productConfiguration.setPercentage(addConProDto.getPercentage());
+                    productConfiguration.setProductConId(addConProDto.getProductConId());
+                    productConfiguration.setProductStdId(productLibraryStandard.getProductStdId());
+                    productLibraryConfigurationService.addConfigurationProduction(productConfiguration);
+                }
+            }
         } catch (Exception e) {
             return new ResultBean<>(e);
         }
@@ -70,7 +95,6 @@ public class ProductConfigurationController {
 
     /**
      * 修改配置信息
-     *
      * @param productLibraryConfiguration
      * @return : com.fpms.entity.pojo.ResultBean<java.lang.Boolean>
      * @author : HuiZhe Xu
@@ -94,6 +118,7 @@ public class ProductConfigurationController {
         }
         return res;
     }
+
     /**
      * 修改配置比例
      * @author     : HuiZhe Xu

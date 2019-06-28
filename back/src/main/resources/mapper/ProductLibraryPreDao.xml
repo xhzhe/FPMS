@@ -295,4 +295,7 @@
   <select id="getAllProductPres" resultMap="BaseResultMap">
     select * from product_library_pre
   </select>
+  <select id="selectByProductName" resultMap="BaseResultMap">
+    select * from product_library_pre where product_name = #{productName}
+  </select>
 </mapper>

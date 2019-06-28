@@ -44,4 +44,13 @@ public interface ProductLibraryStandardService {
      * @return     : java.lang.Boolean
      */
     Boolean uploadProduct(Integer Id);
+
+    /**
+     * 通过产品预选id查找标准库产品
+     * @author     ：YongBiao Liao
+     * @date       ：Created in 2019/6/28 16:44
+     * @param       productPreId
+     * @return     : com.fpms.entity.ProductLibraryStandard
+     */
+    ProductLibraryStandard selectByProductPreId(Integer productPreId);
 }

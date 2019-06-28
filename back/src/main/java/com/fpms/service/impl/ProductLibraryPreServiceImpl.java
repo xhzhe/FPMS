@@ -115,4 +115,16 @@ public class ProductLibraryPreServiceImpl implements ProductLibraryPreService {
         ProductLibraryStandard productLibraryStandard = productLibraryStandardDao.selectByPrimaryKey(productStdId);
         return productLibraryPreDao.selectByPrimaryKey(productLibraryStandard.getProductPreId());
     }
+
+    /**
+     * 通过产品名查找产品
+     * @author     ：YongBiao Liao
+     * @date       ：Created in 2019/6/28 16:36
+     * @param       productName
+     * @return     : com.fpms.entity.ProductLibraryPre
+     */
+    @Override
+    public ProductLibraryPre selectByProductName(String productName){
+        return productLibraryPreDao.selectByProductName(productName);
+    };
 }
