@@ -5,10 +5,12 @@ import com.fpms.dto.EvaluationDto;
 import com.fpms.entity.Evaluation;
 import com.fpms.entity.ProductLibraryConfiguration;
 import com.fpms.entity.ProductLibraryPre;
+import com.fpms.entity.User;
 import com.fpms.entity.pojo.ResultBean;
 import com.fpms.service.EvaluationService;
 import com.fpms.service.ProductLibraryConfigurationService;
 import com.fpms.service.ProductLibraryPreService;
+import com.fpms.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -32,6 +34,9 @@ public class EvaluationController {
 
     @Autowired
     private ProductLibraryConfigurationService productLibraryConfigurationService;
+
+    @Autowired
+    private UserService userService;
     /**
      *  获取用户对订单的评价
      * @author     ：TianHong Liao
@@ -45,6 +50,8 @@ public class EvaluationController {
         EvaluationDto evaluationDto = new EvaluationDto();
         try{
             Evaluation evaluation = evaluationService.selectEvaluationByUserIdAndOrderId(userId,orderId);
+            User user = userService.getUserById(userId);
+            evaluationDto.setUserName(user.getUserName());
             evaluationDto.setEvaluation(evaluation);
             if(evaluation.getEvaluationType() == 1){
                 ProductLibraryPre productLibraryPre = productLibraryPreService.selectByStdId(evaluation.getProductStdId());
@@ -113,10 +120,12 @@ public class EvaluationController {
         List<EvaluationDto> evaluationDtoList = new ArrayList<>();
         try{
             List<Evaluation> evaluationList = evaluationService.selectAllEvaluationByUserId(userId);
+            User user = userService.getUserById(userId);
             for(int i=0;i<evaluationList.size();i++){
                 Evaluation evaluation = evaluationList.get(i);
                 EvaluationDto evaluationDto = new EvaluationDto();
                 evaluationDto.setEvaluation(evaluation);
+                evaluationDto.setUserName(user.getUserName());
                 if(evaluation.getEvaluationType() == 1){
                     ProductLibraryPre productLibraryPre = productLibraryPreService.selectByStdId(evaluation.getProductStdId());
                     evaluationDto.setProductLibraryPre(productLibraryPre);
@@ -148,7 +157,9 @@ public class EvaluationController {
             for(int i=0;i<evaluationList.size();i++){
                 Evaluation evaluation = evaluationList.get(i);
                 EvaluationDto evaluationDto = new EvaluationDto();
+                User user = userService.getUserById(evaluation.getUserId());
                 evaluationDto.setEvaluation(evaluation);
+                evaluationDto.setUserName(user.getUserName());
                 ProductLibraryPre productLibraryPre = productLibraryPreService.selectByStdId(evaluation.getProductStdId());
                 evaluationDto.setProductLibraryPre(productLibraryPre);
                 evaluationDtoList.add(evaluationDto);
@@ -174,7 +185,9 @@ public class EvaluationController {
             List<Evaluation> evaluationList = evaluationService.selectAllEvaluationByProductConId(productConId);
             for(int i=0;i<evaluationList.size();i++){
                 Evaluation evaluation = evaluationList.get(i);
+                User user = userService.getUserById(evaluation.getUserId());
                 EvaluationDto evaluationDto = new EvaluationDto();
+                evaluationDto.setUserName(user.getUserName());
                 evaluationDto.setEvaluation(evaluation);
                 ProductLibraryConfiguration productLibraryConfiguration = productLibraryConfigurationService.selectById(evaluation.getProductConId());
                 evaluationDto.setProductLibraryConfiguration(productLibraryConfiguration);
@@ -201,7 +214,9 @@ public class EvaluationController {
             List<Evaluation> evaluationList = evaluationService.selectAll();
             for(int i=0;i<evaluationList.size();i++){
                 Evaluation evaluation = evaluationList.get(i);
+                User user = userService.getUserById(evaluation.getUserId());
                 EvaluationDto evaluationDto = new EvaluationDto();
+                evaluationDto.setUserName(user.getUserName());
                 evaluationDto.setEvaluation(evaluation);
                 if(evaluation.getEvaluationType() == 1){
                     ProductLibraryPre productLibraryPre = productLibraryPreService.selectByStdId(evaluation.getProductStdId());

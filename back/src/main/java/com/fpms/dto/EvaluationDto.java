@@ -14,6 +14,7 @@ public class EvaluationDto {
     private Evaluation evaluation;
     private ProductLibraryPre productLibraryPre;
     private ProductLibraryConfiguration productLibraryConfiguration;
+    private String userName;
 
     public Evaluation getEvaluation() {
         return evaluation;
@@ -37,5 +38,13 @@ public class EvaluationDto {
 
     public void setProductLibraryConfiguration(ProductLibraryConfiguration productLibraryConfiguration) {
         this.productLibraryConfiguration = productLibraryConfiguration;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 }
