@@ -2,6 +2,8 @@ package com.fpms.service;
 
 import com.fpms.entity.ProductLibraryStandard;
 
+import java.util.List;
+
 /**
  * @author     : HuiZhe Xu
  * @date       : 2019/6/14 14:51
@@ -44,4 +46,13 @@ public interface ProductLibraryStandardService {
      * @return     : java.lang.Boolean
      */
     Boolean uploadProduct(Integer Id);
+
+    /**
+     *  获取所有的标准库内的产品
+     * @author     ：TianHong Liao
+     * @date       ：Created in 2019/6/28 16:50
+     * @param
+     * @return     : java.util.List<com.fpms.entity.ProductLibraryStandard>
+     */
+    List<ProductLibraryStandard> getAll();
 }

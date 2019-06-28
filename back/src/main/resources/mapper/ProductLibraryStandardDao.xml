@@ -30,6 +30,11 @@
     from product_library_standard
     where product_std_id = #{productStdId,jdbcType=INTEGER}
   </select>
+  <select id="selectAll" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from product_library_standard
+  </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from product_library_standard
     where product_std_id = #{productStdId,jdbcType=INTEGER}
