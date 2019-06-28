@@ -58,7 +58,7 @@ public class ProductLibraryConfigurationController {
                     ArrayList<ProductLibraryStandard> productLibraryStandardArrayList = new ArrayList<>();
                     ArrayList<ProductLibraryPre> productLibraryPreArrayList = new ArrayList<>();
                     for(int j = 0; j < productConfigurationList.size(); j++){
-                        Integer productStdId = productConfigurationList.get(i).getProductStdId();
+                        Integer productStdId = productConfigurationList.get(j).getProductStdId();
                         ProductLibraryStandard productLibraryStandard = productLibraryStandardService.selectById(productStdId);
                         Integer productPreId = productLibraryStandard.getProductPreId();
                         productLibraryStandardArrayList.add(productLibraryStandard);
