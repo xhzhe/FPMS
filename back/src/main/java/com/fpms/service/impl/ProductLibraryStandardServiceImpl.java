@@ -6,6 +6,8 @@ import com.fpms.service.ProductLibraryStandardService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  * @author : HuiZhe Xu
  * @date : 2019/6/14 15:13
@@ -91,5 +93,17 @@ public class ProductLibraryStandardServiceImpl implements ProductLibraryStandard
     @Override
     public ProductLibraryStandard selectByProductPreId(Integer productPreId) {
         return productLibraryStandardDao.selectByProductPreId(productPreId);
+    }
+
+    /**
+     *  获取所有标准库产品
+     * @author     ：TianHong Liao
+     * @date       ：Created in 2019/6/28 16:50
+     * @param
+     * @return     : java.util.List<com.fpms.entity.ProductLibraryStandard>
+     */
+    @Override
+    public List<ProductLibraryStandard> getAll() {
+        return productLibraryStandardDao.selectAll();
     }
 }
