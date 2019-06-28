@@ -30,29 +30,34 @@
     from evaluation
     where user_id = #{userId,jdbcType=INTEGER}
     and   order_id = #{orderId,jdbcType=INTEGER}
+    and is_delete != 1
   </select>
   <select id="selectAllByUserId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />
     from evaluation
     where user_id = #{userId,jdbcType=INTEGER}
+    and is_delete != 1
   </select>
   <select id="selectAllByProductStdId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />
     from evaluation
     where product_std_id = #{productStdId,jdbcType=INTEGER}
+    and is_delete != 1
   </select>
   <select id="selectAll" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />
     from evaluation
+    where is_delete != 1
   </select>
   <select id="selectAllByProductConId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />
     from evaluation
     where product_con_id = #{productConId,jdbcType=INTEGER}
+    and is_delete != 1
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from evaluation

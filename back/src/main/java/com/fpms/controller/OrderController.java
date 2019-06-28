@@ -41,6 +41,9 @@ public class OrderController {
 
     @Autowired
     private ProductUserService productUserService;
+
+    @Autowired
+    private EvaluationService evaluationService;
     /**
      *  获取用户的订单列表
      * @author     ：TianHong Liao
@@ -88,7 +91,19 @@ public class OrderController {
     @PostMapping("/order")
     public ResultBean<Boolean> addOrder(@RequestBody Order order){
         try{
+            if(order.getUserId() == null){
+                return new ResultBean<>("用户Id为空！");
+            }
+            //新增订单
             orderService.addOrder(order);
+            //自动创建评价类
+            Evaluation evaluation = new Evaluation();
+            evaluation.setOrderId(order.getOrderId());
+            evaluation.setUserId(order.getUserId());
+            evaluation.setEvaluationType(order.getOrderType());
+            evaluation.setProductConId(order.getProductConId());
+            evaluation.setProductStdId(order.getProductStdId());
+            evaluationService.addEvaluation(evaluation);
         }
         catch (Exception e){
             return new ResultBean<>(e);

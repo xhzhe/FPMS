@@ -2,18 +2,13 @@ package com.fpms.controller;
 
 import com.fpms.annotation.OperationLog;
 import com.fpms.dto.EvaluationDto;
-import com.fpms.entity.Evaluation;
-import com.fpms.entity.ProductLibraryConfiguration;
-import com.fpms.entity.ProductLibraryPre;
-import com.fpms.entity.User;
+import com.fpms.entity.*;
 import com.fpms.entity.pojo.ResultBean;
-import com.fpms.service.EvaluationService;
-import com.fpms.service.ProductLibraryConfigurationService;
-import com.fpms.service.ProductLibraryPreService;
-import com.fpms.service.UserService;
+import com.fpms.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,7 +31,13 @@ public class EvaluationController {
     private ProductLibraryConfigurationService productLibraryConfigurationService;
 
     @Autowired
+    private ProductLibraryStandardService productLibraryStandardService;
+
+    @Autowired
     private UserService userService;
+
+    @Autowired
+    private OrderService orderService;
     /**
      *  获取用户对订单的评价
      * @author     ：TianHong Liao
@@ -68,20 +69,47 @@ public class EvaluationController {
     }
 
     /**
-     *  修改用户对订单的评价
+     *  新增用户对订单的评价
      * @author     ：TianHong Liao
      * @date       ：Created in 2019/6/19 20:14
      * @param       evaluation
      * @return     : com.fpms.entity.pojo.ResultBean<java.lang.Boolean>
      */
-    @OperationLog(value = "更新评价")
-    @PutMapping("/user/{userId}/order/{orderId}/evaluation/{evaluationId}")
-    public ResultBean<Boolean> updateEvaluation(@RequestBody Evaluation evaluation,@PathVariable Integer userId, @PathVariable Integer orderId,@PathVariable Integer evaluationId ){
+    @OperationLog(value = "新增评价")
+    @PostMapping("/user/{userId}/order/{orderId}/evaluation")
+    public ResultBean<Boolean> updateEvaluation(@RequestBody Evaluation evaluation,@PathVariable Integer userId, @PathVariable Integer orderId ){
+        Evaluation evaluation1 = evaluationService.selectEvaluationByUserIdAndOrderId(userId,orderId);
+        if(evaluation1.getEvaluationStatus() == 1){
+            return new ResultBean<>("已评价，请勿重复评价！");
+        }
         try{
-            evaluation.setEvaluationId(evaluationId);
-//            evaluation.setOrderId(orderId);
-//            evaluation.setUserId(userId);
+            //添加评价
+            evaluation.setEvaluationId(evaluation1.getEvaluationId());
+            evaluation.setEvaluationStatus(Byte.valueOf("1"));
             evaluationService.updateEvaluationByEvaluationId(evaluation);
+            //修改产品分数
+            Order order = orderService.selectOrderByOrderId(orderId);
+            if(order.getOrderType() == 1){
+                ProductLibraryStandard productLibraryStandard = productLibraryStandardService.selectById(order.getProductStdId());
+                double old_avg_score = productLibraryStandard.getEvalutionAvgScore().doubleValue();
+                int old_num = productLibraryStandard.getEvalutionNum().intValue();
+                int score = evaluation.getEvaluationScore().intValue();
+                //计算新的平均分
+                double new_avg_score = (old_avg_score * old_num + score)/(old_num + 1);
+                productLibraryStandard.setEvalutionAvgScore(BigDecimal.valueOf(new_avg_score));
+                productLibraryStandard.setEvalutionNum(old_num+1);
+                productLibraryStandardService.updateProductStandard(productLibraryStandard);
+            }else if(order.getOrderType() == 2){
+                ProductLibraryConfiguration productLibraryConfiguration = productLibraryConfigurationService.selectById(order.getProductConId());
+                double old_avg_score = productLibraryConfiguration.getEvalutionAvgScore().doubleValue();
+                int old_num = productLibraryConfiguration.getEvalutionNum().intValue();
+                int score = evaluation.getEvaluationScore().intValue();
+                //计算新的平均分
+                double new_avg_score = (old_avg_score * old_num + score)/(old_num + 1);
+                productLibraryConfiguration.setEvalutionAvgScore(BigDecimal.valueOf(new_avg_score));
+                productLibraryConfiguration.setEvalutionNum(old_num+1);
+                productLibraryConfigurationService.updateProductConfiguration(productLibraryConfiguration);
+            }
         }
         catch (Exception e){
             return new ResultBean<>(e);

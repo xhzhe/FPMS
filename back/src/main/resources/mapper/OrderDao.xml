@@ -44,7 +44,7 @@
       #{productConId,jdbcType=INTEGER}, #{orderMoney,jdbcType=DECIMAL}, #{orderType,jdbcType=TINYINT}, 
       #{orderStatus,jdbcType=TINYINT}, #{createTime,jdbcType=TIMESTAMP})
   </insert>
-  <insert id="insertSelective" parameterType="com.fpms.entity.Order">
+  <insert id="insertSelective" useGeneratedKeys="true" keyProperty="orderId" parameterType="com.fpms.entity.Order">
     insert into `order`
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="orderId != null">
