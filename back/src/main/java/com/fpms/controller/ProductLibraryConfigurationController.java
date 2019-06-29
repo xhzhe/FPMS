@@ -39,7 +39,7 @@ public class ProductLibraryConfigurationController {
     private ProductLibraryPreService productLibraryPreService;
 
     /**
-     * 获取所有配置的信息
+     * 获取所有配置的信息以及其包含的产品
      * @author     ：YongBiao Liao
      * @date       ：Created in 2019/6/26 16:05
      * @param
@@ -175,5 +175,22 @@ public class ProductLibraryConfigurationController {
             return new ResultBean<>(e);
         }
         return res;
+    }
+
+    /**
+     * 获取所有的配置
+     * @author     ：YongBiao Liao
+     * @date       ：Created in 2019/6/29 13:54
+     * @param
+     * @return     : com.fpms.entity.pojo.ResultBean<java.util.List<com.fpms.entity.ProductLibraryConfiguration>>
+     */
+    @GetMapping(value = "/productLibraryConfigurations")
+    public ResultBean<List<ProductLibraryConfiguration>> getProductLibraryConfigurations(){
+        try {
+            List<ProductLibraryConfiguration> productLibraryConfigurationList = productLibraryConfigurationService.getAllConfiguration();
+            return new ResultBean<>(productLibraryConfigurationList);
+        }catch (Exception e){
+            return new ResultBean<>(e);
+        }
     }
 }
