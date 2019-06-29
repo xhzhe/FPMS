@@ -17,6 +17,16 @@ public class ConProDto {
 
     private List<BigDecimal> percentage;
 
+    public List<Integer> getProductStdId() {
+        return productStdId;
+    }
+
+    public void setProductStdId(List<Integer> productStdId) {
+        this.productStdId = productStdId;
+    }
+
+    private List<Integer> productStdId;
+
     public Integer getProductConId() {
         return productConId;
     }

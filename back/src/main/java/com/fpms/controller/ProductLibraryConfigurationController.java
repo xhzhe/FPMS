@@ -12,6 +12,7 @@ import com.fpms.entity.pojo.ResultBean;
 import com.fpms.service.ProductLibraryConfigurationService;
 import com.fpms.service.ProductLibraryPreService;
 import com.fpms.service.ProductLibraryStandardService;
+import io.swagger.models.auth.In;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -131,6 +132,7 @@ public class ProductLibraryConfigurationController {
             }else {
                 List<String> productName = new ArrayList<>();
                 List<BigDecimal> productPercentage = new ArrayList<>();
+                List<Integer> productStdIds = new ArrayList<>();
                 for(int i = 0; i < productConfigurationList.size(); i++){
                     Integer productStdId = productConfigurationList.get(i).getProductStdId();
                     ProductLibraryStandard productLibraryStandard = productLibraryStandardService.selectById(productStdId);
@@ -138,10 +140,12 @@ public class ProductLibraryConfigurationController {
                     ProductLibraryPre productLibraryPre = productLibraryPreService.selectById(productPreId);
                     productName.add(productLibraryPre.getProductName());
                     productPercentage.add(productConfigurationList.get(i).getPercentage());
+                    productStdIds.add(productStdId);
                 }
                 conProDto.setProductConId(productConId);
                 conProDto.setProductName(productName);
                 conProDto.setPercentage(productPercentage);
+                conProDto.setProductStdId(productStdIds);
                 return new ResultBean<>(conProDto);
             }
         }catch (Exception e){
