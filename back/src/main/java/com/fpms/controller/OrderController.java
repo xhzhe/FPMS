@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -155,7 +156,12 @@ public class OrderController {
                 productLibraryStandardService.updateProductStandard(productLibraryStandard);
                 //支付
                 User user = userService.getUserById(order1.getUserId());
-                user.setUserMoney(user.getUserMoney().subtract(order1.getOrderMoney()));
+                BigDecimal userMoney = user.getUserMoney();
+                BigDecimal orderMoney = order1.getOrderMoney();
+                if(userMoney.subtract(orderMoney).doubleValue() < 0){
+                    return new ResultBean<>("用户余额不足！");
+                }
+                user.setUserMoney(userMoney.subtract(orderMoney));
                 userService.updateUser(user);
                 //放入个人产品库中
                 ProductUser productUser = new ProductUser();
@@ -181,7 +187,12 @@ public class OrderController {
                 productLibraryConfigurationService.updateProductConfiguration(productLibraryConfiguration);
                 //支付
                 User user = userService.getUserById(order1.getUserId());
-                user.setUserMoney(user.getUserMoney().subtract(order1.getOrderMoney()));
+                BigDecimal userMoney = user.getUserMoney();
+                BigDecimal orderMoney = order1.getOrderMoney();
+                if(userMoney.subtract(orderMoney).doubleValue() < 0){
+                    return new ResultBean<>("用户余额不足！");
+                }
+                user.setUserMoney(userMoney.subtract(orderMoney));
                 userService.updateUser(user);
                 //放入个人产品库中
                 ProductUser productUser = new ProductUser();
