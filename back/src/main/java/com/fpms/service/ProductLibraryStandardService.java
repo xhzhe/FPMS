@@ -1,7 +1,9 @@
 package com.fpms.service;
 
+import com.fpms.dto.ProductWithName;
 import com.fpms.entity.ProductLibraryStandard;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -61,7 +63,7 @@ public interface ProductLibraryStandardService {
      * @author     ：TianHong Liao
      * @date       ：Created in 2019/6/28 16:50
      * @param
-     * @return     : java.util.List<com.fpms.entity.ProductLibraryStandard>
+     * @return     : ArrayList<ProductWithName>
      */
-    public List<ProductLibraryStandard> getAll();
+    public ArrayList<ProductWithName> getAll();
 }

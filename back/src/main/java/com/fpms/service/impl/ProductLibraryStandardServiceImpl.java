@@ -1,11 +1,17 @@
 package com.fpms.service.impl;
 
+import com.fpms.dao.ProductLibraryPreDao;
 import com.fpms.dao.ProductLibraryStandardDao;
+import com.fpms.dto.ProductWithName;
+
+import com.fpms.entity.ProductLibraryPre;
 import com.fpms.entity.ProductLibraryStandard;
+
 import com.fpms.service.ProductLibraryStandardService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -18,6 +24,9 @@ import java.util.List;
 public class ProductLibraryStandardServiceImpl implements ProductLibraryStandardService {
     @Autowired
     private ProductLibraryStandardDao productLibraryStandardDao;
+
+    @Autowired
+    private ProductLibraryPreDao productLibraryPreDao;
     /**
      *  下架产品
      * @author     : HuiZhe Xu
@@ -100,10 +109,43 @@ public class ProductLibraryStandardServiceImpl implements ProductLibraryStandard
      * @author     ：TianHong Liao
      * @date       ：Created in 2019/6/28 16:50
      * @param
-     * @return     : java.util.List<com.fpms.entity.ProductLibraryStandard>
+     * @return     : ArrayList<ProductWithName>
      */
     @Override
-    public List<ProductLibraryStandard> getAll() {
-        return productLibraryStandardDao.selectAll();
+    public ArrayList<ProductWithName> getAll() {
+        ArrayList<ProductWithName> productWithNames= new ArrayList<>();
+        List<ProductLibraryStandard> productLibraryStandards = productLibraryStandardDao.selectAll();
+        if(productLibraryStandards==null){
+            return null;
+        }
+        for(ProductLibraryStandard productLibraryStandard: productLibraryStandards){
+            ProductLibraryPre productLibraryPre=productLibraryPreDao.selectByPrimaryKey(productLibraryStandard.getProductPreId());
+            if(productLibraryPre==null){
+                return null;
+            }
+            String name=productLibraryPre.getProductName();
+            ProductWithName productWithName=new ProductWithName();
+            productWithName.setCreateTime(productLibraryStandard.getCreateTime());
+            productWithName.setIsSale(productLibraryStandard.getIsSale());
+            productWithName.setCreditRiskIndex(productLibraryStandard.getCreditRiskIndex());
+            productWithName.setEvalutionAvgScore(productLibraryStandard.getEvalutionAvgScore());
+            productWithName.setEvalutionNum(productLibraryStandard.getEvalutionNum());
+            productWithName.setExchangeRateRiskIndex(productLibraryStandard.getExchangeRateRiskIndex());
+            productWithName.setInterestRateRiskIndex(productLibraryStandard.getInterestRateRiskIndex());
+            productWithName.setInterRiskRating(productLibraryStandard.getInterRiskRating());
+            productWithName.setMarketRiskIndex(productLibraryStandard.getMarketRiskIndex());
+            productWithName.setProductName(name);
+            productWithName.setProductPreId(productLibraryStandard.getProductPreId());
+            productWithName.setProductStdId(productLibraryStandard.getProductStdId());
+            productWithName.setSaleEndTime(productLibraryStandard.getSaleEndTime());
+            productWithName.setSaleNum(productLibraryStandard.getSaleNum());
+            productWithName.setSaleStartTime(productLibraryStandard.getSaleStartTime());
+            productWithName.setStock(productLibraryStandard.getStock());
+            productWithName.setSuitUser(productLibraryStandard.getSuitUser());
+
+
+            productWithNames.add(productWithName);
+        }
+        return productWithNames;
     }
 }

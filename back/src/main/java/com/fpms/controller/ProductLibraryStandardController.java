@@ -1,6 +1,7 @@
 package com.fpms.controller;
 
 import com.fpms.annotation.OperationLog;
+import com.fpms.dto.ProductWithName;
 import com.fpms.entity.ProductLibraryStandard;
 import com.fpms.entity.pojo.ResultBean;
 import com.fpms.service.ProductLibraryStandardService;
@@ -101,16 +102,19 @@ public class ProductLibraryStandardController {
      * @author     ：TianHong Liao
      * @date       ：Created in 2019/6/28 16:52
      * @param
-     * @return     : com.fpms.entity.pojo.ResultBean<java.util.List<com.fpms.entity.ProductLibraryStandard>>
+     * @return     : ArrayList<ProductWithName>
      */
     @GetMapping("/productStds")
-    public ResultBean<List<ProductLibraryStandard>> getAllProductStd(){
-        List<ProductLibraryStandard> productLibraryStandardList;
+    public ResultBean<List<ProductWithName>> getAllProductStd(){
+        ArrayList<ProductWithName> productWithNames;
         try{
-            productLibraryStandardList = productLibraryStandardService.getAll();
+            productWithNames = productLibraryStandardService.getAll();
+            if(productWithNames==null){
+                throw new Exception("数据获取失败");
+            }
         }catch (Exception e){
             return new ResultBean<>(e);
         }
-        return new ResultBean<>(productLibraryStandardList);
+        return new ResultBean<>(productWithNames);
     }
 }
