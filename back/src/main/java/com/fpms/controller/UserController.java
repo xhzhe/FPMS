@@ -101,8 +101,8 @@ public class UserController {
     public ResultBean<Boolean> modifyUserPwd(@RequestParam("userPwd") String userPwd, @RequestParam("oldUserPwd") String oldUserPwd ,@PathVariable Integer userId){
         try{
             User user = userService.getUserById(userId);
-            if(user.getUserPwd().equals(oldUserPwd)) {
-                user.setUserPwd(userPwd);
+            if(EdsUtil.decryptBasedDes(user.getUserPwd()).equals(oldUserPwd)) {
+                user.setUserPwd(EdsUtil.encryptBasedDes(userPwd));
                 userService.updateUser(user);
             }else {
                 return new ResultBean<>("原密码错误！");
@@ -155,8 +155,8 @@ public class UserController {
     public ResultBean<Boolean> modifyPayPwd(@RequestParam("payPwd") String payPwd, @RequestParam("oldPayPwd") String oldPayPwd, @PathVariable Integer userId){
         try{
             User user = userService.getUserById(userId);
-            if(user.getPayPwd().equals(oldPayPwd)) {
-                user.setUserPwd(payPwd);
+            if(EdsUtil.decryptBasedDes(user.getPayPwd()).equals(oldPayPwd)) {
+                user.setPayPwd(EdsUtil.encryptBasedDes(payPwd));
                 userService.updateUser(user);
             }else {
                 return new ResultBean<>("原支付密码错误！");
@@ -179,7 +179,7 @@ public class UserController {
     public ResultBean<String> getPayPwd(@PathVariable Integer userId){
         try{
             User user = userService.getUserById(userId);
-            String payPwd = user.getPayPwd();
+            String payPwd = EdsUtil.decryptBasedDes(user.getPayPwd());
             ResultBean<String> resultBean = new ResultBean<>();
             resultBean.setData(payPwd);
             return resultBean;
@@ -201,7 +201,7 @@ public class UserController {
         try{
             User user = new User();
             user.setUserId(userId);
-            user.setPayPwd(payPwd);
+            user.setPayPwd(EdsUtil.encryptBasedDes(payPwd));
             userService.updateUser(user);
         }
         catch (Exception e){

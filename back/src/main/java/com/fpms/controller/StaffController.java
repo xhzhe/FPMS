@@ -369,8 +369,8 @@ public class StaffController {
             if(oldPassword==null){
                 throw new Exception("没有旧密码传入");
             }
-            if(oldPassword.equals(staffTemp.getStaffPwd())){
-                staffTemp.setStaffPwd(password);
+            if(oldPassword.equals(EdsUtil.decryptBasedDes(staffTemp.getStaffPwd()))){
+                staffTemp.setStaffPwd(EdsUtil.encryptBasedDes(password));
                 boolean success = staffService.updateStaff(staffTemp);
                 if(!success){
                     throw new Exception("修改密码失败");
