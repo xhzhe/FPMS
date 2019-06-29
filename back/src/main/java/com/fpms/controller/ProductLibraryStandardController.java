@@ -117,4 +117,27 @@ public class ProductLibraryStandardController {
         }
         return new ResultBean<>(productWithNames);
     }
+
+    /**
+     *  修改标准库产品
+     * @author     : HuiZhe Xu
+     * @date       : Created in 2019/6/29 15:06
+     * @param       productLibraryStandard
+     * @return     : com.fpms.entity.pojo.ResultBean<java.lang.Boolean>
+     */
+    @OperationLog("修改标准库产品")
+    @PutMapping("/productStd")
+    public ResultBean<Boolean> modifyProductStd(@RequestBody ProductLibraryStandard productLibraryStandard){
+        try{
+            boolean success=productLibraryStandardService.updateProductStandard(productLibraryStandard);
+            if(!success){
+                throw new Exception("修改失败");
+
+            }else{
+                return new ResultBean<>(true);
+            }
+        }catch (Exception e){
+            return new ResultBean<>(e);
+        }
+    }
 }

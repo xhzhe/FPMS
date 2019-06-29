@@ -36,9 +36,9 @@ public interface ProductLibraryStandardService {
      * @author     ：HuiZhe Xu
      * @date       ：Created in 2019/6/25 10:35
      * @param       productLibraryStandard
-     * @return     : void
+     * @return     : boolean
      */
-    void updateProductStandard(ProductLibraryStandard productLibraryStandard);
+    boolean updateProductStandard(ProductLibraryStandard productLibraryStandard);
 
     /**
      *  上架产品

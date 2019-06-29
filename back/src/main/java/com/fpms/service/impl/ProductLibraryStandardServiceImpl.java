@@ -63,11 +63,15 @@ public class ProductLibraryStandardServiceImpl implements ProductLibraryStandard
      * @author     ：HuiZhe Xu
      * @date       ：Created in 2019/6/25 10:35
      * @param       productLibraryStandard
-     * @return     : void
+     * @return     : boolean
      */
     @Override
-    public synchronized void updateProductStandard(ProductLibraryStandard productLibraryStandard) {
-        productLibraryStandardDao.updateByPrimaryKeySelective(productLibraryStandard);
+    public synchronized boolean updateProductStandard(ProductLibraryStandard productLibraryStandard) {
+        int count=productLibraryStandardDao.updateByPrimaryKeySelective(productLibraryStandard);
+        if(count>0){
+            return true;
+        }
+        return false;
     }
 
     /**
