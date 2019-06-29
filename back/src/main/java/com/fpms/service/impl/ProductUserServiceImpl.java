@@ -6,6 +6,8 @@ import com.fpms.service.ProductUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  * @author : TianHong Liao
  * @date : 2019/6/28 9:30
@@ -20,5 +22,10 @@ public class ProductUserServiceImpl implements ProductUserService {
     @Override
     public void addProductUser(ProductUser productUser) {
         productUserDao.insertSelective(productUser);
+    }
+
+    @Override
+    public List<ProductUser> selectByUserId(Integer userId) {
+        return productUserDao.selectByUserId(userId);
     }
 }
