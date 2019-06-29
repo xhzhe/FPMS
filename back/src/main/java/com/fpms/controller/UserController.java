@@ -4,6 +4,7 @@ import com.fpms.dto.UserRegisterDto;
 import com.fpms.entity.User;
 import com.fpms.entity.pojo.ResultBean;
 import com.fpms.service.UserService;
+import com.fpms.utils.EdsUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -38,7 +39,7 @@ public class UserController {
         try{
             User user = new User();
             user.setUserName(userName);
-            user.setUserPwd(userPwd);
+            user.setUserPwd(EdsUtil.encryptBasedDes(userPwd));
             user.setUserGender(userGender);
             //SimpleDateFormat formatter = new SimpleDateFormat( "yyyy-MM-dd");
             //user.setUserBrithday(formatter.parse(userBrithday));

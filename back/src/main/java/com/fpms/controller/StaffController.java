@@ -12,6 +12,7 @@ import com.fpms.entity.StaffRole;
 import com.fpms.entity.pojo.ResultBean;
 import com.fpms.service.RoleService;
 import com.fpms.service.StaffRoleService;
+import com.fpms.utils.EdsUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import com.fpms.service.StaffService;
@@ -257,7 +258,7 @@ public class StaffController {
             Staff staff = new Staff();
             staff.setStaffName(staffName);
             staff.setStaffDepartment(staffDepartment);
-            staff.setStaffPwd(staffPwd);
+            staff.setStaffPwd(EdsUtil.encryptBasedDes(staffPwd));
             staff.setStaffGender(staffGender);
             if(staffName.length()==0||staffPwd.length()==0||staffDepartment.length()==0){
                 throw new Exception("缺少参数");

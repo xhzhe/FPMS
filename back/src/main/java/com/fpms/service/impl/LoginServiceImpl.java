@@ -6,6 +6,7 @@ import com.fpms.entity.Staff;
 import com.fpms.entity.User;
 import com.fpms.enums.LoginResultEnum;
 import com.fpms.service.LoginService;
+import com.fpms.utils.EdsUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -47,7 +48,7 @@ public class LoginServiceImpl implements LoginService {
             if (user == null){
                 userLoginResult.put("code",LoginResultEnum.USER_NOT_EXIT.getCode());
                 userLoginResult.put("msg",LoginResultEnum.USER_NOT_EXIT.getMsg());
-            } else if (null != user.getUserPwd() && !user.getUserPwd().equals(password)){
+            } else if (null != user.getUserPwd() && !EdsUtil.decryptBasedDes(user.getUserPwd()).equals(password)){
                 //用户名密码是否一致
                 userLoginResult.put("code",LoginResultEnum.NOT_MATCH.getCode());
                 userLoginResult.put("msg",LoginResultEnum.NOT_MATCH.getMsg());
@@ -85,7 +86,7 @@ public class LoginServiceImpl implements LoginService {
             if (staff == null){
                 staffLoginResult.put("code",LoginResultEnum.USER_NOT_EXIT.getCode());
                 staffLoginResult.put("msg",LoginResultEnum.USER_NOT_EXIT.getMsg());
-            } else if (null != staff.getStaffPwd() && !staff.getStaffPwd().equals(staffPwd)){
+            } else if (null != staff.getStaffPwd() && !EdsUtil.decryptBasedDes(staff.getStaffPwd()).equals(staffPwd)){
                 //用户名密码是否一致
                 staffLoginResult.put("code",LoginResultEnum.NOT_MATCH.getCode());
                 staffLoginResult.put("msg",LoginResultEnum.NOT_MATCH.getMsg());
