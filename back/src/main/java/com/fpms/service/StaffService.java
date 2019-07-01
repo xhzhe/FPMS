@@ -25,7 +25,7 @@ public interface StaffService {
      * @param       configID
      * @return     : com.fpms.dto.ConfigDetail
      */
-    ConfigDetail getConfigById(Integer configID);
+    ConfigDetail getConfigById(Integer configID) throws Exception;
     /**
      *  获取所有配置和产品
      * @author     : HuiZhe Xu
@@ -42,7 +42,7 @@ public interface StaffService {
      * @param       roleName
      * @return     : boolean
      */
-    boolean addStaff(Staff staff, String roleName);
+    boolean addStaff(Staff staff, String roleName) throws Exception;
     /**
      *  获得单个员工的详细信息
      * @author     : HuiZhe Xu
@@ -50,7 +50,7 @@ public interface StaffService {
      * @param       StaffId
      * @return     : com.fpms.entity.Staff
      */
-    Staff getSingleStaffDetail(Integer StaffId);
+    Staff getSingleStaffDetail(Integer StaffId) throws Exception;
     /**
      *  获取产品简介
      * @author     : HuiZhe Xu
@@ -58,7 +58,7 @@ public interface StaffService {
      * @param       ProductID
      * @return     : com.fpms.dto.ProductDetail
      */
-    ProductDetail getProductInfo(Integer ProductID);
+    ProductDetail getProductInfo(Integer ProductID) throws Exception;
     /**
      *  获取所有员工
      * @author     : HuiZhe Xu
@@ -66,7 +66,7 @@ public interface StaffService {
      * @param
      * @return     : java.util.ArrayList<com.fpms.entity.Staff>
      */
-    ArrayList<Staff> getStaffs();
+    ArrayList<Staff> getStaffs() throws Exception;
 
     /**
      *  更新职工信息
@@ -83,5 +83,5 @@ public interface StaffService {
      * @param       id
      * @return     : boolean
      */
-    boolean delStaff(Integer id);
+    boolean delStaff(Integer id) throws Exception;
 }

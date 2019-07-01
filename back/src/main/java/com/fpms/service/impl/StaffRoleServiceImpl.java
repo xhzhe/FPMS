@@ -34,8 +34,19 @@ public class StaffRoleServiceImpl implements StaffRoleService {
         staffRoleDao.deleteByRoleId(roleId);
     }
 
+    /**
+     *  返回员工角色
+     * @author     : HuiZhe Xu
+     * @date       : Created in 2019/7/1 14:55
+     * @param       staffId
+     * @return     : java.util.List<com.fpms.entity.StaffRole>
+     */
     @Override
-    public List<StaffRole> selectStaffRoleByStaffId(Integer staffId) {
-        return staffRoleDao.selectByStaffId(staffId);
+    public List<StaffRole> selectStaffRoleByStaffId(Integer staffId) throws Exception {
+        List<StaffRole>staffRoles = staffRoleDao.selectByStaffId(staffId);
+        if(staffRoles==null||staffRoles.size()<=0){
+            throw new Exception("该员工暂无角色");
+        }
+        return staffRoles;
     }
 }

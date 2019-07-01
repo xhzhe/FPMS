@@ -6,7 +6,6 @@ import com.fpms.dto.ProductDetail;
 import com.fpms.dto.ProductsAndConfigs;
 import com.fpms.dto.StaffDto;
 
-import com.fpms.entity.Role;
 import com.fpms.entity.Staff;
 import com.fpms.entity.StaffRole;
 import com.fpms.entity.pojo.ResultBean;
@@ -17,7 +16,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import com.fpms.service.StaffService;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
@@ -41,59 +39,44 @@ public class StaffController {
 
     @Autowired
     RoleService roleService;
+
     /**
      * 获取详细设置
-     * @author     ：HuiZhe Xu
-     * @date       ：Created in 2019/6/14 16:29
-     * @parameter      ：productConId
-     * @return     : ResultBean<ConfigDetail>
+     *
+     * @return : ResultBean<ConfigDetail>
+     * @author ：HuiZhe Xu
+     * @date ：Created in 2019/6/14 16:29
+     * @parameter ：productConId
      */
     @GetMapping("/staff/configurations/{productConId}")
     public ResultBean<ConfigDetail> getConfigDetail(@PathVariable Integer productConId) {
         ResultBean<ConfigDetail> res = new ResultBean<>();
         try {
             if (productConId == null) {
-                res.setData(null);
-                res.setState(ResultBean.FAIL);
-                res.setMsg(ResultBean.FAIL_MSG);
-                return res;
+                throw new Exception("没有输入配置id");
             }
             ConfigDetail configDetail = staffService.getConfigById(productConId);
-            if (configDetail == null) {
-                res.setData(null);
-                res.setState(ResultBean.FAIL);
-                res.setMsg(ResultBean.FAIL_MSG);
-                return res;
-            }
             res.setData(configDetail);
-            res.setState(ResultBean.SUCCESS);
-            res.setMsg(ResultBean.SUCC_MSG);
             return res;
         } catch (Exception e) {
-            e.printStackTrace();
-            res.setState(ResultBean.FAIL);
-            res.setMsg(ResultBean.FAIL_MSG);
+            return new ResultBean<>(e);
         }
-        return res;
     }
+
     /**
      * 获取所有商品和设置
-     * @author     ：HuiZhe Xu
-     * @date       ：Created in 2019/6/14 16:29
-     * @return     : ResultBean<ProductsAndConfigs>
+     *
+     * @return : ResultBean<ProductsAndConfigs>
+     * @author ：HuiZhe Xu
+     * @date ：Created in 2019/6/14 16:29
      */
     @GetMapping("/staff/mall")
     public ResultBean<ProductsAndConfigs> getMall() {
         ResultBean<ProductsAndConfigs> res = new ResultBean<>();
         try {
             res.setData(staffService.getAllMall());
-            res.setState(ResultBean.SUCCESS);
-            res.setMsg(ResultBean.SUCC_MSG);
-        }catch (Exception e){
-            e.printStackTrace();
-            res.setData(null);
-            res.setState(ResultBean.FAIL);
-            res.setMsg(ResultBean.FAIL_MSG);
+        } catch (Exception e) {
+            return new ResultBean<>(e);
         }
         return res;
     }
@@ -102,136 +85,111 @@ public class StaffController {
 //    public ResultBean<> addSupplier(){
 //
 //    }
+
     /**
      * 获取职工信息
-     * @author     ：HuiZhe Xu
-     * @date       ：Created in 2019/6/14 16:29
-     * @parameter      : staffId
-     * @return     : ResultBean<Staff>
+     *
+     * @return : ResultBean<Staff>
+     * @author ：HuiZhe Xu
+     * @date ：Created in 2019/6/14 16:29
+     * @parameter : staffId
      */
     @GetMapping("/staff/{staffId}")
     public ResultBean<StaffDto> getSingleStaff(@PathVariable String staffId) {
         ResultBean<StaffDto> res = new ResultBean<>();
-        if (staffId == null || staffId.length() <= 0) {
-            res.setData(null);
-            res.setState(ResultBean.FAIL);
-            res.setMsg(ResultBean.FAIL_MSG);
-            return res;
-        }
-        if (NUMBER_PATTERN.matcher(staffId).matches()) {
-            try {
-                Staff staff = staffService.getSingleStaffDetail(Integer.parseInt(staffId));
-                StaffDto staffDto = new StaffDto();
-                staffDto.setStaffId(staff.getStaffId());
-                staffDto.setStaffName(staff.getStaffName());
-                staffDto.setStaffGender(staff.getStaffGender());
-                staffDto.setStaffPhone(staff.getStaffPhone());
-                staffDto.setStaffEmail(staff.getStaffEmail());
-                staffDto.setStaffDepartment(staff.getStaffDepartment());
-                staffDto.setCreateTime(staff.getCreateTime());
-                staffDto.setStaffStatus(staff.getStaffStatus());
-                List<StaffRole> staffRoleList = staffRoleService.selectStaffRoleByStaffId(staff.getStaffId());
-                for(int j=0;j<staffRoleList.size();j++){
-                    Role role = roleService.selectRoleById(staffRoleList.get(j).getRoleId());
-                    staffDto.setRole(role);
-                    break;
-                }
-                res.setData(staffDto);
-                if (staff == null) {
-                    res.setState(ResultBean.FAIL);
-                    res.setMsg("没有该员工");
-                } else {
-                    res.setState(ResultBean.SUCCESS);
-                    res.setMsg(ResultBean.SUCC_MSG);
-                }
-            } catch (Exception e) {
-                res.setData(null);
-                res.setState(ResultBean.FAIL);
-                res.setMsg(ResultBean.FAIL_MSG);
+        try {
+            if (staffId == null || staffId.length() <= 0) {
+                throw new Exception("没有传入id");
             }
+            if (!NUMBER_PATTERN.matcher(staffId).matches()) {
+                throw new Exception("不合法id");
+            }
+            Staff staff = staffService.getSingleStaffDetail(Integer.parseInt(staffId));
+            StaffDto staffDto = makeStaffDto(staff);
+            res.setData(staffDto);
+        } catch (Exception e) {
+            return new ResultBean<>(e);
         }
+
         return res;
     }
+
+    /**
+     * 将staff转换为staffDto
+     *
+     * @param staff
+     * @return : com.fpms.dto.StaffDto
+     * @author : HuiZhe Xu
+     * @date : Created in 2019/7/1 15:50
+     */
+    private StaffDto makeStaffDto(Staff staff) {
+        StaffDto staffDto = new StaffDto();
+        staffDto.setStaffId(staff.getStaffId());
+        staffDto.setStaffName(staff.getStaffName());
+        staffDto.setStaffGender(staff.getStaffGender());
+        staffDto.setStaffPhone(staff.getStaffPhone());
+        staffDto.setStaffEmail(staff.getStaffEmail());
+        staffDto.setStaffDepartment(staff.getStaffDepartment());
+        staffDto.setCreateTime(staff.getCreateTime());
+        staffDto.setStaffStatus(staff.getStaffStatus());
+        try {
+            List<StaffRole> staffRoleList = staffRoleService.selectStaffRoleByStaffId(staff.getStaffId());
+            staffDto.setRole(roleService.selectRoleById(staffRoleList.get(0).getRoleId()));
+        } catch (Exception e) {
+            staffDto.setRole(null);
+        }
+        return staffDto;
+    }
+
     /**
      * 获取产品信息
-     * @author     ：HuiZhe Xu
-     * @date       ：Created in 2019/6/14 16:29
-     * @parameter      : productStdId
-     * @return     : ResultBean<ProductDetail>
+     *
+     * @return : ResultBean<ProductDetail>
+     * @author ：HuiZhe Xu
+     * @date ：Created in 2019/6/14 16:29
+     * @parameter : productStdId
      */
+    @OperationLog("获取产品信息")
     @GetMapping("/staff/productions/{productStdId}")
     public ResultBean<ProductDetail> getSingleProduct(@PathVariable String productStdId) {
         ResultBean<ProductDetail> res = new ResultBean<>();
-        if (productStdId == null || productStdId.length() <= 0) {
-            res.setData(null);
-            res.setState(ResultBean.FAIL);
-            res.setMsg(ResultBean.FAIL_MSG);
-            return res;
-        }
-        if (NUMBER_PATTERN.matcher(productStdId).matches()) {
-            try {
-                ProductDetail productDetail = staffService.getProductInfo(Integer.parseInt(productStdId));
-                res.setData(productDetail);
-                if (productDetail == null) {
-                    res.setState(ResultBean.FAIL);
-                    res.setMsg("查询不到该产品");
-                } else {
-                    res.setState(ResultBean.SUCCESS);
-                    res.setMsg(ResultBean.SUCC_MSG);
-                }
-            } catch (Exception e) {
-                res.setData(null);
-                res.setState(ResultBean.FAIL);
-                res.setMsg(ResultBean.FAIL_MSG);
+        try {
+            if (productStdId == null || productStdId.length() <= 0) {
+                throw new Exception("没有传入id");
             }
+            if (!NUMBER_PATTERN.matcher(productStdId).matches()) {
+                throw new Exception("不合法id");
+            }
+            ProductDetail productDetail = staffService.getProductInfo(Integer.parseInt(productStdId));
+            res.setData(productDetail);
+        } catch (Exception e) {
+            return new ResultBean<>(e);
         }
         return res;
     }
+
     /**
      * 获取员工
-     * @author     ：HuiZhe Xu
-     * @date       ：Created in 2019/6/14 16:29
-     * @return     : ResultBean<ArrayList<Staff>>
+     *
+     * @return : ResultBean<ArrayList<Staff>>
+     * @author ：HuiZhe Xu
+     * @date ：Created in 2019/6/14 16:29
      */
+    @OperationLog("获取员工")
     @GetMapping("/staffs")
     public ResultBean<ArrayList<StaffDto>> getAllStuff() {
         ResultBean<ArrayList<StaffDto>> res = new ResultBean<>();
         try {
             ArrayList<Staff> staffList = staffService.getStaffs();
             ArrayList<StaffDto> staffDtoList = new ArrayList<>();
-            for(int i=0;i<staffList.size();i++){
-                StaffDto staffDto = new StaffDto();
-                Staff staff = staffList.get(i);
-                staffDto.setStaffId(staff.getStaffId());
-                staffDto.setStaffName(staff.getStaffName());
-                staffDto.setStaffGender(staff.getStaffGender());
-                staffDto.setStaffPhone(staff.getStaffPhone());
-                staffDto.setStaffEmail(staff.getStaffEmail());
-                staffDto.setStaffDepartment(staff.getStaffDepartment());
-                staffDto.setCreateTime(staff.getCreateTime());
-                staffDto.setStaffStatus(staff.getStaffStatus());
-                List<StaffRole> staffRoleList = staffRoleService.selectStaffRoleByStaffId(staff.getStaffId());
-                for(int j=0;j<staffRoleList.size();j++){
-                    Role role = roleService.selectRoleById(staffRoleList.get(j).getRoleId());
-                    staffDto.setRole(role);
-                    break;
-                }
+            for (Staff staff : staffList) {
+                StaffDto staffDto = makeStaffDto(staff);
                 staffDtoList.add(staffDto);
             }
             res.setData(staffDtoList);
-            if (staffList == null) {
-                res.setState(ResultBean.FAIL);
-                res.setMsg("暂无员工");
-            } else {
-                res.setState(ResultBean.SUCCESS);
-                res.setMsg(ResultBean.SUCC_MSG);
-            }
         } catch (Exception e) {
-            res.setData(null);
-            res.setState(ResultBean.FAIL);
-            res.setMsg(ResultBean.FAIL_MSG);
+            return new ResultBean<>(e);
         }
-
         return res;
     }
 
@@ -243,142 +201,119 @@ public class StaffController {
 
     /**
      * 添加员工
-     * @author     ：HuiZhe Xu
-     * @date       ：Created in 2019/6/14 16:29
-     * @parameter  : para
-     * @return     : ResultBean<Boolean>
+     *
+     * @return : ResultBean<Boolean>
+     * @author ：HuiZhe Xu
+     * @date ：Created in 2019/6/14 16:29
+     * @parameter : para
      */
     @OperationLog(value = "新增员工")
     @PostMapping("/staff")
-    public ResultBean<Boolean> addStaff(@RequestParam String staffName,@RequestParam String staffPwd,@RequestParam String staffDepartment,
-                                        @RequestParam String staffGender,@RequestParam String roleName) {
+    public ResultBean<Boolean> addStaff(@RequestParam String staffName, @RequestParam String staffPwd, @RequestParam String staffDepartment,
+                                        @RequestParam String staffGender, @RequestParam String roleName) {
         ResultBean<Boolean> res = new ResultBean<>();
-
         try {
             Staff staff = new Staff();
             staff.setStaffName(staffName);
             staff.setStaffDepartment(staffDepartment);
             staff.setStaffPwd(EdsUtil.encryptBasedDes(staffPwd));
             staff.setStaffGender(staffGender);
-            if(staffName.length()==0||staffPwd.length()==0||staffDepartment.length()==0){
+            if (staffName.length() == 0 || staffPwd.length() == 0 || staffDepartment.length() == 0) {
                 throw new Exception("缺少参数");
             }
-            if(!staffService.addStaff(staff,roleName)){
-                throw new Exception("插入失败");
-            }
+            staffService.addStaff(staff, roleName);
             res.setData(true);
-            res.setState(ResultBean.SUCCESS);
-            res.setMsg(ResultBean.SUCC_MSG);
         } catch (Exception e) {
-            e.printStackTrace();
-            res.setData(false);
-            res.setState(ResultBean.FAIL);
-            res.setMsg(e.getMessage()==null?ResultBean.FAIL_MSG:e.getMessage());
+            return new ResultBean<>(e);
         }
         return res;
     }
 
     /**
-     *  删除员工
-     * @author     : HuiZhe Xu
-     * @date       : Created in 2019/6/26 14:36
-     * @param       staffId
-     * @return     : com.fpms.entity.pojo.ResultBean<java.lang.Boolean>
+     * 删除员工
+     *
+     * @param staffId
+     * @return : com.fpms.entity.pojo.ResultBean<java.lang.Boolean>
+     * @author : HuiZhe Xu
+     * @date : Created in 2019/6/26 14:36
      */
     @OperationLog("删除员工")
     @DeleteMapping("/staff/{staffId}")
-    public ResultBean<Boolean> deleteStaff(@PathVariable Integer staffId){
+    public ResultBean<Boolean> deleteStaff(@PathVariable Integer staffId) {
         ResultBean<Boolean> res = new ResultBean<>();
-        if(staffId==null){
-            res.setState(ResultBean.FAIL);
-            res.setMsg(ResultBean.FAIL_MSG);
-            res.setData(false);
-            return res;
-        }
-        if(staffId<0){
-            res.setData(false);
-            res.setMsg(ResultBean.FAIL_MSG);
-            res.setState(ResultBean.FAIL);
-            return res;
-        }
-        try{
-            boolean success=staffService.delStaff(staffId);
-            if(success){
-                res.setData(true);
-                res.setMsg(ResultBean.SUCC_MSG);
-                res.setState(ResultBean.SUCCESS);
-            }else{
-                throw new Exception("删除失败");
+        try {
+            if (staffId == null) {
+                throw new Exception("没有传入id");
             }
-        }catch (Exception e){
-            e.printStackTrace();
-            res.setData(false);
-            res.setMsg(ResultBean.FAIL_MSG);
-            res.setState(ResultBean.FAIL);
-            return res;
+            if (staffId < 0) {
+                throw new Exception("不合法id");
+            }
+            staffService.delStaff(staffId);
+            res.setData(true);
+        } catch (Exception e) {
+            return new ResultBean<>(e);
         }
         return res;
     }
+
     /**
-     *  修改员工信息
-     * @author     ：TianHong Liao
-     * @date       ：Created in 2019/6/26 13:32
-     * @param       staffId
-     * @param       staff
-     * @return     : com.fpms.entity.pojo.ResultBean<java.lang.Boolean>
+     * 修改员工信息
+     *
+     * @param staffId
+     * @param staff
+     * @return : com.fpms.entity.pojo.ResultBean<java.lang.Boolean>
+     * @author ：TianHong Liao
+     * @date ：Created in 2019/6/26 13:32
      */
     @OperationLog(value = "修改员工信息")
     @PutMapping("/staff/{staffId}")
-    public ResultBean<Boolean> modifyStaffInfo(@PathVariable Integer staffId, Staff staff){
-        try{
-
+    public ResultBean<Boolean> modifyStaffInfo(@PathVariable Integer staffId, Staff staff) {
+        try {
             Staff staffTemp = staffService.getSingleStaffDetail(staffId);
-
-            if(staffTemp==null){
+            if (staffTemp == null) {
                 throw new Exception("找不到该员工");
             }
-            boolean success=staffService.updateStaff(staff);
-            if(!success){
+            boolean success = staffService.updateStaff(staff);
+            if (!success) {
                 throw new Exception("修改失败");
             }
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             return new ResultBean<>(e);
         }
         return new ResultBean<>(true);
     }
+
     /**
-     *  修改密码
-     * @author     : HuiZhe Xu
-     * @date       : Created in 2019/6/27 20:31
-     * @param       staffId
-     * @param       oldPassword
-     * @param       password
-     * @return     : com.fpms.entity.pojo.ResultBean<java.lang.Boolean>
+     * 修改密码
+     *
+     * @param staffId
+     * @param oldPassword
+     * @param password
+     * @return : com.fpms.entity.pojo.ResultBean<java.lang.Boolean>
+     * @author : HuiZhe Xu
+     * @date : Created in 2019/6/27 20:31
      */
     @OperationLog("修改密码")
     @PutMapping("/staff/{staffId}/password")
-    public ResultBean<Boolean> modifyPassword(@PathVariable Integer staffId,String oldPassword,String password){
-        try{
+    public ResultBean<Boolean> modifyPassword(@PathVariable Integer staffId, String oldPassword, String password) {
+        try {
             Staff staffTemp = staffService.getSingleStaffDetail(staffId);
-
-            if(staffTemp==null){
+            if (staffTemp == null) {
                 throw new Exception("找不到该员工");
             }
-
-            if(oldPassword==null){
+            if (oldPassword == null) {
                 throw new Exception("没有旧密码传入");
             }
-            if(oldPassword.equals(EdsUtil.decryptBasedDes(staffTemp.getStaffPwd()))){
+            if (oldPassword.equals(EdsUtil.decryptBasedDes(staffTemp.getStaffPwd()))) {
                 staffTemp.setStaffPwd(EdsUtil.encryptBasedDes(password));
                 boolean success = staffService.updateStaff(staffTemp);
-                if(!success){
+                if (!success) {
                     throw new Exception("修改密码失败");
                 }
-            }else{
+            } else {
                 throw new Exception("旧密码不正确");
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             return new ResultBean<>(e);
         }
         return new ResultBean<>(true);

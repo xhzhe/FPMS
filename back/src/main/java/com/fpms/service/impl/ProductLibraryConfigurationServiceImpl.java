@@ -60,7 +60,7 @@ public class ProductLibraryConfigurationServiceImpl implements ProductLibraryCon
      */
     @Override
     public boolean deleteConfiguration(Integer productConId)throws Exception {
-        System.out.println(productConId);
+        //System.out.println(productConId);
         int count=productConfigurationDao.deleteByProductConId(productConId);
         if(count<=0){
             throw new Exception("删除产品配置关联失败");
