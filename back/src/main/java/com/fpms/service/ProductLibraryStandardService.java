@@ -20,7 +20,7 @@ public interface ProductLibraryStandardService {
      * @param       ID
      * @return     : java.lang.Boolean
      */
-    Boolean obetainProducts(Integer ID);
+    Boolean obtainedProducts(Integer ID) throws Exception;
 
     /**
      *  通过标准库iD获取标准库产品
@@ -29,7 +29,7 @@ public interface ProductLibraryStandardService {
      * @param       productStdId
      * @return     : com.fpms.entity.ProductLibraryStandard
      */
-    ProductLibraryStandard selectById(Integer productStdId);
+    ProductLibraryStandard selectById(Integer productStdId) throws Exception;
 
     /**
      *  通过标准库
@@ -38,7 +38,7 @@ public interface ProductLibraryStandardService {
      * @param       productLibraryStandard
      * @return     : boolean
      */
-    boolean updateProductStandard(ProductLibraryStandard productLibraryStandard);
+    boolean updateProductStandard(ProductLibraryStandard productLibraryStandard) throws Exception;
 
     /**
      *  上架产品
@@ -47,7 +47,7 @@ public interface ProductLibraryStandardService {
      * @param       Id
      * @return     : java.lang.Boolean
      */
-    Boolean uploadProduct(Integer Id);
+    Boolean uploadProduct(Integer Id) throws Exception;
 
     /**
      * 通过产品预选id查找标准库产品
@@ -56,7 +56,7 @@ public interface ProductLibraryStandardService {
      * @param       productPreId
      * @return     : com.fpms.entity.ProductLibraryStandard
      */
-    ProductLibraryStandard selectByProductPreId(Integer productPreId);
+    ProductLibraryStandard selectByProductPreId(Integer productPreId) throws Exception;
 
     /**
      *  获取所有标准库产品
@@ -65,5 +65,5 @@ public interface ProductLibraryStandardService {
      * @param
      * @return     : ArrayList<ProductWithName>
      */
-    public ArrayList<ProductWithName> getAll();
+    public ArrayList<ProductWithName> getAll() throws Exception;
 }
