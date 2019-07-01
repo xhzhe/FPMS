@@ -56,12 +56,20 @@ public class ProductLibraryConfigurationServiceImpl implements ProductLibraryCon
      * @author     ：YongBiao Liao
      * @date       ：Created in 2019/6/24 21:06
      * @param       productConId
-     * @return     : void
+     * @return     : boolean
      */
     @Override
-    public void deleteConfiguration(Integer productConId) {
-        productConfigurationDao.deleteByProductConId(productConId);
-        productLibraryConfigurationDao.deleteByPrimaryKey(productConId);
+    public boolean deleteConfiguration(Integer productConId)throws Exception {
+        System.out.println(productConId);
+        int count=productConfigurationDao.deleteByProductConId(productConId);
+        if(count<=0){
+            throw new Exception("删除产品配置关联失败");
+        }
+        count = productLibraryConfigurationDao.deleteByPrimaryKey(productConId);
+        if(count<=0){
+            throw new Exception("删除配置主表失败");
+        }
+        return true;
     }
 
     @Override

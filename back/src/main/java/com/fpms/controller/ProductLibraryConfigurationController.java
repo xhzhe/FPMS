@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author : YongBiao Liao
@@ -88,9 +89,16 @@ public class ProductLibraryConfigurationController {
      */
     @OperationLog(value = "删除配置")
     @DeleteMapping(value = "/configurations")
-    public ResultBean<Boolean> deleteConfiguration(@RequestParam("productConId") Integer productConId){
+    public ResultBean<Boolean> deleteConfiguration(@RequestBody Map productConId){
+
         try {
-            productLibraryConfigurationService.deleteConfiguration(productConId);
+            if(!productConId.containsKey("productConId")){
+                throw new Exception("id为空");
+            }
+            boolean success = productLibraryConfigurationService.deleteConfiguration((Integer)productConId.get("productConId"));
+            if(!success){
+                throw new Exception("删除失败");
+            }
         }catch (Exception e){
             return new ResultBean<>(e);
         }
@@ -117,7 +125,7 @@ public class ProductLibraryConfigurationController {
 
     /**
      * 通过productConId获取配置的所有产品的名字和比例
-     * @author     ：YongBiao Liao
+     * @author     ：YongBiao Liaocon
      * @date       ：Created in 2019/6/28 10:05
      * @param       productConId
      * @return     : com.fpms.entity.pojo.ResultBean<com.fpms.dto.ConProDto>
