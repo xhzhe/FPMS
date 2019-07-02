@@ -1,5 +1,6 @@
 package com.fpms.controller;
 
+import com.fpms.annotation.OperationLog;
 import com.fpms.dto.UserRegisterDto;
 import com.fpms.entity.User;
 import com.fpms.entity.pojo.ResultBean;
@@ -97,6 +98,7 @@ public class UserController {
      * @param       userId
      * @return     : com.fpms.entity.pojo.ResultBean<java.lang.Boolean>
      */
+    @OperationLog("用户修改密码")
     @PutMapping(value = "/user/{userId}/userPwd/actions/modify")
     public ResultBean<Boolean> modifyUserPwd(@RequestParam("userPwd") String userPwd, @RequestParam("oldUserPwd") String oldUserPwd ,@PathVariable Integer userId){
         try{
@@ -109,7 +111,7 @@ public class UserController {
             }
         }
         catch (Exception e){
-            return new ResultBean<>(e);
+            return new ResultBean<>("修改失败");
         }
         return new ResultBean<>(true);
     }
@@ -122,6 +124,7 @@ public class UserController {
      * @param       userId
      * @return     : com.fpms.entity.pojo.ResultBean<java.lang.Boolean>
      */
+    @OperationLog("用户修改信息")
     @PutMapping(value = "/user/{userId}")
     public ResultBean<Boolean> modifyUser(String userEmail,String userPhone ,
                                           String userAddress,String career, @PathVariable Integer userId){
@@ -139,7 +142,7 @@ public class UserController {
             }
         }
         catch (Exception e){
-            return new ResultBean<>(e);
+            return new ResultBean<>("修改失败");
         }
     }
 
@@ -151,6 +154,7 @@ public class UserController {
      * @param       userId
      * @return     : com.fpms.entity.pojo.ResultBean<java.lang.Boolean>
      */
+    @OperationLog("用户修改支付密码")
     @PutMapping(value = "/user/{userId}/payPwd/actions/modify")
     public ResultBean<Boolean> modifyPayPwd(@RequestParam("payPwd") String payPwd, @RequestParam("oldPayPwd") String oldPayPwd, @PathVariable Integer userId){
         try{
@@ -163,7 +167,7 @@ public class UserController {
             }
         }
         catch (Exception e){
-            return new ResultBean<>(e);
+            return new ResultBean<>("修改失败");
         }
         return new ResultBean<>(true);
     }
@@ -196,6 +200,7 @@ public class UserController {
      * @param       payPwd
      * @return     : com.fpms.entity.pojo.ResultBean<java.lang.Boolean>
      */
+    @OperationLog("用户设置支付密码")
     @PutMapping(value = "/user/{userId}/payPwd")
     public ResultBean<Boolean> setPayPwd(@PathVariable Integer userId, @RequestParam("payPwd") String payPwd){
         try{
