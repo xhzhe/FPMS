@@ -90,11 +90,35 @@ public class OrderController {
      * @return     : com.fpms.entity.pojo.ResultBean<java.lang.Boolean>
      */
     @PostMapping("/order")
-    public ResultBean<Boolean> addOrder(@RequestBody Order order){
-        try{
-            if(order.getUserId() == null){
-                return new ResultBean<>("用户Id为空！");
+    public ResultBean<Boolean> addOrder(@RequestBody Order order) throws Exception {
+        if(order.getUserId() == null || userService.getUserById(order.getUserId()) == null){
+            return new ResultBean<>("用户Id不存在!");
+        }
+        if(order.getOrderType() != 1 || order.getOrderType() != 2){
+            return new ResultBean<>("订单类型输入错误！");
+        }
+        if(order.getOrderType() == 1){
+            if(order.getProductStdId() == null || productLibraryStandardService.selectById(order.getProductStdId()) == null){
+                return new ResultBean<>("预选库产品不存在!");
             }
+            ProductLibraryStandard productLibraryStandard = productLibraryStandardService.selectById(order.getProductStdId());
+            if(productLibraryStandard.getStock() == 0){
+                return new ResultBean<>("库存不足，无法下单!");
+            }
+            if( order.getOrderMoney().doubleValue() < productLibraryPreService.selectByStdId(productLibraryStandard.getProductStdId()).
+                    getPurchaseStartPoint().doubleValue() ){
+                return new ResultBean<>("购买金额未达到起购点，无法下单!");
+            }
+        }else if (order.getOrderType() == 2){
+            if(order.getProductConId() == null || productLibraryConfigurationService.selectById(order.getProductConId()) == null){
+                return new ResultBean<>("配置库产品不存在!");
+            }
+            ProductLibraryConfiguration productLibraryConfiguration = productLibraryConfigurationService.selectById(order.getProductConId());
+            if(productLibraryConfiguration.getStock() == 0){
+                return new ResultBean<>("库存不足，无法下单!");
+            }
+        }
+        try{
             //新增订单
             orderService.addOrder(order);
             //自动创建评价类
@@ -121,6 +145,9 @@ public class OrderController {
      */
     @DeleteMapping("/order/{orderId}")
     public ResultBean<Boolean> delOrder(@PathVariable Integer orderId){
+        if(orderService.selectOrderByOrderId(orderId) == null){
+            return new ResultBean<>("要删除的订单不存在！");
+        }
         try{
             orderService.delOrderById(orderId);
         }
@@ -138,7 +165,9 @@ public class OrderController {
      */
     @PutMapping("/order/{orderId}")
     public  ResultBean<Boolean> updateOrder(@PathVariable Integer orderId){
-
+        if(orderService.selectOrderByOrderId(orderId) == null){
+            return new ResultBean<>("要结算的订单不存在！");
+        }
         Order order1 = orderService.selectOrderByOrderId(orderId);
         if(order1.getOrderStatus() == 2){
             return new ResultBean<>("订单已支付，请勿重复支付！");
