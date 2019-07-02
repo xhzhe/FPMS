@@ -86,7 +86,14 @@ public class EvaluationController {
         if(evaluation1.getEvaluationStatus() == 1){
             return new ResultBean<>("已评价，请勿重复评价！");
         }
+
         try{
+            if(evaluation.getEvaluationScore() == null){
+                return new ResultBean<>("评分为空！");
+            }
+            if (evaluation.getEvaluationDesc() == null || evaluation.getEvaluationDesc().isEmpty()){
+                return new ResultBean<>("评价内容为空！");
+            }
             //添加评价
             evaluation.setEvaluationId(evaluation1.getEvaluationId());
             evaluation.setEvaluationStatus(Byte.valueOf("1"));

@@ -38,6 +38,18 @@ public class ProductReviewController {
     public ResultBean<Boolean> addReview(@RequestBody Map<String,String> param, @PathVariable Integer productPreId){
         try{
             //添加评估
+            if(param.get("staffId") == null || param.get("staffId").isEmpty()){
+                return new ResultBean<>("未获取到员工id");
+            }
+            if(param.get("productStatus") == null || param.get("productStatus").isEmpty()){
+                return new ResultBean<>("为获取到要设置的评审状态");
+            }
+            if(param.get("reviewDesc") == null || param.get("reviewDesc").isEmpty()){
+                return new ResultBean<>("评审意见为空！");
+            }
+            if(param.get("productStatus").equals("0")){
+                return new ResultBean<>("不能将评审状态设置为0");
+            }
             Integer staffId = Integer.valueOf(param.get("staffId"));
             Byte productStatus = Byte.valueOf(param.get("productStatus"));
             ProductReview productReview = new ProductReview();
