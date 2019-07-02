@@ -105,4 +105,24 @@ public class ProductLibraryPreController {
         }
         return new ResultBean<>(productLibraryPres);
     }
+
+    /**
+     *  查找预选库产品
+     * @author     : HuiZhe Xu
+     * @date       : Created in 2019/7/2 15:57
+     * @param       productPreId
+     * @return     : com.fpms.entity.pojo.ResultBean<com.fpms.entity.ProductLibraryPre>
+     */
+    @OperationLog("按id查找预选库产品")
+    @GetMapping("/productPre/{productPreId}")
+    public ResultBean<ProductLibraryPre> getProductPre(@PathVariable Integer productPreId){
+        try{
+            ProductLibraryPre productLibraryPre = productLibraryPreService.selectById(productPreId);
+            ResultBean<ProductLibraryPre> res = new ResultBean<>();
+            res.setData(productLibraryPre);
+            return res;
+        }catch (Exception e){
+            return new ResultBean<>(e);
+        }
+    }
 }

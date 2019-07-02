@@ -2,10 +2,8 @@ package com.fpms.service.impl;
 
 import com.fpms.dao.ProductLibraryPreDao;
 import com.fpms.dao.ProductLibraryStandardDao;
-import com.fpms.dao.StaffDao;
 import com.fpms.entity.ProductLibraryPre;
 import com.fpms.entity.ProductLibraryStandard;
-import com.fpms.entity.Staff;
 import com.fpms.service.ProductLibraryPreService;
 import com.fpms.service.StaffService;
 import com.fpms.service.SupplierService;
@@ -49,7 +47,6 @@ public class ProductLibraryPreServiceImpl implements ProductLibraryPreService {
 
     /**
      * 修改产品属性
-     *
      * @param productLibraryPre
      * @author : HuiZhe Xu
      * @date : Created in 2019/6/25 11:06
@@ -70,7 +67,6 @@ public class ProductLibraryPreServiceImpl implements ProductLibraryPreService {
 
     /**
      * 添加产品
-     *
      * @param productLibraryPre
      * @author : HuiZhe Xu
      * @date : Created in 2019/6/25 11:06
@@ -85,7 +81,7 @@ public class ProductLibraryPreServiceImpl implements ProductLibraryPreService {
         }
         staffService.getSingleStaffDetail(productLibraryPre.getStaffId());
         if(productLibraryPre.getSupplierId()==null){
-            throw new Exception("该产品没有供应商");
+            throw new Exception("不合理产品，该产品没有供应商");
         }
         supplierService.getSupplier(productLibraryPre.getProductPreId());
         int count = productLibraryPreDao.insertSelective(productLibraryPre);
@@ -97,7 +93,6 @@ public class ProductLibraryPreServiceImpl implements ProductLibraryPreService {
 
     /**
      * 查询预选库产品
-     *
      * @param productPreId
      * @return : com.fpms.entity.ProductLibraryPre
      * @author : HuiZhe Xu
@@ -114,7 +109,6 @@ public class ProductLibraryPreServiceImpl implements ProductLibraryPreService {
 
     /**
      * 获取未评估产品列表
-     *
      * @param
      * @return : java.util.List<com.fpms.entity.ProductLibraryPre>
      * @author : HuiZhe Xu
@@ -131,7 +125,6 @@ public class ProductLibraryPreServiceImpl implements ProductLibraryPreService {
 
     /**
      * 获取所有预选库产品
-     *
      * @param
      * @return : java.util.List<com.fpms.entity.ProductLibraryPre>
      * @author ：YongBiao Liao
@@ -169,7 +162,6 @@ public class ProductLibraryPreServiceImpl implements ProductLibraryPreService {
 
     /**
      * 通过产品名查找产品
-     *
      * @param productName
      * @return : com.fpms.entity.ProductLibraryPre
      * @author ：YongBiao Liao
