@@ -21,12 +21,15 @@ import java.util.List;
 @Service
 public class ProductLibraryConfigurationServiceImpl implements ProductLibraryConfigurationService {
 
-    @Autowired
     private ProductLibraryConfigurationDao productLibraryConfigurationDao;
 
-    @Autowired
     private ProductConfigurationDao productConfigurationDao;
 
+    @Autowired
+    public ProductLibraryConfigurationServiceImpl(ProductConfigurationDao productConfigurationDao,ProductLibraryConfigurationDao productLibraryConfigurationDao){
+        this.productLibraryConfigurationDao=productLibraryConfigurationDao;
+        this.productConfigurationDao=productConfigurationDao;
+    }
     /**
      * 获取所有配置的信息
      * @author     ：YongBiao Liao
@@ -60,7 +63,6 @@ public class ProductLibraryConfigurationServiceImpl implements ProductLibraryCon
      */
     @Override
     public boolean deleteConfiguration(Integer productConId)throws Exception {
-        //System.out.println(productConId);
         int count=productConfigurationDao.deleteByProductConId(productConId);
         if(count<=0){
             throw new Exception("删除产品配置关联失败");

@@ -17,9 +17,18 @@ import java.util.List;
 @RestController
 @CrossOrigin
 public class ProductLibraryPreController {
-    @Autowired
-    private ProductLibraryPreService productLibraryPreService;
+//    @Autowired
     /**
+     *  预选库服务
+     * @author     : HuiZhe Xu
+     * @date       : Created in 2019/7/2 9:57
+     */
+    private ProductLibraryPreService productLibraryPreService;
+    @Autowired
+    public ProductLibraryPreController(ProductLibraryPreService productLibraryPreService){
+        this.productLibraryPreService=productLibraryPreService;
+    }
+ /**
      *  修改产品属性
      * @author     : HuiZhe Xu
      * @date       : Created in 2019/6/25 10:59

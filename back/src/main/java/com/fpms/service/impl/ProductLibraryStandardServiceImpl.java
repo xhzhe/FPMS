@@ -22,11 +22,18 @@ import java.util.List;
  */
 @Service
 public class ProductLibraryStandardServiceImpl implements ProductLibraryStandardService {
-    @Autowired
     private ProductLibraryStandardDao productLibraryStandardDao;
+    private ProductLibraryPreDao productLibraryPreDao;
 
     @Autowired
-    private ProductLibraryPreDao productLibraryPreDao;
+    public void setProductLibraryPreDao(ProductLibraryPreDao productLibraryPreDao) {
+        this.productLibraryPreDao = productLibraryPreDao;
+    }
+
+    @Autowired
+    public ProductLibraryStandardServiceImpl(ProductLibraryStandardDao productLibraryStandardDao) {
+        this.productLibraryStandardDao=productLibraryStandardDao;
+    }
     /**
      *  下架产品
      * @author     : HuiZhe Xu

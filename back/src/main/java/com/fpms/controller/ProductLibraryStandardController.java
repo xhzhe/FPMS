@@ -7,7 +7,6 @@ import com.fpms.entity.pojo.ResultBean;
 import com.fpms.service.ProductLibraryStandardService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,8 +19,16 @@ import java.util.List;
 @RestController
 @CrossOrigin
 public class ProductLibraryStandardController {
-    @Autowired
+    /**
+     *  标准库服务
+     * @author     : HuiZhe Xu
+     * @date       : Created in 2019/7/2 10:03
+     */
     private ProductLibraryStandardService productLibraryStandardService;
+    @Autowired
+    public ProductLibraryStandardController(ProductLibraryStandardService productLibraryStandardService){
+        this.productLibraryStandardService=productLibraryStandardService;
+    }
 
     /**
      * 下架产品

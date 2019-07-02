@@ -30,15 +30,27 @@ import java.util.regex.Pattern;
 @CrossOrigin
 public class StaffController {
 
-    @Autowired
-    StaffService staffService;
-    private Pattern NUMBER_PATTERN = Pattern.compile("[0-9]*");
+    private StaffService staffService;
+    private static Pattern NUMBER_PATTERN = Pattern.compile("[0-9]*");
+
+    private StaffRoleService staffRoleService;
+
+    private RoleService roleService;
 
     @Autowired
-    StaffRoleService staffRoleService;
+    public StaffController(StaffService staffService) {
+        this.staffService = staffService;
+    }
 
     @Autowired
-    RoleService roleService;
+    public void setStaffRoleService(StaffRoleService staffRoleService) {
+        this.staffRoleService = staffRoleService;
+    }
+
+    @Autowired
+    public void setRoleService(RoleService roleService) {
+        this.roleService = roleService;
+    }
 
     /**
      * 获取详细设置

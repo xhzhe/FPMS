@@ -17,10 +17,10 @@ public interface ProductLibraryStandardService {
      *  下架产品
      * @author     : HuiZhe Xu
      * @date       : Created in 2019/6/25 11:05
-     * @param       ID
+     * @param       id
      * @return     : java.lang.Boolean
      */
-    Boolean obtainedProducts(Integer ID) throws Exception;
+    Boolean obtainedProducts(Integer id) throws Exception;
 
     /**
      *  通过标准库iD获取标准库产品
@@ -44,10 +44,10 @@ public interface ProductLibraryStandardService {
      *  上架产品
      * @author     : HuiZhe Xu
      * @date       : Created in 2019/6/26 10:35
-     * @param       Id
+     * @param       id
      * @return     : java.lang.Boolean
      */
-    Boolean uploadProduct(Integer Id) throws Exception;
+    Boolean uploadProduct(Integer id) throws Exception;
 
     /**
      * 通过产品预选id查找标准库产品

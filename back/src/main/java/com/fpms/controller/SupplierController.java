@@ -18,79 +18,67 @@ import java.util.List;
 @RestController
 @CrossOrigin
 public class SupplierController {
-    @Autowired
     private SupplierService supplierService;
+
+    @Autowired
+    public SupplierController(SupplierService supplierService){
+        this.supplierService=supplierService;
+    }
     @OperationLog("添加供应商")
     @PostMapping("/supplier")
-    public ResultBean<Boolean> addSupplier(@RequestBody Supplier supplier){
+    public ResultBean<Boolean> addSupplier(@RequestBody Supplier supplier) {
         ResultBean<Boolean> res = new ResultBean<>();
-        try{
-            boolean success=supplierService.addSupplier(supplier);
-            if(success){
-                res.setState(ResultBean.SUCCESS);
-                res.setMsg(ResultBean.SUCC_MSG);
-                res.setData(success);
-            }else{
-                throw new Exception("添加失败");
+        try {
+            if(supplier.getSupplierId()!=null){
+                throw new Exception("禁止传入id");
             }
-        }catch (Exception e){
-            res=new ResultBean<>(e);
-            res.setData(false);
+            supplierService.addSupplier(supplier);
+            res.setData(true);
+        } catch (Exception e) {
+            return new ResultBean<>(e);
         }
         return res;
     }
+
     /**
-     *  获取供应商byID
-     * @author     : HuiZhe Xu
-     * @date       : Created in 2019/6/26 15:12
-     * @param       supplierId
-     * @return     : com.fpms.entity.pojo.ResultBean<com.fpms.entity.Supplier>
+     * 获取供应商byID
+     *
+     * @param supplierId
+     * @return : com.fpms.entity.pojo.ResultBean<com.fpms.entity.Supplier>
+     * @author : HuiZhe Xu
+     * @date : Created in 2019/6/26 15:12
      */
     @OperationLog("获取供应商")
     @GetMapping("/supplier/{supplierId}")
-    public ResultBean<Supplier> getSupplier(@PathVariable Integer supplierId){
-        try{
-            Supplier supplier=supplierService.getSupplier(supplierId);
-            if(supplier==null){
-                throw new Exception("供应商不存在");
-            }else{
-                ResultBean<Supplier> res = new ResultBean<>();
-                res.setData(supplier);
-                res.setState(ResultBean.SUCCESS);
-                res.setMsg(ResultBean.SUCC_MSG);
-                return res;
-            }
-        }catch (Exception e){
-            ResultBean<Supplier> res = new ResultBean<>(e);
-            res.setData(null);
+    public ResultBean<Supplier> getSupplier(@PathVariable Integer supplierId) {
+        try {
+            Supplier supplier = supplierService.getSupplier(supplierId);
+            ResultBean<Supplier> res = new ResultBean<>();
+            res.setData(supplier);
             return res;
+        } catch (Exception e) {
+            return new ResultBean<>(e);
         }
     }
+
     /**
-     *  获取所有供应商
-     * @author     : HuiZhe Xu
-     * @date       : Created in 2019/6/26 15:16
+     * 获取所有供应商
+     *
      * @param
-     * @return     : com.fpms.entity.pojo.ResultBean<java.util.List<com.fpms.entity.Supplier>>
+     * @return : com.fpms.entity.pojo.ResultBean<java.util.List<com.fpms.entity.Supplier>>
+     * @author : HuiZhe Xu
+     * @date : Created in 2019/6/26 15:16
      */
     @OperationLog("获取所有供应商")
     @GetMapping("/supplier")
-        public ResultBean<List<Supplier>> getAllSupplier(){
-            try {
-                List<Supplier> suppliers = supplierService.getSuppliers();
-                if (suppliers == null) {
-                    throw new Exception("没有供应商");
-                }else{
-                    ResultBean<List<Supplier>> res = new ResultBean<>();
-                    res.setData(suppliers);
-                    res.setState(ResultBean.SUCCESS);
-                    res.setMsg(ResultBean.SUCC_MSG);
-                    return res;
-                }
-            }catch (Exception e){
-                ResultBean<List<Supplier>> res = new ResultBean<>(e);
-                res.setData(null);
-                return res;
-            }
+    public ResultBean<List<Supplier>> getAllSupplier() {
+        try {
+            List<Supplier> suppliers = supplierService.getSuppliers();
+            ResultBean<List<Supplier>> res = new ResultBean<>();
+            res.setData(suppliers);
+            return res;
+        } catch (Exception e) {
+            return new ResultBean<>(e);
+        }
     }
 }
