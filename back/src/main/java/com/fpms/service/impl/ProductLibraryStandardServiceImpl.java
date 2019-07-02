@@ -138,33 +138,50 @@ public class ProductLibraryStandardServiceImpl implements ProductLibraryStandard
            throw new Exception("标准库中无产品");
         }
         for(ProductLibraryStandard productLibraryStandard: productLibraryStandards){
-            ProductLibraryPre productLibraryPre=productLibraryPreDao.selectByPrimaryKey(productLibraryStandard.getProductPreId());
-            if(productLibraryPre==null){
-                throw new Exception("标准库中产品没有出现在预选库中，不合法产品");
-            }
-            String name=productLibraryPre.getProductName();
-            ProductWithName productWithName=new ProductWithName();
-            productWithName.setCreateTime(productLibraryStandard.getCreateTime());
-            productWithName.setIsSale(productLibraryStandard.getIsSale());
-            productWithName.setCreditRiskIndex(productLibraryStandard.getCreditRiskIndex());
-            productWithName.setEvalutionAvgScore(productLibraryStandard.getEvalutionAvgScore());
-            productWithName.setEvalutionNum(productLibraryStandard.getEvalutionNum());
-            productWithName.setExchangeRateRiskIndex(productLibraryStandard.getExchangeRateRiskIndex());
-            productWithName.setInterestRateRiskIndex(productLibraryStandard.getInterestRateRiskIndex());
-            productWithName.setInterRiskRating(productLibraryStandard.getInterRiskRating());
-            productWithName.setMarketRiskIndex(productLibraryStandard.getMarketRiskIndex());
-            productWithName.setProductName(name);
-            productWithName.setProductPreId(productLibraryStandard.getProductPreId());
-            productWithName.setProductStdId(productLibraryStandard.getProductStdId());
-            productWithName.setSaleEndTime(productLibraryStandard.getSaleEndTime());
-            productWithName.setSaleNum(productLibraryStandard.getSaleNum());
-            productWithName.setSaleStartTime(productLibraryStandard.getSaleStartTime());
-            productWithName.setStock(productLibraryStandard.getStock());
-            productWithName.setSuitUser(productLibraryStandard.getSuitUser());
-
-
-            productWithNames.add(productWithName);
+            productWithNames.add(makeProductWithName(productLibraryStandard));
         }
         return productWithNames;
+    }
+    /**
+     *  查找单个标准库产品
+     * @author     : HuiZhe Xu
+     * @date       : Created in 2019/7/2 16:05
+     * @param       id
+     * @return     : com.fpms.dto.ProductWithName
+     */
+    @Override
+    public ProductWithName getProductStd(Integer id) throws Exception {
+        ProductLibraryStandard productLibraryStandard=selectById(id);
+        return makeProductWithName(productLibraryStandard);
+    }
+
+    private ProductWithName makeProductWithName(ProductLibraryStandard productLibraryStandard) throws Exception {
+        if(productLibraryStandard.getProductPreId()==null){
+            throw new Exception("非法产品，不存在预选库id");
+        }
+        ProductLibraryPre productLibraryPre=productLibraryPreDao.selectByPrimaryKey(productLibraryStandard.getProductPreId());
+        if(productLibraryPre==null){
+            throw new Exception("标准库中产品没有出现在预选库中，不合法产品");
+        }
+        String name=productLibraryPre.getProductName();
+        ProductWithName productWithName=new ProductWithName();
+        productWithName.setCreateTime(productLibraryStandard.getCreateTime());
+        productWithName.setIsSale(productLibraryStandard.getIsSale());
+        productWithName.setCreditRiskIndex(productLibraryStandard.getCreditRiskIndex());
+        productWithName.setEvalutionAvgScore(productLibraryStandard.getEvalutionAvgScore());
+        productWithName.setEvalutionNum(productLibraryStandard.getEvalutionNum());
+        productWithName.setExchangeRateRiskIndex(productLibraryStandard.getExchangeRateRiskIndex());
+        productWithName.setInterestRateRiskIndex(productLibraryStandard.getInterestRateRiskIndex());
+        productWithName.setInterRiskRating(productLibraryStandard.getInterRiskRating());
+        productWithName.setMarketRiskIndex(productLibraryStandard.getMarketRiskIndex());
+        productWithName.setProductName(name);
+        productWithName.setProductPreId(productLibraryStandard.getProductPreId());
+        productWithName.setProductStdId(productLibraryStandard.getProductStdId());
+        productWithName.setSaleEndTime(productLibraryStandard.getSaleEndTime());
+        productWithName.setSaleNum(productLibraryStandard.getSaleNum());
+        productWithName.setSaleStartTime(productLibraryStandard.getSaleStartTime());
+        productWithName.setStock(productLibraryStandard.getStock());
+        productWithName.setSuitUser(productLibraryStandard.getSuitUser());
+        return productWithName;
     }
 }
