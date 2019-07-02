@@ -100,7 +100,7 @@
     select * from product_configuration where product_con_id = #{productConId} and product_std_id = #{productStdId}
   </select>
   <delete id="deleteByProductConId">
-    delete * from product_configuration where product_con_id = #{productConId}
+    delete from product_configuration where product_con_id = #{productConId}
   </delete>
 
   <select id="getProductConfigurationByproductConId" resultMap="BaseResultMap">

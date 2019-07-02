@@ -8,6 +8,7 @@ import com.fpms.entity.*;
 import com.fpms.service.StaffService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,10 +43,10 @@ public class StaffServiceImpl implements StaffService {
      * @return     : com.fpms.dto.ConfigDetail
      */
     @Override
-    public ConfigDetail getConfigById(Integer configId) {
+    public ConfigDetail getConfigById(Integer configId) throws Exception {
         ProductLibraryConfiguration productLibraryConfiguration = productLibraryConfigurationDao.selectByPrimaryKey(configId);
         if(productLibraryConfiguration==null) {
-            return null;
+            throw new Exception("不存在对应的配置");
         }
         ConfigDetail res=new ConfigDetail();
         res.configlib=productLibraryConfiguration;
@@ -56,7 +57,7 @@ public class StaffServiceImpl implements StaffService {
             int productLibraryStandardId=productLibraryStandard.getProductStdId();
             ProductLibraryPre productLibraryPre=productLibraryPreDao.selectByPrimaryKey(productLibraryStandard.getProductPreId());
             if(productLibraryPre==null){
-                break;
+                throw new Exception("该配置不合法：存在标准库中含有而预选库不存在的产品");
             }
             Float rate=Float.parseFloat(productConfiguration.getPercentage().toString());
             res.addProduct(productLibraryPre.getProductName(),productLibraryPre.getProductDesc(),rate,productLibraryStandardId);
@@ -93,15 +94,25 @@ public class StaffServiceImpl implements StaffService {
      * @return     : boolean
      */
     @Override
-    public boolean addStaff(Staff staff, String roleName) {
+    @Transactional(rollbackFor = Exception.class)
+    public boolean addStaff(Staff staff, String roleName) throws Exception {
         //添加职工
-        staffDao.insertSelective(staff);
+        int count = staffDao.insertSelective(staff);
+        if(count<=0){
+            throw new Exception("添加职工失败，可能表现为数据缺失");
+        }
         //添加职工与角色的关联
         Role role = roleDao.selectByRoleName(roleName);
+        if(role==null){
+            throw new Exception("不存在该角色");
+        }
         StaffRole staffRole = new StaffRole();
         staffRole.setRoleId(role.getRoleId());
         staffRole.setStaffId(staff.getStaffId());
-        staffRoleDao.insertSelective(staffRole);
+        count = staffRoleDao.insertSelective(staffRole);
+        if(count<=0){
+            throw new Exception("为该用户添加角色失败");
+        }
         return true;
     }
     /**
@@ -112,9 +123,11 @@ public class StaffServiceImpl implements StaffService {
      * @return     : com.fpms.entity.Staff
      */
     @Override
-    public Staff getSingleStaffDetail(Integer staffId) {
+    public Staff getSingleStaffDetail(Integer staffId) throws Exception {
         Staff staff=staffDao.selectByPrimaryKey(staffId);
-
+        if(staff==null){
+            throw new Exception("不存在该员工");
+        }
         return staff;
     }
     /**
@@ -125,15 +138,15 @@ public class StaffServiceImpl implements StaffService {
      * @return     : com.fpms.dto.ProductDetail
      */
     @Override
-    public ProductDetail getProductInfo(Integer productId) {
+    public ProductDetail getProductInfo(Integer productId) throws Exception {
         ProductLibraryStandard productLibraryStandard=productLibraryStandardDao.selectByPrimaryKey(productId);
         if(productLibraryStandard==null){
-            return null;
+            throw new Exception("标准库中不存在该产品");
         }
         Integer productPreId=productLibraryStandard.getProductPreId();
         ProductLibraryPre productLibraryPre=productLibraryPreDao.selectByPrimaryKey(productPreId);
         if(productLibraryPre==null){
-            return null;
+            throw new Exception("配置库中不存在该产品");
         }
         ProductDetail productDetail=new ProductDetail();
         productDetail.setProductStdId(productId.toString());
@@ -161,7 +174,6 @@ public class StaffServiceImpl implements StaffService {
         productDetail.setCumulativeNetValue(productLibraryPre.getCumulativeNetValue().toString());
         productDetail.setNotice(productLibraryPre.getNotice());
         productDetail.setPurchaseLimit(productLibraryPre.getPurchaseLimit().toString());
-
         return productDetail;
     }
     /**
@@ -172,13 +184,12 @@ public class StaffServiceImpl implements StaffService {
      * @return     : java.util.ArrayList<com.fpms.entity.Staff>
      */
     @Override
-    public ArrayList<Staff> getStaffs() {
+    public ArrayList<Staff> getStaffs() throws Exception {
         List<Staff> res=staffDao.getStaffs();
         if(res.isEmpty()){
-            return null;
+            throw new Exception("员工列表为空");
         }
-        ArrayList<Staff> result=new ArrayList<>(res);
-        return result;
+        return new ArrayList<>(res);
     }
 
     /**
@@ -206,12 +217,12 @@ public class StaffServiceImpl implements StaffService {
      * @date : Created in 2019/6/26 14:31
      */
     @Override
-    public boolean delStaff(Integer id) {
+    public boolean delStaff(Integer id) throws Exception {
         int count=staffDao.deleteByPrimaryKey(id);
         if(count>0){
             return true;
         }
-        return false;
+        throw new Exception("删除失败");
     }
 }
 

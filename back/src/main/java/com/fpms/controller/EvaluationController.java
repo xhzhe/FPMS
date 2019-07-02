@@ -79,35 +79,46 @@ public class EvaluationController {
     @PostMapping("/user/{userId}/order/{orderId}/evaluation")
     public ResultBean<Boolean> updateEvaluation(@RequestBody Evaluation evaluation,@PathVariable Integer userId, @PathVariable Integer orderId ){
         Evaluation evaluation1 = evaluationService.selectEvaluationByUserIdAndOrderId(userId,orderId);
+        Order order = orderService.selectOrderByOrderId(orderId);
+        if(order.getOrderType() ==0 || order.getOrderType() == 1){
+            return new ResultBean<>("订单未支付，无法评价！");
+        }
         if(evaluation1.getEvaluationStatus() == 1){
             return new ResultBean<>("已评价，请勿重复评价！");
         }
+
         try{
+            if(evaluation.getEvaluationScore() == null){
+                return new ResultBean<>("评分为空！");
+            }
+            if (evaluation.getEvaluationDesc() == null || evaluation.getEvaluationDesc().isEmpty()){
+                return new ResultBean<>("评价内容为空！");
+            }
             //添加评价
             evaluation.setEvaluationId(evaluation1.getEvaluationId());
             evaluation.setEvaluationStatus(Byte.valueOf("1"));
             evaluationService.updateEvaluationByEvaluationId(evaluation);
+
             //修改产品分数
-            Order order = orderService.selectOrderByOrderId(orderId);
             if(order.getOrderType() == 1){
                 ProductLibraryStandard productLibraryStandard = productLibraryStandardService.selectById(order.getProductStdId());
-                double old_avg_score = productLibraryStandard.getEvalutionAvgScore().doubleValue();
-                int old_num = productLibraryStandard.getEvalutionNum().intValue();
-                int score = evaluation.getEvaluationScore().intValue();
+                double oldAvgScore = productLibraryStandard.getEvalutionAvgScore().doubleValue();
+                int oldNum = productLibraryStandard.getEvalutionNum();
+                int score = evaluation.getEvaluationScore();
                 //计算新的平均分
-                double new_avg_score = (old_avg_score * old_num + score)/(old_num + 1);
-                productLibraryStandard.setEvalutionAvgScore(BigDecimal.valueOf(new_avg_score));
-                productLibraryStandard.setEvalutionNum(old_num+1);
+                double newAvgScore = (oldAvgScore * oldNum + score)/(oldNum + 1);
+                productLibraryStandard.setEvalutionAvgScore(BigDecimal.valueOf(newAvgScore));
+                productLibraryStandard.setEvalutionNum(oldNum+1);
                 productLibraryStandardService.updateProductStandard(productLibraryStandard);
             }else if(order.getOrderType() == 2){
                 ProductLibraryConfiguration productLibraryConfiguration = productLibraryConfigurationService.selectById(order.getProductConId());
-                double old_avg_score = productLibraryConfiguration.getEvalutionAvgScore().doubleValue();
-                int old_num = productLibraryConfiguration.getEvalutionNum().intValue();
-                int score = evaluation.getEvaluationScore().intValue();
+                double oldAvgScore = productLibraryConfiguration.getEvalutionAvgScore().doubleValue();
+                int oldNum = productLibraryConfiguration.getEvalutionNum();
+                int score = evaluation.getEvaluationScore();
                 //计算新的平均分
-                double new_avg_score = (old_avg_score * old_num + score)/(old_num + 1);
-                productLibraryConfiguration.setEvalutionAvgScore(BigDecimal.valueOf(new_avg_score));
-                productLibraryConfiguration.setEvalutionNum(old_num+1);
+                double newAvgScore = (oldAvgScore * oldNum + score)/(oldNum + 1);
+                productLibraryConfiguration.setEvalutionAvgScore(BigDecimal.valueOf(newAvgScore));
+                productLibraryConfiguration.setEvalutionNum(oldNum + 1);
                 productLibraryConfigurationService.updateProductConfiguration(productLibraryConfiguration);
             }
         }

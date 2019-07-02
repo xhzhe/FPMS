@@ -42,7 +42,7 @@ public interface ProductLibraryConfigurationService {
      * @author ：YongBiao Liao
      * @date ：Created in 2019/6/24 21:04
      */
-    void deleteConfiguration(Integer productConId);
+    boolean deleteConfiguration(Integer productConId) throws Exception;
 
     /**
      * 通过配置Id获取配置

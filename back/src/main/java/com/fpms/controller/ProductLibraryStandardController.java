@@ -23,120 +23,95 @@ public class ProductLibraryStandardController {
     @Autowired
     private ProductLibraryStandardService productLibraryStandardService;
 
-    public void setFail(ResultBean res){
-        res.setData(null);
-        res.setState(ResultBean.FAIL);
-        res.setMsg(ResultBean.FAIL_MSG);
-    }
-    public <T> void setSuccess(String Message,T data,ResultBean res){
-        res.setData(data);
-        res.setState(ResultBean.SUCCESS);
-        res.setMsg(Message);
-    }
     /**
-     *  下架产品
-     * @author     : HuiZhe Xu
-     * @date       : Created in 2019/6/25 10:58
-     * @param       productStdId
-     * @return     : com.fpms.entity.ResultBean<java.lang.Boolean>
+     * 下架产品
+     *
+     * @param productStdId
+     * @return : com.fpms.entity.ResultBean<java.lang.Boolean>
+     * @author : HuiZhe Xu
+     * @date : Created in 2019/6/25 10:58
      */
     @OperationLog(value = "下架产品")
     @DeleteMapping("/productStd/{productStdId}")
-    public ResultBean<Boolean> productObtained(@PathVariable Integer productStdId){
+    public ResultBean<Boolean> productObtained(@PathVariable Integer productStdId) {
         ResultBean<Boolean> res = new ResultBean<>();
-        if(productStdId==null){
-            setFail(res);
-            return res;
-        }
-        if(productStdId<0){
-            setFail(res);
-            return res;
-        }
-        try{
-            boolean success=productLibraryStandardService.obetainProducts(productStdId);
-            if(success){
-                setSuccess("成功下架",success,res);
-            }else {
-                setFail(res);
+        try {
+            if (productStdId == null) {
+                throw new Exception("没有传入id");
             }
-        }catch (Exception e){
-            setFail(res);
+            if (productStdId < 0) {
+                throw new Exception("不合法id");
+            }
+            productLibraryStandardService.obtainedProducts(productStdId);
+            res.setData(true);
+        } catch (Exception e) {
+            return new ResultBean<>(e);
         }
         return res;
 
     }
+
     /**
-     *  上架产品
-     * @author     : HuiZhe Xu
-     * @date       : Created in 2019/6/26 10:32
-     * @param       productStdId
-     * @return     : com.fpms.entity.ResultBean<java.lang.Boolean>
+     * 上架产品
+     *
+     * @param productStdId
+     * @return : com.fpms.entity.ResultBean<java.lang.Boolean>
+     * @author : HuiZhe Xu
+     * @date : Created in 2019/6/26 10:32
      */
-    @OperationLog(value="上架产品")
+    @OperationLog(value = "上架产品")
     @PostMapping("/productStd/{productStdId}")
-    public ResultBean<Boolean> postProduct(@PathVariable Integer productStdId){
+    public ResultBean<Boolean> postProduct(@PathVariable Integer productStdId) {
         ResultBean<Boolean> res = new ResultBean<>();
-        if(productStdId==null){
-            setFail(res);
-            return res;
-        }
-        if(productStdId<0){
-            setFail(res);
-            return res;
-        }
-        try{
-            boolean success=productLibraryStandardService.uploadProduct(productStdId);
-            if(success){
-                setSuccess("成功上架",success,res);
-            }else {
-                setFail(res);
+        try {
+            if (productStdId == null) {
+                throw new Exception("没有传入id");
             }
-        }catch (Exception e){
-            setFail(res);
+            if (productStdId < 0) {
+                throw new Exception("不合法id");
+            }
+            productLibraryStandardService.uploadProduct(productStdId);
+            res.setData(true);
+        } catch (Exception e) {
+            return new ResultBean<>(e);
         }
         return res;
     }
 
     /**
-     *  获取所有标准库产品
-     * @author     ：TianHong Liao
-     * @date       ：Created in 2019/6/28 16:52
+     * 获取所有标准库产品
+     *
      * @param
-     * @return     : ArrayList<ProductWithName>
+     * @return : ArrayList<ProductWithName>
+     * @author ：TianHong Liao
+     * @date ：Created in 2019/6/28 16:52
      */
     @GetMapping("/productStds")
-    public ResultBean<List<ProductWithName>> getAllProductStd(){
+    public ResultBean<List<ProductWithName>> getAllProductStd() {
         ArrayList<ProductWithName> productWithNames;
-        try{
+        try {
             productWithNames = productLibraryStandardService.getAll();
-            if(productWithNames==null){
-                throw new Exception("数据获取失败");
-            }
-        }catch (Exception e){
+        } catch (Exception e) {
             return new ResultBean<>(e);
         }
         return new ResultBean<>(productWithNames);
     }
 
     /**
-     *  修改标准库产品
-     * @author     : HuiZhe Xu
-     * @date       : Created in 2019/6/29 15:06
-     * @param       productLibraryStandard
-     * @return     : com.fpms.entity.pojo.ResultBean<java.lang.Boolean>
+     * 修改标准库产品
+     *
+     * @param productLibraryStandard
+     * @return : com.fpms.entity.pojo.ResultBean<java.lang.Boolean>
+     * @author : HuiZhe Xu
+     * @date : Created in 2019/6/29 15:06
      */
     @OperationLog("修改标准库产品")
     @PutMapping("/productStd")
-    public ResultBean<Boolean> modifyProductStd(@RequestBody ProductLibraryStandard productLibraryStandard){
-        try{
-            boolean success=productLibraryStandardService.updateProductStandard(productLibraryStandard);
-            if(!success){
-                throw new Exception("修改失败");
-
-            }else{
-                return new ResultBean<>(true);
-            }
-        }catch (Exception e){
+    public ResultBean<Boolean> modifyProductStd(@RequestBody ProductLibraryStandard productLibraryStandard) {
+        try {
+            productLibraryStandardService.updateProductStandard(productLibraryStandard);
+            return new ResultBean<>(true);
+        } catch (Exception e) {
             return new ResultBean<>(e);
         }
     }

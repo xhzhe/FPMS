@@ -60,6 +60,7 @@ public class UserController {
                 resultBean.setMsg("注册失败");
             }
         }catch (Exception e){
+            e.printStackTrace();
             resultBean.setState(1);
             resultBean.setMsg(e.getMessage());
         }

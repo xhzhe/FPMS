@@ -18,7 +18,7 @@ public interface ProductLibraryPreService {
      * @param       productLibraryPre
      * @return     : java.lang.Boolean
      */
-    Boolean modifyProduct(ProductLibraryPre productLibraryPre);
+    Boolean modifyProduct(ProductLibraryPre productLibraryPre) throws Exception;
     /**
      *  添加产品
      * @author     : HuiZhe Xu
@@ -26,7 +26,7 @@ public interface ProductLibraryPreService {
      * @param       productLibraryPre
      * @return     : java.lang.Boolean
      */
-    Boolean addProduct(ProductLibraryPre productLibraryPre);
+    Boolean addProduct(ProductLibraryPre productLibraryPre) throws Exception;
 
     /**
      *  通过预选库Id获取预选库产品
@@ -35,7 +35,7 @@ public interface ProductLibraryPreService {
      * @param       productPreId
      * @return     : com.fpms.entity.ProductLibraryPre
      */
-    ProductLibraryPre selectById(Integer productPreId);
+    ProductLibraryPre selectById(Integer productPreId) throws Exception;
 
     /**
      *  获取未评审的产品
@@ -44,7 +44,7 @@ public interface ProductLibraryPreService {
      * @param
      * @return     : java.util.List<com.fpms.entity.ProductLibraryPre>
      */
-    List<ProductLibraryPre> getUnReviewProductList();
+    List<ProductLibraryPre> getUnReviewProductList() throws Exception;
 
     /**
      * 获取所有预选库的产品
@@ -53,7 +53,7 @@ public interface ProductLibraryPreService {
      * @param
      * @return     : java.util.List<com.fpms.entity.ProductLibraryPre>
      */
-    List<ProductLibraryPre> getAllProductPres();
+    List<ProductLibraryPre> getAllProductPres() throws Exception;
 
     /**
      *  通过标准库Id获得预选库的产品信息
@@ -62,7 +62,7 @@ public interface ProductLibraryPreService {
      * @param       productStdId
      * @return     : com.fpms.entity.ProductLibraryPre
      */
-    ProductLibraryPre selectByStdId(Integer productStdId);
+    ProductLibraryPre selectByStdId(Integer productStdId) throws Exception;
 
     /**
      * 通过产品名查找产品
@@ -71,5 +71,5 @@ public interface ProductLibraryPreService {
      * @param       productName
      * @return     : com.fpms.entity.ProductLibraryPre
      */
-    ProductLibraryPre selectByProductName(String productName);
+    ProductLibraryPre selectByProductName(String productName) throws Exception;
 }

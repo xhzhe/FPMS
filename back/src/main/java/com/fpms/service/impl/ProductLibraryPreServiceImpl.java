@@ -25,106 +25,146 @@ public class ProductLibraryPreServiceImpl implements ProductLibraryPreService {
 
     @Autowired
     private ProductLibraryStandardDao productLibraryStandardDao;
+
     /**
-     *  修改产品属性
-     * @author     : HuiZhe Xu
-     * @date       : Created in 2019/6/25 11:06
-     * @param       productLibraryPre
-     * @return     : java.lang.Boolean
+     * 修改产品属性
+     *
+     * @param productLibraryPre
+     * @return : java.lang.Boolean
+     * @author : HuiZhe Xu
+     * @date : Created in 2019/6/25 11:06
      */
     @Override
-    public Boolean modifyProduct(ProductLibraryPre productLibraryPre) {
-        ProductLibraryPre productLibraryPrepare=productLibraryPreDao.selectByPrimaryKey(productLibraryPre.getProductPreId());
-        try {
-            Class productPre=Class.forName("com.fpms.entity.ProductLibraryPre");
-            Method []methods=productPre.getMethods();
-            for(Method method:methods){
-                String methodName=method.getName();
-                if("set".equals(methodName.substring(0,3))){
-                    String getName="get"+methodName.substring(3);
-                    Method m=productPre.getMethod(getName);
-                    Object attribute=m.invoke(productLibraryPre);
-                    if(attribute!=null){
-                        method.invoke(productLibraryPrepare,attribute);
-                    }
-                }
-            }
-            int count=productLibraryPreDao.updateByPrimaryKeySelective(productLibraryPre);
-            if(count>0){
-                return true;
-            }
-        } catch (ClassNotFoundException|NoSuchMethodException|IllegalAccessException|InvocationTargetException e) {
-            e.printStackTrace();
-            return false;
+    public Boolean modifyProduct(ProductLibraryPre productLibraryPre) throws Exception {
+        ProductLibraryPre productLibraryPrepare = selectById(productLibraryPre.getProductPreId());
+        if (productLibraryPrepare == null) {
+            throw new Exception("预选库没有该产品");
         }
-
-        return false;
+        //没有必要的反射
+//            Class productPre=Class.forName("com.fpms.entity.ProductLibraryPre");
+//            Method []methods=productPre.getMethods();
+//            for(Method method:methods){
+//                String methodName=method.getName();
+//                if("set".equals(methodName.substring(0,3))){
+//                    String getName="get"+methodName.substring(3);
+//                    Method m=productPre.getMethod(getName);
+//                    Object attribute=m.invoke(productLibraryPre);
+//                    if(attribute!=null){
+//                        method.invoke(productLibraryPrepare,attribute);
+//                    }
+//                }
+//            }
+        int count = productLibraryPreDao.updateByPrimaryKeySelective(productLibraryPre);
+        if (count > 0) {
+            return true;
+        }
+        throw new Exception("更新失败");
     }
+
     /**
-     *  添加产品
-     * @author     : HuiZhe Xu
-     * @date       : Created in 2019/6/25 11:06
-     * @param       productLibraryPre
-     * @return     : java.lang.Boolean
+     * 添加产品
+     *
+     * @param productLibraryPre
+     * @return : java.lang.Boolean
+     * @author : HuiZhe Xu
+     * @date : Created in 2019/6/25 11:06
      */
     @Override
-    public Boolean addProduct(ProductLibraryPre productLibraryPre) {
-        try{
-            int count=productLibraryPreDao.insertSelective(productLibraryPre);
-            if(count>0){
-                return true;
-            }
-        }catch (Exception e){
-            e.printStackTrace();
-            return false;
+    public Boolean addProduct(ProductLibraryPre productLibraryPre) throws Exception {
+
+        int count = productLibraryPreDao.insertSelective(productLibraryPre);
+        if (count > 0) {
+            return true;
         }
-        return false;
+        throw new Exception("添加失败");
     }
 
+    /**
+     * 查询预选库产品
+     *
+     * @param productPreId
+     * @return : com.fpms.entity.ProductLibraryPre
+     * @author : HuiZhe Xu
+     * @date : Created in 2019/7/1 16:47
+     */
     @Override
-    public ProductLibraryPre selectById(Integer productPreId) {
-        return productLibraryPreDao.selectByPrimaryKey(productPreId);
+    public ProductLibraryPre selectById(Integer productPreId) throws Exception {
+        ProductLibraryPre productLibraryPre = productLibraryPreDao.selectByPrimaryKey(productPreId);
+        if (productLibraryPre == null) {
+            throw new Exception("预选库中没有该产品");
+        }
+        return productLibraryPre;
     }
 
+    /**
+     * 获取未评估产品列表
+     *
+     * @param
+     * @return : java.util.List<com.fpms.entity.ProductLibraryPre>
+     * @author : HuiZhe Xu
+     * @date : Created in 2019/7/1 16:48
+     */
     @Override
-    public List<ProductLibraryPre> getUnReviewProductList() {
-        return productLibraryPreDao.selectByProductStatus(Byte.valueOf("0"));
+    public List<ProductLibraryPre> getUnReviewProductList() throws Exception {
+        List<ProductLibraryPre> productLibraryPres = productLibraryPreDao.selectByProductStatus(Byte.valueOf("0"));
+        if (productLibraryPres == null) {
+            throw new Exception("未评估产品列表为空");
+        }
+        return productLibraryPres;
     }
 
     /**
      * 获取所有预选库产品
-     * @author     ：YongBiao Liao
-     * @date       ：Created in 2019/6/26 11:41
+     *
      * @param
-     * @return     : java.util.List<com.fpms.entity.ProductLibraryPre>
+     * @return : java.util.List<com.fpms.entity.ProductLibraryPre>
+     * @author ：YongBiao Liao
+     * @date ：Created in 2019/6/26 11:41
      */
     @Override
-    public List<ProductLibraryPre> getAllProductPres() {
-        return productLibraryPreDao.getAllProductPres();
+    public List<ProductLibraryPre> getAllProductPres() throws Exception {
+        List<ProductLibraryPre> productLibraryPres = productLibraryPreDao.getAllProductPres();
+        if (productLibraryPres == null) {
+            throw new Exception("预选库为空");
+        }
+        return productLibraryPres;
     }
 
     /**
-     *  过标准库Id获得预选库的产品信息
-     * @author     ：TianHong Liao
-     * @date       ：Created in 2019/6/26 15:58
-     * @param       productStdId
-     * @return     : com.fpms.entity.ProductLibraryPre
+     * 过标准库Id获得预选库的产品信息
+     *
+     * @param productStdId
+     * @return : com.fpms.entity.ProductLibraryPre
+     * @author ：TianHong Liao
+     * @date ：Created in 2019/6/26 15:58
      */
     @Override
-    public ProductLibraryPre selectByStdId(Integer productStdId) {
+    public ProductLibraryPre selectByStdId(Integer productStdId) throws Exception {
         ProductLibraryStandard productLibraryStandard = productLibraryStandardDao.selectByPrimaryKey(productStdId);
-        return productLibraryPreDao.selectByPrimaryKey(productLibraryStandard.getProductPreId());
+        if (productLibraryStandard == null) {
+            throw new Exception("标准库中没有该产品");
+        }
+        ProductLibraryPre productLibraryPre = productLibraryPreDao.selectByPrimaryKey(productLibraryStandard.getProductPreId());
+        if (productLibraryPre == null) {
+            throw new Exception("预选库中没有该产品，该产品可能不合法");
+        }
+        return productLibraryPre;
     }
 
     /**
      * 通过产品名查找产品
-     * @author     ：YongBiao Liao
-     * @date       ：Created in 2019/6/28 16:36
-     * @param       productName
-     * @return     : com.fpms.entity.ProductLibraryPre
+     *
+     * @param productName
+     * @return : com.fpms.entity.ProductLibraryPre
+     * @author ：YongBiao Liao
+     * @date ：Created in 2019/6/28 16:36
      */
     @Override
-    public ProductLibraryPre selectByProductName(String productName){
-        return productLibraryPreDao.selectByProductName(productName);
-    };
+    public ProductLibraryPre selectByProductName(String productName) throws Exception {
+        ProductLibraryPre productLibraryPre = productLibraryPreDao.selectByProductName(productName);
+        if (productLibraryPre == null) {
+            throw new Exception("预选库中没有该产品");
+        }
+        return productLibraryPre;
+    }
 }
