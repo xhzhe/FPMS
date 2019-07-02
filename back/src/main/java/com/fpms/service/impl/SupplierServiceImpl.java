@@ -67,4 +67,37 @@ public class SupplierServiceImpl implements SupplierService {
         }
         return suppliers;
     }
+
+    /**
+     * 删除供应商
+     * @param id
+     * @return : void
+     * @author : HuiZhe Xu
+     * @date : Created in 2019/7/2 15:27
+     */
+    @Override
+    public void deleteSupplierById(Integer id) throws Exception {
+        getSupplier(id);
+        int count = supplierDao.deleteByPrimaryKey(id);
+        if(count<=0){
+            throw new Exception("删除失败");
+        }
+    }
+
+    /**
+     * 修改供应商
+     *
+     * @param supplier
+     * @return : void
+     * @author : HuiZhe Xu
+     * @date : Created in 2019/7/2 15:33
+     */
+    @Override
+    public void modifySupplier(Supplier supplier) throws Exception {
+        getSupplier(supplier.getSupplierId());
+        int count = supplierDao.updateByPrimaryKeySelective(supplier);
+        if(count<=0){
+            throw new Exception("修改失败");
+        }
+    }
 }

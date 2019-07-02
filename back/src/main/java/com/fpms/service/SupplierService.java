@@ -39,4 +39,22 @@ public interface SupplierService {
      * @return     : java.util.List<com.fpms.entity.Supplier>
      */
     List<Supplier> getSuppliers() throws Exception;
+
+    /**
+     *  删除供应商
+     * @author     : HuiZhe Xu
+     * @date       : Created in 2019/7/2 15:27
+     * @param       id :
+     * @return     : void
+     */
+    void deleteSupplierById(Integer id) throws Exception;
+
+    /**
+     *  修改供应商
+     * @author     : HuiZhe Xu
+     * @date       : Created in 2019/7/2 15:33
+     * @param       supplier
+     * @return     : void
+     */
+    void modifySupplier(Supplier supplier) throws Exception;
 }

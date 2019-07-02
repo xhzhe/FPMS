@@ -24,6 +24,14 @@ public class SupplierController {
     public SupplierController(SupplierService supplierService){
         this.supplierService=supplierService;
     }
+
+    /**
+     *  添加供应商
+     * @author     : HuiZhe Xu
+     * @date       : Created in 2019/7/2 15:21
+     * @param       supplier :
+     * @return     : com.fpms.entity.pojo.ResultBean<java.lang.Boolean>
+     */
     @OperationLog("添加供应商")
     @PostMapping("/supplier")
     public ResultBean<Boolean> addSupplier(@RequestBody Supplier supplier) {
@@ -78,6 +86,55 @@ public class SupplierController {
             res.setData(suppliers);
             return res;
         } catch (Exception e) {
+            return new ResultBean<>(e);
+        }
+    }
+
+    /**
+     *  删除供应商
+     * @author     : HuiZhe Xu
+     * @date       : Created in 2019/7/2 15:31
+     * @param       supplierId
+     * @return     : com.fpms.entity.pojo.ResultBean<java.lang.Boolean>
+     */
+    @OperationLog("删除供应商")
+    @DeleteMapping("/supplier/{supplierId}")
+    public ResultBean<Boolean> delSupplier(@PathVariable Integer supplierId){
+        try{
+            if(supplierId==null){
+                throw new Exception("没有传入id");
+            }
+            if(supplierId<0){
+                throw new Exception("不合法id");
+            }
+            supplierService.deleteSupplierById(supplierId);
+            ResultBean<Boolean> res = new ResultBean<>();
+            res.setData(true);
+            return res;
+        }catch (Exception e){
+            return new ResultBean<>(e);
+        }
+    }
+
+    /**
+     *  修改供应商
+     * @author     : HuiZhe Xu
+     * @date       : Created in 2019/7/2 15:35
+     * @param       supplier
+     * @return     : com.fpms.entity.pojo.ResultBean<java.lang.Boolean>
+     */
+    @OperationLog("修改供应商")
+    @PutMapping("/supplier")
+    public ResultBean<Boolean> modifySupplier(@RequestBody Supplier supplier){
+        try{
+            if(supplier.getSupplierId()==null){
+                throw new Exception("没有该供应商的id");
+            }
+            supplierService.modifySupplier(supplier);
+            ResultBean<Boolean> res = new ResultBean<>();
+            res.setData(true);
+            return res;
+        }catch (Exception e){
             return new ResultBean<>(e);
         }
     }
