@@ -42,8 +42,6 @@ public class UserController {
             user.setUserName(userName);
             user.setUserPwd(EdsUtil.encryptBasedDes(userPwd));
             user.setUserGender(userGender);
-            //SimpleDateFormat formatter = new SimpleDateFormat( "yyyy-MM-dd");
-            //user.setUserBrithday(formatter.parse(userBrithday));
             user.setUserPhone(userPhone);
             user.setUserEmail(userEmail);
             user.setCertificateType(Byte.valueOf(certificateType));

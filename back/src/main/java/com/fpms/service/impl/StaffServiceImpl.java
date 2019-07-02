@@ -96,6 +96,10 @@ public class StaffServiceImpl implements StaffService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public boolean addStaff(Staff staff, String roleName) throws Exception {
+        Staff staffTemp=staffDao.selectByStaffName(staff.getStaffName());
+        if(staffTemp!=null){
+            throw new Exception("员工名已存在");
+        }
         //添加职工
         int count = staffDao.insertSelective(staff);
         if(count<=0){

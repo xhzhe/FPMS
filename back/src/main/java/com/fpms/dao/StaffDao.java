@@ -87,4 +87,5 @@ public interface StaffDao {
      * @return     : java.util.List<com.fpms.entity.Staff>
      */
     List<Staff> getStaffs();
+
 }
