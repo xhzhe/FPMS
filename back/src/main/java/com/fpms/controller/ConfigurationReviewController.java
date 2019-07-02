@@ -48,7 +48,7 @@ public class ConfigurationReviewController {
             if(param.get("reviewDesc") == null || param.get("reviewDesc").isEmpty()){
                 return new ResultBean<>("评审意见为空！");
             }
-            if(param.get("reviewStatus").equals("0")){
+            if("0".equals(param.get("reviewStatus"))){
                 return new ResultBean<>("不能将评审状态设置为0");
             }
             Integer staffId = Integer.valueOf(param.get("staffId"));

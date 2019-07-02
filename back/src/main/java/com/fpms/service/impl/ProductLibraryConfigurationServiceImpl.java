@@ -135,7 +135,7 @@ public class ProductLibraryConfigurationServiceImpl implements ProductLibraryCon
      */
     @Override
     public boolean modifyConfigurationRate(Integer productConId, Integer productStdId, double rate) {
-        ProductConfiguration productConfiguration=productConfigurationDao.selectByPCIAndPSI(productConId,productStdId);
+        ProductConfiguration productConfiguration=productConfigurationDao.selectByPciAndPsi(productConId,productStdId);
         if(productConfiguration==null){
             return false;
         }

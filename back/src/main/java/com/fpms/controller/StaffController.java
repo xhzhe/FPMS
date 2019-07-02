@@ -330,24 +330,4 @@ public class StaffController {
         }
         return new ResultBean<>(true);
     }
-//API
-//    @PutMapping("/{staffId}/privilege")
-//    public ResultBean<Boolean> modifyStaffPrivilege(@PathVariable Integer staffId, @RequestBody Map parm){
-//        ResultBean<Boolean> res = new ResultBean<>();
-//        try{
-//            ArrayList<Object> privilegeList=(ArrayList)parm.get("privilegeList");
-//            if(!staffService.ModifyPrivilege(staffId,privilegeList)){
-//                throw new Exception("修改失败");
-//            }
-//            res.setData(true);
-//            res.setState(ResultBean.SUCCESS);
-//            res.setMsg(ResultBean.SUCC_MSG);
-//        }catch (Exception e){
-//            e.printStackTrace();
-//            res.setData(false);
-//            res.setState(ResultBean.FAIL);
-//            res.setMsg(e.getMessage()==null?ResultBean.FAIL_MSG:e.getMessage());
-//        }
-//        return res;
-//    }
 }

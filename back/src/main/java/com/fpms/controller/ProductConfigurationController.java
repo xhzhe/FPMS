@@ -52,7 +52,7 @@ public class ProductConfigurationController {
         try {
             Integer productConfigId = Integer.valueOf(param.get("productConfigId"));
             Integer productStdId = Integer.valueOf(param.get("productStdId"));
-            ProductConfiguration productConfiguration = productConfigurationDao.selectByPCIAndPSI(productConfigId, productStdId);
+            ProductConfiguration productConfiguration = productConfigurationDao.selectByPciAndPsi(productConfigId, productStdId);
             productConfigurationDao.deleteByPrimaryKey(productConfiguration.getConfigurationId());
         } catch (Exception e) {
             return new ResultBean<>(e);

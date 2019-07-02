@@ -50,7 +50,7 @@ public class StaffServiceImpl implements StaffService {
         }
         ConfigDetail res=new ConfigDetail();
         res.configlib=productLibraryConfiguration;
-        List<ProductConfiguration> productConfigurations= productConfigurationDao.getProductConfigID(configId);
+        List<ProductConfiguration> productConfigurations= productConfigurationDao.getProductConfigId(configId);
 
         for(ProductConfiguration productConfiguration:productConfigurations){
             ProductLibraryStandard productLibraryStandard=productLibraryStandardDao.selectByPrimaryKey(productConfiguration.getProductStdId());
