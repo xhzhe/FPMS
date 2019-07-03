@@ -9,6 +9,8 @@ import com.fpms.entity.ProductLibraryPre;
 import com.fpms.entity.ProductLibraryStandard;
 
 import com.fpms.service.ProductLibraryStandardService;
+import org.apache.ibatis.exceptions.TooManyResultsException;
+import org.mybatis.spring.MyBatisSystemException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -117,7 +119,12 @@ public class ProductLibraryStandardServiceImpl implements ProductLibraryStandard
      */
     @Override
     public ProductLibraryStandard selectByProductPreId(Integer productPreId) throws Exception {
-        ProductLibraryStandard productLibraryStandard = productLibraryStandardDao.selectByProductPreId(productPreId);
+        ProductLibraryStandard productLibraryStandard;
+        try {
+            productLibraryStandard = productLibraryStandardDao.selectByProductPreId(productPreId);
+        }catch (MyBatisSystemException e){
+            throw new Exception("数据库异常，有多个标准库产品和一个预选库产品对应");
+        }
         if(productLibraryStandard==null){
             throw new Exception("标准库中无该产品");
         }
@@ -154,6 +161,33 @@ public class ProductLibraryStandardServiceImpl implements ProductLibraryStandard
     public ProductWithName getProductStd(Integer id) throws Exception {
         ProductLibraryStandard productLibraryStandard=selectById(id);
         return makeProductWithName(productLibraryStandard);
+    }
+
+    /**
+     * 插入标准库产品
+     *
+     * @param productLibraryStandard
+     * @return : void
+     * @author : HuiZhe Xu
+     * @date : Created in 2019/7/3 16:51
+     */
+    @Override
+    public void insertProductStd(ProductLibraryStandard productLibraryStandard) throws Exception {
+        try{
+            selectByProductPreId(productLibraryStandard.getProductPreId());
+            throw new RuntimeException("标准库存在该预选库产品");
+        }catch (RuntimeException e){
+            throw e;
+        } catch (Exception e){
+            if(!"标准库中无该产品".equals(e.getMessage())){
+                throw e;
+            }
+        }
+        int count = productLibraryStandardDao.insertSelective(productLibraryStandard);
+        if(count>0){
+            return;
+        }
+        throw new Exception("插入失败");
     }
 
     private ProductWithName makeProductWithName(ProductLibraryStandard productLibraryStandard) throws Exception {

@@ -1,6 +1,5 @@
 package com.fpms.service;
 
-import com.fpms.dto.ProductDetail;
 import com.fpms.dto.ProductWithName;
 import com.fpms.entity.ProductLibraryStandard;
 
@@ -82,6 +81,15 @@ public interface ProductLibraryStandardService {
      * @return     : com.fpms.dto.ProductWithName
      */
     ProductWithName getProductStd(Integer id) throws Exception;
+
+    /**
+     *  插入标准库产品
+     * @author     : HuiZhe Xu
+     * @date       : Created in 2019/7/3 16:51
+     * @param       productLibraryStandard
+     * @return     : void
+     */
+    void insertProductStd(ProductLibraryStandard productLibraryStandard) throws Exception;
 
     /**
      * 获取所有上架的产品
