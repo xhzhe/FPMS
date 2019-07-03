@@ -167,9 +167,12 @@ public class ProductLibraryStandardServiceImpl implements ProductLibraryStandard
     public void insertProductStd(ProductLibraryStandard productLibraryStandard) throws Exception {
         try{
             selectByProductPreId(productLibraryStandard.getProductPreId());
-            throw new Exception("标准库存在该预选库产品");
-        }catch (Exception e){
-            if("标准库存在该预选库产品".equals(e.getMessage())){
+            throw new RuntimeException("标准库存在该预选库产品");
+        }catch (RuntimeException e){
+            throw e;
+        }
+        catch (Exception e){
+            if(!"标准库中无该产品".equals(e.getMessage())){
                 throw e;
             }
         }
