@@ -83,7 +83,7 @@ public class ProductLibraryPreServiceImpl implements ProductLibraryPreService {
         if(productLibraryPre.getSupplierId()==null){
             throw new Exception("不合理产品，该产品没有供应商");
         }
-        supplierService.getSupplier(productLibraryPre.getProductPreId());
+        supplierService.getSupplier(productLibraryPre.getSupplierId());
         int count = productLibraryPreDao.insertSelective(productLibraryPre);
         if (count > 0) {
             return;

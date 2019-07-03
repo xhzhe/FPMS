@@ -26,6 +26,7 @@ public class ConfigurationReviewController {
     @Autowired
     private ProductLibraryConfigurationDao productLibraryConfigurationDao;
 
+    private final String STAFF_ID="staffId";
     /**
      *  新增对配置产品的评估
      * @author     ：TianHong Liao
@@ -39,7 +40,7 @@ public class ConfigurationReviewController {
     @PostMapping("/productCon/{productConId}/actions/review")
     public ResultBean<Boolean> addConfigurationReview(@RequestBody Map<String,String> param, @PathVariable Integer productConId){
         try{
-            if(param.get("staffId") == null || param.get("staffId").isEmpty()){
+            if(param.get(STAFF_ID) == null || param.get(STAFF_ID).isEmpty()){
                 return new ResultBean<>("未获取到员工id");
             }
             if(param.get("reviewStatus") == null || param.get("reviewStatus").isEmpty()){
