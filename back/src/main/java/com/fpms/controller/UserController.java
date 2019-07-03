@@ -38,27 +38,41 @@ public class UserController {
                                         String userEmail, String certificateType, String certificateNum, String career){
         ResultBean<Boolean> resultBean = new ResultBean<>();
         try{
-            User user = new User();
-            user.setUserName(userName);
-            user.setUserPwd(EdsUtil.encryptBasedDes(userPwd));
-            user.setUserGender(userGender);
-            user.setUserPhone(userPhone);
-            user.setUserEmail(userEmail);
-            user.setCertificateType(Byte.valueOf(certificateType));
-            user.setCertificateNum(certificateNum);
-            user.setCareer(career);
-            int result = userService.register(user);
-            if(result == 0){
-                resultBean.setState(1);
-                resultBean.setMsg("用户已存在");
-            }else if (result == 1){
+            if(userName.length() > 1023 || userEmail.length() >255
+                    || userPhone.length() > 11 || career.length() > 255){
+                return new ResultBean<>("用户名过长");
+            }else if (userEmail.length() >255){
+                return new ResultBean<>("邮箱过长");
+            }
+            else if (userPhone.length() > 11){
+                return new ResultBean<>("电话过长");
+            }
+            else if (career.length() > 255) {
+                return new ResultBean<>("职业过长");
+            }else {
+                User user = new User();
+                user.setUserName(userName);
+                user.setUserPwd(EdsUtil.encryptBasedDes(userPwd));
+                user.setUserGender(userGender);
+                //SimpleDateFormat formatter = new SimpleDateFormat( "yyyy-MM-dd");
+                //user.setUserBrithday(formatter.parse(userBrithday));
+                user.setUserPhone(userPhone);
+                user.setUserEmail(userEmail);
+                user.setCertificateType(Byte.valueOf(certificateType));
+                user.setCertificateNum(certificateNum);
+                user.setCareer(career);
+                int result = userService.register(user);
+                if(result == 0){
+                    resultBean.setState(1);
+                    resultBean.setMsg("用户已存在");
+                }else if (result == 1){
 
-            }else if (result == 2){
-                resultBean.setState(1);
-                resultBean.setMsg("注册失败");
+                }else if (result == 2){
+                    resultBean.setState(1);
+                    resultBean.setMsg("注册失败");
+                }
             }
         }catch (Exception e){
-            e.printStackTrace();
             resultBean.setState(1);
             resultBean.setMsg(e.getMessage());
         }
@@ -128,16 +142,29 @@ public class UserController {
     public ResultBean<Boolean> modifyUser(String userEmail,String userPhone ,
                                           String userAddress,String career, @PathVariable Integer userId){
         try{
-            User user = userService.getUserById(userId);
-            if(user != null ) {
-                user.setUserEmail(userEmail);
-                user.setUserPhone(userPhone);
-                user.setUserAddress(userAddress);
-                user.setCareer(career);
-                userService.updateUser(user);
-                return new ResultBean<>();
+            if(userAddress.length() > 1023 || userEmail.length() >255
+                    || userPhone.length() > 11 || career.length() > 255){
+                return new ResultBean<>("地址过长");
+            }else if (userEmail.length() >255){
+                return new ResultBean<>("邮箱过长");
+            }
+            else if (userPhone.length() > 11){
+                return new ResultBean<>("电话过长");
+            }
+            else if (career.length() > 255){
+                return new ResultBean<>("职业过长");
             }else {
-                return new ResultBean<>("此用户不存在");
+                User user = userService.getUserById(userId);
+                if(user != null ) {
+                    user.setUserEmail(userEmail);
+                    user.setUserPhone(userPhone);
+                    user.setUserAddress(userAddress);
+                    user.setCareer(career);
+                    userService.updateUser(user);
+                    return new ResultBean<>();
+                }else {
+                    return new ResultBean<>("此用户不存在");
+                }
             }
         }
         catch (Exception e){
