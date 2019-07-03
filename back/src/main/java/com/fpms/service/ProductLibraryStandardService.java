@@ -1,5 +1,6 @@
 package com.fpms.service;
 
+import com.fpms.dto.ProductDetail;
 import com.fpms.dto.ProductWithName;
 import com.fpms.entity.ProductLibraryStandard;
 
@@ -81,4 +82,13 @@ public interface ProductLibraryStandardService {
      * @return     : com.fpms.dto.ProductWithName
      */
     ProductWithName getProductStd(Integer id) throws Exception;
+
+    /**
+     * 获取所有上架的产品
+     * @author     ：YongBiao Liao
+     * @date       ：Created in 2019/7/3 22:57
+     * @param
+     * @return     : java.util.List<com.fpms.entity.ProductLibraryStandard>
+     */
+    List<ProductLibraryStandard> getProductsOnSale();
 }

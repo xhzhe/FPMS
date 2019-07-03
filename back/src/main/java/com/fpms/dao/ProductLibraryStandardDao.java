@@ -1,5 +1,6 @@
 package com.fpms.dao;
 
+import com.fpms.dto.ProductDetail;
 import com.fpms.entity.ProductLibraryStandard;
 import org.springframework.stereotype.Component;
 
@@ -35,4 +36,13 @@ public interface ProductLibraryStandardDao {
     ProductLibraryStandard selectByProductPreId(Integer productPreId);
 
     List<ProductLibraryStandard> selectAll();
+
+    /**
+     * 获取所有上架的商品
+     * @author     ：YongBiao Liao
+     * @date       ：Created in 2019/7/3 23:09
+     * @param
+     * @return     : java.util.List<com.fpms.entity.ProductLibraryStandard>
+     */
+    List<ProductLibraryStandard> getProductsOnSale();
 }

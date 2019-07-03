@@ -1,17 +1,19 @@
 package com.fpms.controller;
 
 import com.fpms.annotation.OperationLog;
-import com.fpms.dto.UserRegisterDto;
-import com.fpms.entity.User;
+import com.fpms.dto.*;
+import com.fpms.entity.*;
 import com.fpms.entity.pojo.ResultBean;
+import com.fpms.service.ProductLibraryConfigurationService;
+import com.fpms.service.ProductLibraryPreService;
+import com.fpms.service.ProductLibraryStandardService;
 import com.fpms.service.UserService;
 import com.fpms.utils.EdsUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author : YongBiao Liao
@@ -25,6 +27,15 @@ public class UserController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private ProductLibraryStandardService productLibraryStandardService;
+
+    @Autowired
+    private ProductLibraryPreService productLibraryPreService;
+
+    @Autowired
+    private ProductLibraryConfigurationService productLibraryConfigurationService;
 
     /**
      * 注册用户
@@ -246,4 +257,57 @@ public class UserController {
     }
 
 
+    @GetMapping("/user/mall")
+    public ResultBean<MallDto> getOnSale() throws Exception {
+        MallDto mallDto = new MallDto();
+
+        try{
+            //获取已上架产品
+            ArrayList<ProductDto> productDtoArrayList = new ArrayList<>();
+            List<ProductLibraryStandard> productLibraryStandardList = productLibraryStandardService.getProductsOnSale();
+            ArrayList<ProductLibraryPre> productLibraryPreArrayList = new ArrayList<>();
+            if(productLibraryStandardList != null){
+                for(int i = 0; i < productLibraryStandardList.size(); i++) {
+                    ProductDto productDto = new ProductDto();
+                    ProductLibraryStandard productLibraryStandard = productLibraryStandardList.get(i);
+                    ProductLibraryPre productLibraryPre = productLibraryPreService.selectById(productLibraryStandard.getProductPreId());
+                    productLibraryPreArrayList.add(productLibraryPre);
+                    productDto.setProductLibraryPre(productLibraryPre);
+                    productDto.setProductLibraryStandard(productLibraryStandard);
+                    productDtoArrayList.add(productDto);
+                }
+            }
+            mallDto.setProductDtoList(productDtoArrayList);
+
+            //获取已上架配置以及其包含的产品
+            ArrayList<ConfigurationDto> configurationDtoArrayList = new ArrayList<>();
+            List<ProductLibraryConfiguration> productLibraryConfigurationList = productLibraryConfigurationService.getConfigurationsOnSale();
+            for(int i = 0; i < productLibraryConfigurationList.size(); i++){
+                ConfigurationDto configurationDto = new ConfigurationDto();
+                configurationDto.setProductLibraryConfiguration(productLibraryConfigurationList.get(i));
+                List<ProductConfiguration> productConfigurationList = productLibraryConfigurationService.getProductConfigurationByproductConId(productLibraryConfigurationList.get(i).getProductConId());
+                if(productConfigurationList != null){
+                    ArrayList<ProductLibraryStandard> productLibraryStandardArrayList = new ArrayList<>();
+                    ArrayList<ProductLibraryPre> productLibraryPreArrayList1 = new ArrayList<>();
+                    for(int j = 0; j < productConfigurationList.size(); j++){
+                        Integer productStdId = productConfigurationList.get(j).getProductStdId();
+                        ProductLibraryStandard productLibraryStandard = productLibraryStandardService.selectById(productStdId);
+                        Integer productPreId = productLibraryStandard.getProductPreId();
+                        productLibraryStandardArrayList.add(productLibraryStandard);
+                        ProductLibraryPre productLibraryPre = productLibraryPreService.selectById(productPreId);
+                        productLibraryPreArrayList1.add(productLibraryPre);
+                    }
+                    configurationDto.setProductLibraryPreList(productLibraryPreArrayList1);
+                    configurationDto.setProductLibraryStandardList(productLibraryStandardArrayList);
+                    configurationDtoArrayList.add(configurationDto);
+                }else {
+                    continue;
+                }
+            }
+            mallDto.setConfigurationDtoList(configurationDtoArrayList);
+            return new ResultBean<>(mallDto);
+        }catch (Exception e){
+            return new ResultBean<>("获取失败！");
+        }
+    }
 }
