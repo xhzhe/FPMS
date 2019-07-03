@@ -155,6 +155,31 @@ public class ProductLibraryStandardServiceImpl implements ProductLibraryStandard
         return makeProductWithName(productLibraryStandard);
     }
 
+    /**
+     * 插入标准库产品
+     *
+     * @param productLibraryStandard
+     * @return : void
+     * @author : HuiZhe Xu
+     * @date : Created in 2019/7/3 16:51
+     */
+    @Override
+    public void insertProductStd(ProductLibraryStandard productLibraryStandard) throws Exception {
+        try{
+            selectByProductPreId(productLibraryStandard.getProductPreId());
+            throw new Exception("标准库存在该预选库产品");
+        }catch (Exception e){
+            if("标准库存在该预选库产品".equals(e.getMessage())){
+                throw e;
+            }
+        }
+        int count = productLibraryStandardDao.insertSelective(productLibraryStandard);
+        if(count>0){
+            return;
+        }
+        throw new Exception("插入失败");
+    }
+
     private ProductWithName makeProductWithName(ProductLibraryStandard productLibraryStandard) throws Exception {
         if(productLibraryStandard.getProductPreId()==null){
             throw new Exception("非法产品，不存在预选库id");
