@@ -40,15 +40,15 @@ public class UserController {
         try{
             if(userName.length() > 1023 || userEmail.length() >255
                     || userPhone.length() > 11 || career.length() > 255){
-                return new ResultBean<>("用户名过长");
+                return new ResultBean<>("用户名过长！");
             }else if (userEmail.length() >255){
-                return new ResultBean<>("邮箱过长");
+                return new ResultBean<>("邮箱过长！");
             }
             else if (userPhone.length() > 11){
-                return new ResultBean<>("电话过长");
+                return new ResultBean<>("电话过长！");
             }
             else if (career.length() > 255) {
-                return new ResultBean<>("职业过长");
+                return new ResultBean<>("职业过长！");
             }else {
                 User user = new User();
                 user.setUserName(userName);
@@ -93,7 +93,7 @@ public class UserController {
             ResultBean<User> resultBean = new ResultBean<>();
             if (user == null) {
                 resultBean.setState(1);
-                resultBean.setMsg("该用户不存在");
+                resultBean.setMsg("该用户不存在！");
             } else {
                 resultBean = new ResultBean<>(user);
             }
@@ -124,7 +124,7 @@ public class UserController {
             }
         }
         catch (Exception e){
-            return new ResultBean<>("修改失败");
+            return new ResultBean<>("修改失败！");
         }
         return new ResultBean<>(true);
     }
@@ -144,15 +144,15 @@ public class UserController {
         try{
             if(userAddress.length() > 1023 || userEmail.length() >255
                     || userPhone.length() > 11 || career.length() > 255){
-                return new ResultBean<>("地址过长");
+                return new ResultBean<>("地址过长！");
             }else if (userEmail.length() >255){
-                return new ResultBean<>("邮箱过长");
+                return new ResultBean<>("邮箱过长！");
             }
             else if (userPhone.length() > 11){
-                return new ResultBean<>("电话过长");
+                return new ResultBean<>("电话过长！");
             }
             else if (career.length() > 255){
-                return new ResultBean<>("职业过长");
+                return new ResultBean<>("职业过长！");
             }else {
                 User user = userService.getUserById(userId);
                 if(user != null ) {
@@ -163,12 +163,12 @@ public class UserController {
                     userService.updateUser(user);
                     return new ResultBean<>();
                 }else {
-                    return new ResultBean<>("此用户不存在");
+                    return new ResultBean<>("此用户不存在！");
                 }
             }
         }
         catch (Exception e){
-            return new ResultBean<>("修改失败");
+            return new ResultBean<>("修改失败！");
         }
     }
 
@@ -209,12 +209,16 @@ public class UserController {
     public ResultBean<String> getPayPwd(@PathVariable Integer userId){
         try{
             User user = userService.getUserById(userId);
-            String payPwd = EdsUtil.decryptBasedDes(user.getPayPwd());
-            ResultBean<String> resultBean = new ResultBean<>();
-            resultBean.setData(payPwd);
-            return resultBean;
+            if(user == null){
+                return new ResultBean<>("用户不存在！");
+            }else {
+                String payPwd = EdsUtil.decryptBasedDes(user.getPayPwd());
+                ResultBean<String> resultBean = new ResultBean<>();
+                resultBean.setData(payPwd);
+                return resultBean;
+            }
         }catch (Exception e){
-            return new ResultBean<>(e);
+            return new ResultBean<>("获取失败！");
         }
     }
 
@@ -236,7 +240,7 @@ public class UserController {
             userService.updateUser(user);
         }
         catch (Exception e){
-            return new ResultBean<>(e);
+            return new ResultBean<>("设置失败！");
         }
         return new ResultBean<>(true);
     }
