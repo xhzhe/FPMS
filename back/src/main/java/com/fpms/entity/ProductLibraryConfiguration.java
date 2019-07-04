@@ -1,5 +1,7 @@
 package com.fpms.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.math.BigDecimal;
 import java.util.Date;
 
@@ -23,9 +25,9 @@ public class ProductLibraryConfiguration {
     private Byte reviewStatus;
 
     private Byte isSale;
-
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+0")
     private Date saleStartTime;
-
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+0")
     private Date saleEndTime;
 
     private Integer saleNum;
@@ -35,7 +37,7 @@ public class ProductLibraryConfiguration {
     private BigDecimal evalutionAvgScore;
 
     private Integer evalutionNum;
-
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+0")
     private Date createTime;
 
     public Integer getProductConId() {

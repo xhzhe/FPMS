@@ -1,5 +1,6 @@
 package com.fpms.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
@@ -19,7 +20,7 @@ public class ConfigurationReview {
 
     private String reviewDesc;
 
-    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+0")
     private Date createTime;
 
     public Integer getConReviewId() {

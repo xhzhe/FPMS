@@ -1,5 +1,6 @@
 package com.fpms.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -21,7 +22,7 @@ public class User {
     private String userPwd;
 
     private String userGender;
-
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+0")
     private Date userBrithday;
 
     private String userPhone;
@@ -48,6 +49,7 @@ public class User {
     private String payPwd;
 
     @JsonIgnore
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+0")
     private Date createTime;
 
     public Integer getUserId() {
