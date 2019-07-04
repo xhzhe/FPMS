@@ -83,10 +83,12 @@ public class EvaluationController {
         if(order.getOrderStatus() == 0 || order.getOrderStatus() == 1){
             return new ResultBean<>("订单未支付，无法评价！");
         }
-        if(evaluation1.getEvaluationStatus() == 1){
+        if( evaluation1 != null && evaluation1.getEvaluationStatus() == 1){
             return new ResultBean<>("已评价，请勿重复评价！");
         }
-
+        if( evaluation1 != null && evaluation1.getIsDelete() == 1){
+            return new ResultBean<>("原评价已删除，无法重新评价！");
+        }
         try{
             if(evaluation.getEvaluationScore() == null){
                 return new ResultBean<>("评分为空！");
@@ -95,10 +97,16 @@ public class EvaluationController {
                 return new ResultBean<>("评价内容为空！");
             }
             //添加评价
-            evaluation.setEvaluationId(evaluation1.getEvaluationId());
+            evaluation.setOrderId(order.getOrderId());
+            evaluation.setUserId(order.getUserId());
+            evaluation.setEvaluationType(order.getOrderType());
+            evaluation.setProductConId(order.getProductConId());
+            evaluation.setProductStdId(order.getProductStdId());
             evaluation.setEvaluationStatus(Byte.valueOf("1"));
-            evaluationService.updateEvaluationByEvaluationId(evaluation);
-
+            evaluationService.addEvaluation(evaluation);
+            //修改订单状态
+            order.setOrderStatus(Byte.valueOf("3"));
+            orderService.updateOrder(order);
             //修改产品分数
             if(order.getOrderType() == 1){
                 ProductLibraryStandard productLibraryStandard = productLibraryStandardService.selectById(order.getProductStdId());

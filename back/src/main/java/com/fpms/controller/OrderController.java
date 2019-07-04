@@ -121,14 +121,6 @@ public class OrderController {
         try{
             //新增订单
             orderService.addOrder(order);
-            //自动创建评价类
-            Evaluation evaluation = new Evaluation();
-            evaluation.setOrderId(order.getOrderId());
-            evaluation.setUserId(order.getUserId());
-            evaluation.setEvaluationType(order.getOrderType());
-            evaluation.setProductConId(order.getProductConId());
-            evaluation.setProductStdId(order.getProductStdId());
-            evaluationService.addEvaluation(evaluation);
         }
         catch (Exception e){
             return new ResultBean<>(e);
@@ -240,6 +232,7 @@ public class OrderController {
                 logMoney.setUserMoney(user.getUserMoney());
                 logMoneyService.addLogMoney(logMoney);
             }
+
         }
         catch (Exception e){
             return new ResultBean<>(e);
