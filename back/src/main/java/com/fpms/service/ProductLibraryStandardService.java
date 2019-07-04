@@ -90,4 +90,13 @@ public interface ProductLibraryStandardService {
      * @return     : void
      */
     void insertProductStd(ProductLibraryStandard productLibraryStandard) throws Exception;
+
+    /**
+     * 获取所有上架的产品
+     * @author     ：YongBiao Liao
+     * @date       ：Created in 2019/7/3 22:57
+     * @param
+     * @return     : java.util.List<com.fpms.entity.ProductLibraryStandard>
+     */
+    List<ProductLibraryStandard> getProductsOnSale();
 }

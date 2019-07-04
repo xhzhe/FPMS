@@ -114,4 +114,13 @@ public interface ProductLibraryConfigurationService {
      * @return     : Integer
      */
     Integer addConfig(String configName);
+
+    /**
+     * 获取已上架的所有配置
+     * @author     ：YongBiao Liao
+     * @date       ：Created in 2019/7/3 23:41
+     * @param
+     * @return     : java.util.List<com.fpms.entity.ProductLibraryConfiguration>
+     */
+    List<ProductLibraryConfiguration> getConfigurationsOnSale();
 }

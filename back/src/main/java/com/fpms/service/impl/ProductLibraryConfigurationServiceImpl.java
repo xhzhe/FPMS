@@ -164,4 +164,16 @@ public class ProductLibraryConfigurationServiceImpl implements ProductLibraryCon
         }
         return null;
     }
+
+    /**
+     * 获取已上架的所有配置
+     * @author     ：YongBiao Liao
+     * @date       ：Created in 2019/7/3 23:42
+     * @param
+     * @return     : java.util.List<com.fpms.entity.ProductLibraryConfiguration>
+     */
+    @Override
+    public List<ProductLibraryConfiguration> getConfigurationsOnSale() {
+        return productLibraryConfigurationDao.getConfigurationsOnSale();
+    }
 }

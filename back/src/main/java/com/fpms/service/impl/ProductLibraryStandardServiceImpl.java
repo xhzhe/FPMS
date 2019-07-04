@@ -2,6 +2,7 @@ package com.fpms.service.impl;
 
 import com.fpms.dao.ProductLibraryPreDao;
 import com.fpms.dao.ProductLibraryStandardDao;
+import com.fpms.dto.ProductDetail;
 import com.fpms.dto.ProductWithName;
 
 import com.fpms.entity.ProductLibraryPre;
@@ -217,5 +218,17 @@ public class ProductLibraryStandardServiceImpl implements ProductLibraryStandard
         productWithName.setStock(productLibraryStandard.getStock());
         productWithName.setSuitUser(productLibraryStandard.getSuitUser());
         return productWithName;
+    }
+
+    /**
+     * 获取所有上架的产品
+     * @author     ：YongBiao Liao
+     * @date       ：Created in 2019/7/3 23:09
+     * @param
+     * @return     : java.util.List<com.fpms.entity.ProductLibraryStandard>
+     */
+    @Override
+    public List<ProductLibraryStandard> getProductsOnSale() {
+        return productLibraryStandardDao.getProductsOnSale();
     }
 }
