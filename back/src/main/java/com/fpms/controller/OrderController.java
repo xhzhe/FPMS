@@ -94,7 +94,7 @@ public class OrderController {
         if(order.getUserId() == null || userService.getUserById(order.getUserId()) == null){
             return new ResultBean<>("用户Id不存在!");
         }
-        if(order.getOrderType() != 1 || order.getOrderType() != 2){
+        if(order.getOrderType() != 1 && order.getOrderType() != 2){
             return new ResultBean<>("订单类型输入错误！");
         }
         if(order.getOrderType() == 1){
