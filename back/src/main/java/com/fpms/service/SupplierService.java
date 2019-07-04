@@ -19,9 +19,8 @@ public interface SupplierService {
      * @author     : HuiZhe Xu
      * @date       : Created in 2019/6/26 14:57
      * @param       supplier
-     * @return     : boolean
      */
-    boolean addSupplier(Supplier supplier);
+    void addSupplier(Supplier supplier) throws Exception;
 
     /**
      *  获取供应商
@@ -30,7 +29,7 @@ public interface SupplierService {
      * @param       id
      * @return     : com.fpms.entity.Supplier
      */
-    Supplier getSupplier(Integer id);
+    Supplier getSupplier(Integer id) throws Exception;
 
     /**
      *  获取所有供应商
@@ -39,5 +38,23 @@ public interface SupplierService {
      * @param
      * @return     : java.util.List<com.fpms.entity.Supplier>
      */
-    List<Supplier> getSuppliers();
+    List<Supplier> getSuppliers() throws Exception;
+
+    /**
+     *  删除供应商
+     * @author     : HuiZhe Xu
+     * @date       : Created in 2019/7/2 15:27
+     * @param       id :
+     * @return     : void
+     */
+    void deleteSupplierById(Integer id) throws Exception;
+
+    /**
+     *  修改供应商
+     * @author     : HuiZhe Xu
+     * @date       : Created in 2019/7/2 15:33
+     * @param       supplier
+     * @return     : void
+     */
+    void modifySupplier(Supplier supplier) throws Exception;
 }

@@ -1,17 +1,19 @@
 package com.fpms.controller;
 
 import com.fpms.annotation.OperationLog;
-import com.fpms.dto.UserRegisterDto;
-import com.fpms.entity.User;
+import com.fpms.dto.*;
+import com.fpms.entity.*;
 import com.fpms.entity.pojo.ResultBean;
+import com.fpms.service.ProductLibraryConfigurationService;
+import com.fpms.service.ProductLibraryPreService;
+import com.fpms.service.ProductLibraryStandardService;
 import com.fpms.service.UserService;
 import com.fpms.utils.EdsUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author : YongBiao Liao
@@ -26,6 +28,15 @@ public class UserController {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private ProductLibraryStandardService productLibraryStandardService;
+
+    @Autowired
+    private ProductLibraryPreService productLibraryPreService;
+
+    @Autowired
+    private ProductLibraryConfigurationService productLibraryConfigurationService;
+
     /**
      * 注册用户
      * @author     ：YongBiao Liao
@@ -38,29 +49,41 @@ public class UserController {
                                         String userEmail, String certificateType, String certificateNum, String career){
         ResultBean<Boolean> resultBean = new ResultBean<>();
         try{
-            User user = new User();
-            user.setUserName(userName);
-            user.setUserPwd(EdsUtil.encryptBasedDes(userPwd));
-            user.setUserGender(userGender);
-            //SimpleDateFormat formatter = new SimpleDateFormat( "yyyy-MM-dd");
-            //user.setUserBrithday(formatter.parse(userBrithday));
-            user.setUserPhone(userPhone);
-            user.setUserEmail(userEmail);
-            user.setCertificateType(Byte.valueOf(certificateType));
-            user.setCertificateNum(certificateNum);
-            user.setCareer(career);
-            int result = userService.register(user);
-            if(result == 0){
-                resultBean.setState(1);
-                resultBean.setMsg("用户已存在");
-            }else if (result == 1){
+            if(userName.length() > 1023 || userEmail.length() >255
+                    || userPhone.length() > 11 || career.length() > 255){
+                return new ResultBean<>("用户名过长！");
+            }else if (userEmail.length() >255){
+                return new ResultBean<>("邮箱过长！");
+            }
+            else if (userPhone.length() > 11){
+                return new ResultBean<>("电话过长！");
+            }
+            else if (career.length() > 255) {
+                return new ResultBean<>("职业过长！");
+            }else {
+                User user = new User();
+                user.setUserName(userName);
+                user.setUserPwd(EdsUtil.encryptBasedDes(userPwd));
+                user.setUserGender(userGender);
+                //SimpleDateFormat formatter = new SimpleDateFormat( "yyyy-MM-dd");
+                //user.setUserBrithday(formatter.parse(userBrithday));
+                user.setUserPhone(userPhone);
+                user.setUserEmail(userEmail);
+                user.setCertificateType(Byte.valueOf(certificateType));
+                user.setCertificateNum(certificateNum);
+                user.setCareer(career);
+                int result = userService.register(user);
+                if(result == 0){
+                    resultBean.setState(1);
+                    resultBean.setMsg("用户已存在");
+                }else if (result == 1){
 
-            }else if (result == 2){
-                resultBean.setState(1);
-                resultBean.setMsg("注册失败");
+                }else if (result == 2){
+                    resultBean.setState(1);
+                    resultBean.setMsg("注册失败");
+                }
             }
         }catch (Exception e){
-            e.printStackTrace();
             resultBean.setState(1);
             resultBean.setMsg(e.getMessage());
         }
@@ -81,7 +104,7 @@ public class UserController {
             ResultBean<User> resultBean = new ResultBean<>();
             if (user == null) {
                 resultBean.setState(1);
-                resultBean.setMsg("该用户不存在");
+                resultBean.setMsg("该用户不存在！");
             } else {
                 resultBean = new ResultBean<>(user);
             }
@@ -112,7 +135,7 @@ public class UserController {
             }
         }
         catch (Exception e){
-            return new ResultBean<>("修改失败");
+            return new ResultBean<>("修改失败！");
         }
         return new ResultBean<>(true);
     }
@@ -130,20 +153,33 @@ public class UserController {
     public ResultBean<Boolean> modifyUser(String userEmail,String userPhone ,
                                           String userAddress,String career, @PathVariable Integer userId){
         try{
-            User user = userService.getUserById(userId);
-            if(user != null ) {
-                user.setUserEmail(userEmail);
-                user.setUserPhone(userPhone);
-                user.setUserAddress(userAddress);
-                user.setCareer(career);
-                userService.updateUser(user);
-                return new ResultBean<>();
+            if(userAddress.length() > 1023 || userEmail.length() >255
+                    || userPhone.length() > 11 || career.length() > 255){
+                return new ResultBean<>("地址过长！");
+            }else if (userEmail.length() >255){
+                return new ResultBean<>("邮箱过长！");
+            }
+            else if (userPhone.length() > 11){
+                return new ResultBean<>("电话过长！");
+            }
+            else if (career.length() > 255){
+                return new ResultBean<>("职业过长！");
             }else {
-                return new ResultBean<>("此用户不存在");
+                User user = userService.getUserById(userId);
+                if(user != null ) {
+                    user.setUserEmail(userEmail);
+                    user.setUserPhone(userPhone);
+                    user.setUserAddress(userAddress);
+                    user.setCareer(career);
+                    userService.updateUser(user);
+                    return new ResultBean<>();
+                }else {
+                    return new ResultBean<>("此用户不存在！");
+                }
             }
         }
         catch (Exception e){
-            return new ResultBean<>("修改失败");
+            return new ResultBean<>("修改失败！");
         }
     }
 
@@ -184,12 +220,16 @@ public class UserController {
     public ResultBean<String> getPayPwd(@PathVariable Integer userId){
         try{
             User user = userService.getUserById(userId);
-            String payPwd = EdsUtil.decryptBasedDes(user.getPayPwd());
-            ResultBean<String> resultBean = new ResultBean<>();
-            resultBean.setData(payPwd);
-            return resultBean;
+            if(user == null){
+                return new ResultBean<>("用户不存在！");
+            }else {
+                String payPwd = EdsUtil.decryptBasedDes(user.getPayPwd());
+                ResultBean<String> resultBean = new ResultBean<>();
+                resultBean.setData(payPwd);
+                return resultBean;
+            }
         }catch (Exception e){
-            return new ResultBean<>(e);
+            return new ResultBean<>("获取失败！");
         }
     }
 
@@ -211,10 +251,63 @@ public class UserController {
             userService.updateUser(user);
         }
         catch (Exception e){
-            return new ResultBean<>(e);
+            return new ResultBean<>("设置失败！");
         }
         return new ResultBean<>(true);
     }
 
 
+    @GetMapping("/user/mall")
+    public ResultBean<MallDto> getOnSale() throws Exception {
+        MallDto mallDto = new MallDto();
+
+        try{
+            //获取已上架产品
+            ArrayList<ProductDto> productDtoArrayList = new ArrayList<>();
+            List<ProductLibraryStandard> productLibraryStandardList = productLibraryStandardService.getProductsOnSale();
+            ArrayList<ProductLibraryPre> productLibraryPreArrayList = new ArrayList<>();
+            if(productLibraryStandardList != null){
+                for(int i = 0; i < productLibraryStandardList.size(); i++) {
+                    ProductDto productDto = new ProductDto();
+                    ProductLibraryStandard productLibraryStandard = productLibraryStandardList.get(i);
+                    ProductLibraryPre productLibraryPre = productLibraryPreService.selectById(productLibraryStandard.getProductPreId());
+                    productLibraryPreArrayList.add(productLibraryPre);
+                    productDto.setProductLibraryPre(productLibraryPre);
+                    productDto.setProductLibraryStandard(productLibraryStandard);
+                    productDtoArrayList.add(productDto);
+                }
+            }
+            mallDto.setProductDtoList(productDtoArrayList);
+
+            //获取已上架配置以及其包含的产品
+            ArrayList<ConfigurationDto> configurationDtoArrayList = new ArrayList<>();
+            List<ProductLibraryConfiguration> productLibraryConfigurationList = productLibraryConfigurationService.getConfigurationsOnSale();
+            for(int i = 0; i < productLibraryConfigurationList.size(); i++){
+                ConfigurationDto configurationDto = new ConfigurationDto();
+                configurationDto.setProductLibraryConfiguration(productLibraryConfigurationList.get(i));
+                List<ProductConfiguration> productConfigurationList = productLibraryConfigurationService.getProductConfigurationByproductConId(productLibraryConfigurationList.get(i).getProductConId());
+                if(productConfigurationList != null){
+                    ArrayList<ProductLibraryStandard> productLibraryStandardArrayList = new ArrayList<>();
+                    ArrayList<ProductLibraryPre> productLibraryPreArrayList1 = new ArrayList<>();
+                    for(int j = 0; j < productConfigurationList.size(); j++){
+                        Integer productStdId = productConfigurationList.get(j).getProductStdId();
+                        ProductLibraryStandard productLibraryStandard = productLibraryStandardService.selectById(productStdId);
+                        Integer productPreId = productLibraryStandard.getProductPreId();
+                        productLibraryStandardArrayList.add(productLibraryStandard);
+                        ProductLibraryPre productLibraryPre = productLibraryPreService.selectById(productPreId);
+                        productLibraryPreArrayList1.add(productLibraryPre);
+                    }
+                    configurationDto.setProductLibraryPreList(productLibraryPreArrayList1);
+                    configurationDto.setProductLibraryStandardList(productLibraryStandardArrayList);
+                    configurationDtoArrayList.add(configurationDto);
+                }else {
+                    continue;
+                }
+            }
+            mallDto.setConfigurationDtoList(configurationDtoArrayList);
+            return new ResultBean<>(mallDto);
+        }catch (Exception e){
+            return new ResultBean<>("获取失败！");
+        }
+    }
 }

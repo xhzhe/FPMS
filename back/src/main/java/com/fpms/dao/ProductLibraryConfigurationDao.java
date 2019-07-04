@@ -86,4 +86,13 @@ public interface ProductLibraryConfigurationDao {
      * @return     : java.util.List<com.fpms.entity.ProductLibraryConfiguration>
      */
     List<ProductLibraryConfigurationDto> selectByReviewStatus(Byte reviewStatus);
+
+    /**
+     * 获取已上架的所有配置
+     * @author     ：YongBiao Liao
+     * @date       ：Created in 2019/7/3 23:44
+     * @param
+     * @return     : java.util.List<com.fpms.entity.ProductLibraryConfiguration>
+     */
+    public List<ProductLibraryConfiguration> getConfigurationsOnSale();
 }

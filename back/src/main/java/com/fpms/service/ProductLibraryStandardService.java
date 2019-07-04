@@ -7,63 +7,96 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * @author     : HuiZhe Xu
- * @date       : 2019/6/14 14:51
+ * @author : HuiZhe Xu
+ * @date : 2019/6/14 14:51
  * @description:
- * @modified   :
+ * @modified :
  */
 public interface ProductLibraryStandardService {
     /**
-     *  下架产品
-     * @author     : HuiZhe Xu
-     * @date       : Created in 2019/6/25 11:05
-     * @param       ID
-     * @return     : java.lang.Boolean
+     * 下架产品
+     *
+     * @param id
+     * @return : java.lang.Boolean
+     * @author : HuiZhe Xu
+     * @date : Created in 2019/6/25 11:05
      */
-    Boolean obtainedProducts(Integer ID) throws Exception;
+    Boolean obtainedProducts(Integer id) throws Exception;
 
     /**
-     *  通过标准库iD获取标准库产品
-     * @author     ：HuiZhe Xu
-     * @date       ：Created in 2019/6/25 10:34
-     * @param       productStdId
-     * @return     : com.fpms.entity.ProductLibraryStandard
+     * 通过标准库iD获取标准库产品
+     *
+     * @param productStdId
+     * @return : com.fpms.entity.ProductLibraryStandard
+     * @author ：HuiZhe Xu
+     * @date ：Created in 2019/6/25 10:34
      */
     ProductLibraryStandard selectById(Integer productStdId) throws Exception;
 
     /**
-     *  通过标准库
-     * @author     ：HuiZhe Xu
-     * @date       ：Created in 2019/6/25 10:35
-     * @param       productLibraryStandard
-     * @return     : boolean
+     * 通过标准库
+     *
+     * @param productLibraryStandard
+     * @return : boolean
+     * @author ：HuiZhe Xu
+     * @date ：Created in 2019/6/25 10:35
      */
     boolean updateProductStandard(ProductLibraryStandard productLibraryStandard) throws Exception;
 
     /**
-     *  上架产品
-     * @author     : HuiZhe Xu
-     * @date       : Created in 2019/6/26 10:35
-     * @param       Id
-     * @return     : java.lang.Boolean
+     * 上架产品
+     *
+     * @param id
+     * @return : java.lang.Boolean
+     * @author : HuiZhe Xu
+     * @date : Created in 2019/6/26 10:35
      */
-    Boolean uploadProduct(Integer Id) throws Exception;
+    Boolean uploadProduct(Integer id) throws Exception;
 
     /**
      * 通过产品预选id查找标准库产品
-     * @author     ：YongBiao Liao
-     * @date       ：Created in 2019/6/28 16:44
-     * @param       productPreId
-     * @return     : com.fpms.entity.ProductLibraryStandard
+     *
+     * @param productPreId
+     * @return : com.fpms.entity.ProductLibraryStandard
+     * @author ：YongBiao Liao
+     * @date ：Created in 2019/6/28 16:44
      */
     ProductLibraryStandard selectByProductPreId(Integer productPreId) throws Exception;
 
     /**
-     *  获取所有标准库产品
-     * @author     ：TianHong Liao
-     * @date       ：Created in 2019/6/28 16:50
+     * 获取所有标准库产品
+     *
      * @param
-     * @return     : ArrayList<ProductWithName>
+     * @return : ArrayList<ProductWithName>
+     * @author ：TianHong Liao
+     * @date ：Created in 2019/6/28 16:50
      */
-    public ArrayList<ProductWithName> getAll() throws Exception;
+    ArrayList<ProductWithName> getAll() throws Exception;
+
+    /**
+     *  查找单个标准库产品
+     * @author     : HuiZhe Xu
+     * @date       : Created in 2019/7/2 16:05
+     * @param       id
+     * @return     : com.fpms.dto.ProductWithName
+     */
+    ProductWithName getProductStd(Integer id) throws Exception;
+
+    /**
+     *  插入标准库产品
+     * @author     : HuiZhe Xu
+     * @date       : Created in 2019/7/3 16:51
+     * @param       productLibraryStandard
+     * @return     : void
+     */
+    void insertProductStd(ProductLibraryStandard productLibraryStandard) throws Exception;
+
+    /**
+     * 获取所有上架的产品
+     * @author     ：YongBiao Liao
+     * @date       ：Created in 2019/7/3 22:57
+     * @param
+     * @return     : java.util.List<com.fpms.entity.ProductLibraryStandard>
+     */
+    List<ProductLibraryStandard> getProductsOnSale();
 }

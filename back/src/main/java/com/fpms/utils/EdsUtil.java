@@ -31,11 +31,11 @@ public class EdsUtil {
             // 加密，并把字节数组编码成字符串
             encryptedData = new sun.misc.BASE64Encoder().encode(cipher.doFinal(password.getBytes()));
         } catch (Exception e) {
-            // log.error("加密错误，错误信息：", e);
             throw new RuntimeException("加密错误，错误信息：", e);
         }
         return encryptedData;
     }
+
     @SuppressWarnings("restriction")
     public static String decryptBasedDes(String cryptData) {
         String decryptedData = null;

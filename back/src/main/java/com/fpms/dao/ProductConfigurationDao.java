@@ -77,7 +77,7 @@ public interface ProductConfigurationDao {
      * @param       productStdId
      * @return     : com.fpms.entity.ProductConfiguration
      */
-    ProductConfiguration selectByPCIAndPSI(@Param("productConId") Integer productConId, @Param("productStdId") Integer productStdId);
+    ProductConfiguration selectByPciAndPsi(@Param("productConId") Integer productConId, @Param("productStdId") Integer productStdId);
 
     /**
      * 通过配置id删除配置
@@ -88,7 +88,7 @@ public interface ProductConfigurationDao {
      */
     Integer deleteByProductConId(@Param("productConId") Integer productConId);
 
-    List<ProductConfiguration> getProductConfigID(Integer configID);
+    List<ProductConfiguration> getProductConfigId(Integer configId);
 
     /**
      * 通过配置id获取该配置中的所有产品

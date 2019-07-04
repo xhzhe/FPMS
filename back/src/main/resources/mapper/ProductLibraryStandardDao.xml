@@ -231,4 +231,7 @@
   <select id="selectByProductPreId" resultMap="BaseResultMap">
     select * from product_library_standard where product_pre_id = #{productPreId}
   </select>
+  <select id="getProductsOnSale" resultMap="BaseResultMap">
+    select * from product_library_standard where is_sale = 1
+  </select>
 </mapper>

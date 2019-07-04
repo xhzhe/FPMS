@@ -30,15 +30,30 @@ import java.util.regex.Pattern;
 @CrossOrigin
 public class StaffController {
 
+
+    private StaffService staffService;
+    private static Pattern NUMBER_PATTERN = Pattern.compile("[0-9]*");
+
+    private StaffRoleService staffRoleService;
+
+    private RoleService roleService;
+
+    private final int MAX_USER_NAME_LENGTH =255;
+    private final int MAX_PASSWORD_LENGTH =20;
     @Autowired
-    StaffService staffService;
-    private Pattern NUMBER_PATTERN = Pattern.compile("[0-9]*");
+    public StaffController(StaffService staffService) {
+        this.staffService = staffService;
+    }
 
     @Autowired
-    StaffRoleService staffRoleService;
+    public void setStaffRoleService(StaffRoleService staffRoleService) {
+        this.staffRoleService = staffRoleService;
+    }
 
     @Autowired
-    RoleService roleService;
+    public void setRoleService(RoleService roleService) {
+        this.roleService = roleService;
+    }
 
     /**
      * 获取详细设置
@@ -213,14 +228,21 @@ public class StaffController {
                                         @RequestParam String staffGender, @RequestParam String roleName) {
         ResultBean<Boolean> res = new ResultBean<>();
         try {
+            if (staffName.length() == 0 || staffPwd.length() == 0 || staffDepartment.length() == 0||roleName.length()==0||staffGender.length()==0) {
+                throw new Exception("缺少参数");
+            }
+            if(staffName.length()> MAX_USER_NAME_LENGTH){
+                throw new Exception("用户名过长");
+            }
+            String password=EdsUtil.encryptBasedDes(staffPwd);
+            if(password.length()> MAX_PASSWORD_LENGTH){
+                throw new Exception("密码设置过长");
+            }
             Staff staff = new Staff();
             staff.setStaffName(staffName);
             staff.setStaffDepartment(staffDepartment);
-            staff.setStaffPwd(EdsUtil.encryptBasedDes(staffPwd));
+            staff.setStaffPwd(password);
             staff.setStaffGender(staffGender);
-            if (staffName.length() == 0 || staffPwd.length() == 0 || staffDepartment.length() == 0) {
-                throw new Exception("缺少参数");
-            }
             staffService.addStaff(staff, roleName);
             res.setData(true);
         } catch (Exception e) {
@@ -318,24 +340,4 @@ public class StaffController {
         }
         return new ResultBean<>(true);
     }
-//API
-//    @PutMapping("/{staffId}/privilege")
-//    public ResultBean<Boolean> modifyStaffPrivilege(@PathVariable Integer staffId, @RequestBody Map parm){
-//        ResultBean<Boolean> res = new ResultBean<>();
-//        try{
-//            ArrayList<Object> privilegeList=(ArrayList)parm.get("privilegeList");
-//            if(!staffService.ModifyPrivilege(staffId,privilegeList)){
-//                throw new Exception("修改失败");
-//            }
-//            res.setData(true);
-//            res.setState(ResultBean.SUCCESS);
-//            res.setMsg(ResultBean.SUCC_MSG);
-//        }catch (Exception e){
-//            e.printStackTrace();
-//            res.setData(false);
-//            res.setState(ResultBean.FAIL);
-//            res.setMsg(e.getMessage()==null?ResultBean.FAIL_MSG:e.getMessage());
-//        }
-//        return res;
-//    }
 }

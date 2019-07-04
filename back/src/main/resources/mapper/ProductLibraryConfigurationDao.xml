@@ -214,4 +214,7 @@
   <select id="selectAll" resultMap="BaseResultMap">
     select * from product_library_configuration
   </select>
+  <select id="getConfigurationsOnSale" resultMap="BaseResultMap">
+    select * from product_library_configuration where is_sale = 1
+  </select>
 </mapper>

@@ -37,17 +37,18 @@ public interface ProductLibraryConfigurationService {
     /**
      * 通过配置id删除配置
      *
-     * @param productConId
+     * @param : productConId
      * @return : void
      * @author ：YongBiao Liao
      * @date ：Created in 2019/6/24 21:04
+     * @exception Exception
      */
     boolean deleteConfiguration(Integer productConId) throws Exception;
 
     /**
      * 通过配置Id获取配置
      *
-     * @param productConId
+     * @param : productConId
      * @return : com.fpms.entity.ProductLibraryConfiguration
      * @author ：TianHong Liao
      * @date ：Created in 2019/6/25 10:38
@@ -113,4 +114,13 @@ public interface ProductLibraryConfigurationService {
      * @return     : Integer
      */
     Integer addConfig(String configName);
+
+    /**
+     * 获取已上架的所有配置
+     * @author     ：YongBiao Liao
+     * @date       ：Created in 2019/7/3 23:41
+     * @param
+     * @return     : java.util.List<com.fpms.entity.ProductLibraryConfiguration>
+     */
+    List<ProductLibraryConfiguration> getConfigurationsOnSale();
 }

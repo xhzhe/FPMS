@@ -23,17 +23,16 @@ public class SupplierServiceImpl implements SupplierService {
      * 添加员工
      *
      * @param supplier
-     * @return : boolean
      * @author : HuiZhe Xu
      * @date : Created in 2019/6/26 14:57
      */
     @Override
-    public boolean addSupplier(Supplier supplier) {
+    public void addSupplier(Supplier supplier) throws Exception {
         int count=supplierDao.insertSelective(supplier);
         if(count>0){
-            return true;
+            return;
         }
-        return false;
+        throw new Exception("供应商插入失败");
     }
 
     /**
@@ -45,10 +44,10 @@ public class SupplierServiceImpl implements SupplierService {
      * @date : Created in 2019/6/26 15:04
      */
     @Override
-    public Supplier getSupplier(Integer id) {
+    public Supplier getSupplier(Integer id) throws Exception {
         Supplier supplier=supplierDao.selectByPrimaryKey(id);
         if(supplier==null){
-            return null;
+            throw new Exception("没有这个供应商");
         }
         return supplier;
     }
@@ -61,9 +60,44 @@ public class SupplierServiceImpl implements SupplierService {
      * @date : Created in 2019/6/26 15:14
      */
     @Override
-    public List<Supplier> getSuppliers() {
+    public List<Supplier> getSuppliers() throws Exception {
         List<Supplier> suppliers=supplierDao.getAllSupplier();
-
+        if(suppliers==null){
+            throw new Exception("供应商列表为空");
+        }
         return suppliers;
+    }
+
+    /**
+     * 删除供应商
+     * @param id
+     * @return : void
+     * @author : HuiZhe Xu
+     * @date : Created in 2019/7/2 15:27
+     */
+    @Override
+    public void deleteSupplierById(Integer id) throws Exception {
+        getSupplier(id);
+        int count = supplierDao.deleteByPrimaryKey(id);
+        if(count<=0){
+            throw new Exception("删除失败");
+        }
+    }
+
+    /**
+     * 修改供应商
+     *
+     * @param supplier
+     * @return : void
+     * @author : HuiZhe Xu
+     * @date : Created in 2019/7/2 15:33
+     */
+    @Override
+    public void modifySupplier(Supplier supplier) throws Exception {
+        getSupplier(supplier.getSupplierId());
+        int count = supplierDao.updateByPrimaryKeySelective(supplier);
+        if(count<=0){
+            throw new Exception("修改失败");
+        }
     }
 }

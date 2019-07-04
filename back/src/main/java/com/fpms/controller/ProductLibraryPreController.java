@@ -17,9 +17,18 @@ import java.util.List;
 @RestController
 @CrossOrigin
 public class ProductLibraryPreController {
-    @Autowired
-    private ProductLibraryPreService productLibraryPreService;
+//    @Autowired
     /**
+     *  预选库服务
+     * @author     : HuiZhe Xu
+     * @date       : Created in 2019/7/2 9:57
+     */
+    private ProductLibraryPreService productLibraryPreService;
+    @Autowired
+    public ProductLibraryPreController(ProductLibraryPreService productLibraryPreService){
+        this.productLibraryPreService=productLibraryPreService;
+    }
+ /**
      *  修改产品属性
      * @author     : HuiZhe Xu
      * @date       : Created in 2019/6/25 10:59
@@ -95,5 +104,25 @@ public class ProductLibraryPreController {
             return new ResultBean<>(e);
         }
         return new ResultBean<>(productLibraryPres);
+    }
+
+    /**
+     *  查找预选库产品
+     * @author     : HuiZhe Xu
+     * @date       : Created in 2019/7/2 15:57
+     * @param       productPreId
+     * @return     : com.fpms.entity.pojo.ResultBean<com.fpms.entity.ProductLibraryPre>
+     */
+    @OperationLog("按id查找预选库产品")
+    @GetMapping("/productPre/{productPreId}")
+    public ResultBean<ProductLibraryPre> getProductPre(@PathVariable Integer productPreId){
+        try{
+            ProductLibraryPre productLibraryPre = productLibraryPreService.selectById(productPreId);
+            ResultBean<ProductLibraryPre> res = new ResultBean<>();
+            res.setData(productLibraryPre);
+            return res;
+        }catch (Exception e){
+            return new ResultBean<>(e);
+        }
     }
 }

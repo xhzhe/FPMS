@@ -5,11 +5,11 @@ import com.fpms.dao.ProductLibraryStandardDao;
 import com.fpms.entity.ProductLibraryPre;
 import com.fpms.entity.ProductLibraryStandard;
 import com.fpms.service.ProductLibraryPreService;
+import com.fpms.service.StaffService;
+import com.fpms.service.SupplierService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.util.List;
 
 /**
@@ -20,68 +20,79 @@ import java.util.List;
  */
 @Service
 public class ProductLibraryPreServiceImpl implements ProductLibraryPreService {
-    @Autowired
     private ProductLibraryPreDao productLibraryPreDao;
+    private ProductLibraryStandardDao productLibraryStandardDao;
+    private StaffService staffService;
+    private SupplierService supplierService;
 
     @Autowired
-    private ProductLibraryStandardDao productLibraryStandardDao;
+    public void setProductLibraryStandardDao(ProductLibraryStandardDao productLibraryStandardDao) {
+        this.productLibraryStandardDao = productLibraryStandardDao;
+    }
+
+    @Autowired
+    public void setStaffService(StaffService staffService) {
+        this.staffService = staffService;
+    }
+
+    @Autowired
+    public void setSupplierService(SupplierService supplierService) {
+        this.supplierService = supplierService;
+    }
+
+    @Autowired
+    public ProductLibraryPreServiceImpl(ProductLibraryPreDao productLibraryPreDao){
+        this.productLibraryPreDao=productLibraryPreDao;
+    }
 
     /**
      * 修改产品属性
-     *
      * @param productLibraryPre
-     * @return : java.lang.Boolean
      * @author : HuiZhe Xu
      * @date : Created in 2019/6/25 11:06
+     * @exception Exception when nothing found there
      */
     @Override
-    public Boolean modifyProduct(ProductLibraryPre productLibraryPre) throws Exception {
+    public void modifyProduct(ProductLibraryPre productLibraryPre) throws Exception {
         ProductLibraryPre productLibraryPrepare = selectById(productLibraryPre.getProductPreId());
         if (productLibraryPrepare == null) {
             throw new Exception("预选库没有该产品");
         }
-        //没有必要的反射
-//            Class productPre=Class.forName("com.fpms.entity.ProductLibraryPre");
-//            Method []methods=productPre.getMethods();
-//            for(Method method:methods){
-//                String methodName=method.getName();
-//                if("set".equals(methodName.substring(0,3))){
-//                    String getName="get"+methodName.substring(3);
-//                    Method m=productPre.getMethod(getName);
-//                    Object attribute=m.invoke(productLibraryPre);
-//                    if(attribute!=null){
-//                        method.invoke(productLibraryPrepare,attribute);
-//                    }
-//                }
-//            }
         int count = productLibraryPreDao.updateByPrimaryKeySelective(productLibraryPre);
         if (count > 0) {
-            return true;
+            return;
         }
         throw new Exception("更新失败");
     }
 
     /**
      * 添加产品
-     *
      * @param productLibraryPre
-     * @return : java.lang.Boolean
      * @author : HuiZhe Xu
      * @date : Created in 2019/6/25 11:06
      */
     @Override
-    public Boolean addProduct(ProductLibraryPre productLibraryPre) throws Exception {
-
+    public void addProduct(ProductLibraryPre productLibraryPre) throws Exception {
+        if(productLibraryPre.getProductName()==null){
+            throw new Exception("没有产品名");
+        }
+        if(productLibraryPre.getStaffId()==null){
+            throw new Exception("非法操作，没有员工执行的操作");
+        }
+        staffService.getSingleStaffDetail(productLibraryPre.getStaffId());
+        if(productLibraryPre.getSupplierId()==null){
+            throw new Exception("不合理产品，该产品没有供应商");
+        }
+        supplierService.getSupplier(productLibraryPre.getSupplierId());
         int count = productLibraryPreDao.insertSelective(productLibraryPre);
         if (count > 0) {
-            return true;
+            return;
         }
         throw new Exception("添加失败");
     }
 
     /**
      * 查询预选库产品
-     *
      * @param productPreId
      * @return : com.fpms.entity.ProductLibraryPre
      * @author : HuiZhe Xu
@@ -98,7 +109,6 @@ public class ProductLibraryPreServiceImpl implements ProductLibraryPreService {
 
     /**
      * 获取未评估产品列表
-     *
      * @param
      * @return : java.util.List<com.fpms.entity.ProductLibraryPre>
      * @author : HuiZhe Xu
@@ -115,7 +125,6 @@ public class ProductLibraryPreServiceImpl implements ProductLibraryPreService {
 
     /**
      * 获取所有预选库产品
-     *
      * @param
      * @return : java.util.List<com.fpms.entity.ProductLibraryPre>
      * @author ：YongBiao Liao
@@ -153,7 +162,6 @@ public class ProductLibraryPreServiceImpl implements ProductLibraryPreService {
 
     /**
      * 通过产品名查找产品
-     *
      * @param productName
      * @return : com.fpms.entity.ProductLibraryPre
      * @author ：YongBiao Liao

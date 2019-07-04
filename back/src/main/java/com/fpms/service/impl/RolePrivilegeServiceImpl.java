@@ -3,7 +3,6 @@ package com.fpms.service.impl;
 import com.fpms.dao.RolePrivilegeDao;
 import com.fpms.entity.RolePrivilege;
 import com.fpms.service.RolePrivilegeService;
-import com.fpms.service.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

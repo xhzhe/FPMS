@@ -1,5 +1,7 @@
 package com.fpms.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.util.Date;
 
 /**
@@ -12,7 +14,7 @@ public class LogOperate {
     private Integer logOperateId;
 
     private Integer staffId;
-
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+0")
     private Date operateTime;
 
     private String operateDesc;
@@ -20,7 +22,7 @@ public class LogOperate {
     private String operateUrl;
 
     private String content;
-
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+0")
     private Date createTime;
 
     public Integer getLogOperateId() {

@@ -22,10 +22,10 @@ public interface StaffService {
      *  从ID获取配置详细信息
      * @author     : HuiZhe Xu
      * @date       : Created in 2019/6/25 11:00
-     * @param       configID
+     * @param       configId
      * @return     : com.fpms.dto.ConfigDetail
      */
-    ConfigDetail getConfigById(Integer configID) throws Exception;
+    ConfigDetail getConfigById(Integer configId) throws Exception;
     /**
      *  获取所有配置和产品
      * @author     : HuiZhe Xu
@@ -47,18 +47,18 @@ public interface StaffService {
      *  获得单个员工的详细信息
      * @author     : HuiZhe Xu
      * @date       : Created in 2019/6/25 11:01
-     * @param       StaffId
+     * @param       staffId
      * @return     : com.fpms.entity.Staff
      */
-    Staff getSingleStaffDetail(Integer StaffId) throws Exception;
+    Staff getSingleStaffDetail(Integer staffId) throws Exception;
     /**
      *  获取产品简介
      * @author     : HuiZhe Xu
      * @date       : Created in 2019/6/25 11:01
-     * @param       ProductID
+     * @param       productId
      * @return     : com.fpms.dto.ProductDetail
      */
-    ProductDetail getProductInfo(Integer ProductID) throws Exception;
+    ProductDetail getProductInfo(Integer productId) throws Exception;
     /**
      *  获取所有员工
      * @author     : HuiZhe Xu

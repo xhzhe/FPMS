@@ -12,11 +12,11 @@ import java.util.ArrayList;
 public class ConfigDetail {
     public ProductLibraryConfiguration configlib;
     public ArrayList<Product> products=new ArrayList<>();
-    public void addProduct(String name, String desc, Float rate,int productLibraryID){
+    public void addProduct(String name, String desc, Float rate,int productLibraryId){
         Product p=new Product();
         p.rate=rate;
         p.describe=name;
-        p.productStdId=productLibraryID;
+        p.productStdId=productLibraryId;
         p.productName=desc;
         products.add(p);
     }

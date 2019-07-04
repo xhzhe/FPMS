@@ -16,17 +16,16 @@ public interface ProductLibraryPreService {
      * @author     : HuiZhe Xu
      * @date       : Created in 2019/6/25 11:06
      * @param       productLibraryPre
-     * @return     : java.lang.Boolean
+     * @exception Exception when nothing found there
      */
-    Boolean modifyProduct(ProductLibraryPre productLibraryPre) throws Exception;
+    void modifyProduct(ProductLibraryPre productLibraryPre) throws Exception;
     /**
      *  添加产品
      * @author     : HuiZhe Xu
      * @date       : Created in 2019/6/25 11:06
      * @param       productLibraryPre
-     * @return     : java.lang.Boolean
      */
-    Boolean addProduct(ProductLibraryPre productLibraryPre) throws Exception;
+    void addProduct(ProductLibraryPre productLibraryPre) throws Exception;
 
     /**
      *  通过预选库Id获取预选库产品

@@ -2,12 +2,15 @@ package com.fpms.service.impl;
 
 import com.fpms.dao.ProductLibraryPreDao;
 import com.fpms.dao.ProductLibraryStandardDao;
+import com.fpms.dto.ProductDetail;
 import com.fpms.dto.ProductWithName;
 
 import com.fpms.entity.ProductLibraryPre;
 import com.fpms.entity.ProductLibraryStandard;
 
 import com.fpms.service.ProductLibraryStandardService;
+import org.apache.ibatis.exceptions.TooManyResultsException;
+import org.mybatis.spring.MyBatisSystemException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,11 +25,18 @@ import java.util.List;
  */
 @Service
 public class ProductLibraryStandardServiceImpl implements ProductLibraryStandardService {
-    @Autowired
     private ProductLibraryStandardDao productLibraryStandardDao;
+    private ProductLibraryPreDao productLibraryPreDao;
 
     @Autowired
-    private ProductLibraryPreDao productLibraryPreDao;
+    public void setProductLibraryPreDao(ProductLibraryPreDao productLibraryPreDao) {
+        this.productLibraryPreDao = productLibraryPreDao;
+    }
+
+    @Autowired
+    public ProductLibraryStandardServiceImpl(ProductLibraryStandardDao productLibraryStandardDao) {
+        this.productLibraryStandardDao=productLibraryStandardDao;
+    }
     /**
      *  下架产品
      * @author     : HuiZhe Xu
@@ -109,7 +119,12 @@ public class ProductLibraryStandardServiceImpl implements ProductLibraryStandard
      */
     @Override
     public ProductLibraryStandard selectByProductPreId(Integer productPreId) throws Exception {
-        ProductLibraryStandard productLibraryStandard = productLibraryStandardDao.selectByProductPreId(productPreId);
+        ProductLibraryStandard productLibraryStandard;
+        try {
+            productLibraryStandard = productLibraryStandardDao.selectByProductPreId(productPreId);
+        }catch (MyBatisSystemException e){
+            throw new Exception("数据库异常，有多个标准库产品和一个预选库产品对应");
+        }
         if(productLibraryStandard==null){
             throw new Exception("标准库中无该产品");
         }
@@ -131,33 +146,89 @@ public class ProductLibraryStandardServiceImpl implements ProductLibraryStandard
            throw new Exception("标准库中无产品");
         }
         for(ProductLibraryStandard productLibraryStandard: productLibraryStandards){
-            ProductLibraryPre productLibraryPre=productLibraryPreDao.selectByPrimaryKey(productLibraryStandard.getProductPreId());
-            if(productLibraryPre==null){
-                throw new Exception("标准库中产品没有出现在预选库中，不合法产品");
-            }
-            String name=productLibraryPre.getProductName();
-            ProductWithName productWithName=new ProductWithName();
-            productWithName.setCreateTime(productLibraryStandard.getCreateTime());
-            productWithName.setIsSale(productLibraryStandard.getIsSale());
-            productWithName.setCreditRiskIndex(productLibraryStandard.getCreditRiskIndex());
-            productWithName.setEvalutionAvgScore(productLibraryStandard.getEvalutionAvgScore());
-            productWithName.setEvalutionNum(productLibraryStandard.getEvalutionNum());
-            productWithName.setExchangeRateRiskIndex(productLibraryStandard.getExchangeRateRiskIndex());
-            productWithName.setInterestRateRiskIndex(productLibraryStandard.getInterestRateRiskIndex());
-            productWithName.setInterRiskRating(productLibraryStandard.getInterRiskRating());
-            productWithName.setMarketRiskIndex(productLibraryStandard.getMarketRiskIndex());
-            productWithName.setProductName(name);
-            productWithName.setProductPreId(productLibraryStandard.getProductPreId());
-            productWithName.setProductStdId(productLibraryStandard.getProductStdId());
-            productWithName.setSaleEndTime(productLibraryStandard.getSaleEndTime());
-            productWithName.setSaleNum(productLibraryStandard.getSaleNum());
-            productWithName.setSaleStartTime(productLibraryStandard.getSaleStartTime());
-            productWithName.setStock(productLibraryStandard.getStock());
-            productWithName.setSuitUser(productLibraryStandard.getSuitUser());
-
-
-            productWithNames.add(productWithName);
+            productWithNames.add(makeProductWithName(productLibraryStandard));
         }
         return productWithNames;
+    }
+    /**
+     *  查找单个标准库产品
+     * @author     : HuiZhe Xu
+     * @date       : Created in 2019/7/2 16:05
+     * @param       id
+     * @return     : com.fpms.dto.ProductWithName
+     */
+    @Override
+    public ProductWithName getProductStd(Integer id) throws Exception {
+        ProductLibraryStandard productLibraryStandard=selectById(id);
+        return makeProductWithName(productLibraryStandard);
+    }
+
+    /**
+     * 插入标准库产品
+     *
+     * @param productLibraryStandard
+     * @return : void
+     * @author : HuiZhe Xu
+     * @date : Created in 2019/7/3 16:51
+     */
+    @Override
+    public void insertProductStd(ProductLibraryStandard productLibraryStandard) throws Exception {
+        try{
+            selectByProductPreId(productLibraryStandard.getProductPreId());
+            throw new RuntimeException("标准库存在该预选库产品");
+        }catch (RuntimeException e){
+            throw e;
+        } catch (Exception e){
+            if(!"标准库中无该产品".equals(e.getMessage())){
+                throw e;
+            }
+        }
+        int count = productLibraryStandardDao.insertSelective(productLibraryStandard);
+        if(count>0){
+            return;
+        }
+        throw new Exception("插入失败");
+    }
+
+    private ProductWithName makeProductWithName(ProductLibraryStandard productLibraryStandard) throws Exception {
+        if(productLibraryStandard.getProductPreId()==null){
+            throw new Exception("非法产品，不存在预选库id");
+        }
+        ProductLibraryPre productLibraryPre=productLibraryPreDao.selectByPrimaryKey(productLibraryStandard.getProductPreId());
+        if(productLibraryPre==null){
+            throw new Exception("标准库中产品没有出现在预选库中，不合法产品");
+        }
+        String name=productLibraryPre.getProductName();
+        ProductWithName productWithName=new ProductWithName();
+        productWithName.setCreateTime(productLibraryStandard.getCreateTime());
+        productWithName.setIsSale(productLibraryStandard.getIsSale());
+        productWithName.setCreditRiskIndex(productLibraryStandard.getCreditRiskIndex());
+        productWithName.setEvalutionAvgScore(productLibraryStandard.getEvalutionAvgScore());
+        productWithName.setEvalutionNum(productLibraryStandard.getEvalutionNum());
+        productWithName.setExchangeRateRiskIndex(productLibraryStandard.getExchangeRateRiskIndex());
+        productWithName.setInterestRateRiskIndex(productLibraryStandard.getInterestRateRiskIndex());
+        productWithName.setInterRiskRating(productLibraryStandard.getInterRiskRating());
+        productWithName.setMarketRiskIndex(productLibraryStandard.getMarketRiskIndex());
+        productWithName.setProductName(name);
+        productWithName.setProductPreId(productLibraryStandard.getProductPreId());
+        productWithName.setProductStdId(productLibraryStandard.getProductStdId());
+        productWithName.setSaleEndTime(productLibraryStandard.getSaleEndTime());
+        productWithName.setSaleNum(productLibraryStandard.getSaleNum());
+        productWithName.setSaleStartTime(productLibraryStandard.getSaleStartTime());
+        productWithName.setStock(productLibraryStandard.getStock());
+        productWithName.setSuitUser(productLibraryStandard.getSuitUser());
+        return productWithName;
+    }
+
+    /**
+     * 获取所有上架的产品
+     * @author     ：YongBiao Liao
+     * @date       ：Created in 2019/7/3 23:09
+     * @param
+     * @return     : java.util.List<com.fpms.entity.ProductLibraryStandard>
+     */
+    @Override
+    public List<ProductLibraryStandard> getProductsOnSale() {
+        return productLibraryStandardDao.getProductsOnSale();
     }
 }
