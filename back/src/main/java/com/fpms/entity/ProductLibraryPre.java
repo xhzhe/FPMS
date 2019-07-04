@@ -1,5 +1,7 @@
 package com.fpms.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.math.BigDecimal;
 import java.util.Date;
 
@@ -29,7 +31,7 @@ public class ProductLibraryPre {
     private BigDecimal purchaseStartPoint;
 
     private Integer term;
-
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date expiryDate;
 
     private Byte riskRating;
