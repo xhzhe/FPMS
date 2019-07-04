@@ -80,7 +80,7 @@ public class EvaluationController {
     public ResultBean<Boolean> updateEvaluation(@RequestBody Evaluation evaluation,@PathVariable Integer userId, @PathVariable Integer orderId ){
         Evaluation evaluation1 = evaluationService.selectEvaluationByUserIdAndOrderId(userId,orderId);
         Order order = orderService.selectOrderByOrderId(orderId);
-        if(order.getOrderType() ==0 || order.getOrderType() == 1){
+        if(order.getOrderStatus() == 0 || order.getOrderStatus() == 1){
             return new ResultBean<>("订单未支付，无法评价！");
         }
         if(evaluation1.getEvaluationStatus() == 1){
