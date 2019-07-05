@@ -32,7 +32,7 @@ public interface ProductLibraryConfigurationService {
      * @author ：YongBiao Liao
      * @date ：Created in 2019/6/24 16:40
      */
-    void addConfigurationProduction(ProductConfiguration productConfiguration);
+    void addConfigurationProduction(ProductConfiguration productConfiguration) throws Exception;
 
     /**
      * 通过配置id删除配置
@@ -53,7 +53,7 @@ public interface ProductLibraryConfigurationService {
      * @author ：TianHong Liao
      * @date ：Created in 2019/6/25 10:38
      */
-    ProductLibraryConfiguration selectById(Integer productConId);
+    ProductLibraryConfiguration selectById(Integer productConId) throws Exception;
 
     /**
      * 通过配置Id更新配置

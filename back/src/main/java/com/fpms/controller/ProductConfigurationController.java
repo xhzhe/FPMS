@@ -12,6 +12,7 @@ import com.fpms.service.ProductLibraryConfigurationService;
 import com.fpms.service.ProductLibraryPreService;
 import com.fpms.service.ProductLibraryStandardService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
@@ -48,10 +49,20 @@ public class ProductConfigurationController {
      */
     @OperationLog(value = "删除配置中的产品")
     @DeleteMapping(value = "/configuration/production")
+    @Transactional(rollbackFor = Exception.class)
     public ResultBean<Boolean> deleteConfigurationProduction(@RequestBody Map<String, String> param) {
         try {
             Integer productConfigId = Integer.valueOf(param.get("productConfigId"));
             Integer productStdId = Integer.valueOf(param.get("productStdId"));
+            ProductLibraryConfiguration productLibraryConfiguration = productLibraryConfigurationService.selectById(productConfigId);
+            synchronized (ProductLibraryConfiguration.class) {
+                if (productLibraryConfiguration.getProductConNum() == 0) {
+                    throw new Exception("产品配置数量错误，该配置中无产品");
+                }
+                productLibraryConfiguration.setProductConNum(productLibraryConfiguration.getProductConNum() - 1);
+                productLibraryConfigurationService.modifyConfiguration(productLibraryConfiguration);
+            }
+
             ProductConfiguration productConfiguration = productConfigurationDao.selectByPciAndPsi(productConfigId, productStdId);
             productConfigurationDao.deleteByPrimaryKey(productConfiguration.getConfigurationId());
         } catch (Exception e) {
@@ -62,6 +73,7 @@ public class ProductConfigurationController {
 
     /**
      * 向配置中增加产品
+     *
      * @param addConProDto
      * @return : com.fpms.entity.pojo.ResultBean<java.lang.Boolean>
      * @author ：YongBiao Liao
@@ -73,14 +85,20 @@ public class ProductConfigurationController {
         try {
             ProductConfiguration productConfiguration = new ProductConfiguration();
             ProductLibraryPre productLibraryPre = productLibraryPreService.selectByProductName(addConProDto.getProductName());
-            if(productLibraryPre == null){
-                return  new ResultBean<>("预选库中不存在此产品！");
-            }else {
+            if (productLibraryPre == null) {
+                return new ResultBean<>("预选库中不存在此产品！");
+            } else {
                 Integer productPreId = productLibraryPre.getProductPreId();
-                ProductLibraryStandard productLibraryStandard = productLibraryStandardService.selectByProductPreId(productPreId);
-                if(productLibraryStandard == null){
+                ProductLibraryStandard productLibraryStandard = productLibraryStandardService.selectById(productPreId);
+                if (productLibraryStandard == null) {
                     return new ResultBean<>("标准中不存在此产品");
-                }else {
+                } else {
+
+                    ProductLibraryConfiguration productLibraryConfiguration = productLibraryConfigurationService.selectById(addConProDto.getProductConId());
+                    synchronized (ProductLibraryConfiguration.class) {
+                        productLibraryConfiguration.setProductConNum(productLibraryConfiguration.getProductConNum() + 1);
+                        productLibraryConfigurationService.modifyConfiguration(productLibraryConfiguration);
+                    }
                     productConfiguration.setPercentage(addConProDto.getPercentage());
                     productConfiguration.setProductConId(addConProDto.getProductConId());
                     productConfiguration.setProductStdId(productLibraryStandard.getProductStdId());
@@ -95,6 +113,7 @@ public class ProductConfigurationController {
 
     /**
      * 修改配置信息
+     *
      * @param productLibraryConfiguration
      * @return : com.fpms.entity.pojo.ResultBean<java.lang.Boolean>
      * @author : HuiZhe Xu
@@ -121,12 +140,13 @@ public class ProductConfigurationController {
 
     /**
      * 修改配置比例
-     * @author     : HuiZhe Xu
-     * @date       : Created in 2019/6/27 18:40
-     * @param       configId
-     * @param       productStdId
-     * @param       rate
-     * @return     : com.fpms.entity.pojo.ResultBean<java.lang.Boolean>
+     *
+     * @param configId
+     * @param productStdId
+     * @param rate
+     * @return : com.fpms.entity.pojo.ResultBean<java.lang.Boolean>
+     * @author : HuiZhe Xu
+     * @date : Created in 2019/6/27 18:40
      */
     @OperationLog(value = "修改产品比例")
     @PutMapping("/configuration/{configId}/{productStdId}/{rate}")

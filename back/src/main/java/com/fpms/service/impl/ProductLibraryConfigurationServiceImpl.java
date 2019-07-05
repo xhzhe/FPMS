@@ -50,8 +50,11 @@ public class ProductLibraryConfigurationServiceImpl implements ProductLibraryCon
      * @return     : void
      */
     @Override
-    public void addConfigurationProduction(ProductConfiguration productConfiguration) {
-        productConfigurationDao.insert(productConfiguration);
+    public void addConfigurationProduction(ProductConfiguration productConfiguration) throws Exception {
+        int count = productConfigurationDao.insert(productConfiguration);
+        if(count<=0){
+            throw new Exception("插入产品失败");
+        }
     }
 
     /**
@@ -75,8 +78,15 @@ public class ProductLibraryConfigurationServiceImpl implements ProductLibraryCon
     }
 
     @Override
-    public ProductLibraryConfiguration selectById(Integer productConId) {
-        return productLibraryConfigurationDao.selectByPrimaryKey(productConId);
+    public ProductLibraryConfiguration selectById(Integer productConId) throws Exception {
+        ProductLibraryConfiguration productLibraryConfiguration = productLibraryConfigurationDao.selectByPrimaryKey(productConId);
+        if(productLibraryConfiguration==null){
+            throw new Exception("配置库中没有该配置");
+        }
+        if(productLibraryConfiguration.getProductConNum()<0){
+            throw new Exception("非法配置，配置中产品数量为负");
+        }
+        return productLibraryConfiguration;
     }
 
     @Override
