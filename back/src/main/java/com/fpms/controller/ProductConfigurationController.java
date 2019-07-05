@@ -11,8 +11,10 @@ import com.fpms.entity.pojo.ResultBean;
 import com.fpms.service.ProductLibraryConfigurationService;
 import com.fpms.service.ProductLibraryPreService;
 import com.fpms.service.ProductLibraryStandardService;
+import org.mybatis.spring.MyBatisSystemException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.interceptor.TransactionAspectSupport;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
@@ -62,10 +64,15 @@ public class ProductConfigurationController {
                 productLibraryConfiguration.setProductConNum(productLibraryConfiguration.getProductConNum() - 1);
                 productLibraryConfigurationService.modifyConfiguration(productLibraryConfiguration);
             }
-
             ProductConfiguration productConfiguration = productConfigurationDao.selectByPciAndPsi(productConfigId, productStdId);
             productConfigurationDao.deleteByPrimaryKey(productConfiguration.getConfigurationId());
-        } catch (Exception e) {
+
+        }catch (MyBatisSystemException e){
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+            return new ResultBean<>("数据库错误，可能为返回数据数量和预定不匹配,即配置中存在相同产品");
+        }
+        catch (Exception e) {
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
             return new ResultBean<>(e);
         }
         return new ResultBean<>(true);
@@ -85,26 +92,19 @@ public class ProductConfigurationController {
         try {
             ProductConfiguration productConfiguration = new ProductConfiguration();
             ProductLibraryPre productLibraryPre = productLibraryPreService.selectByProductName(addConProDto.getProductName());
-            if (productLibraryPre == null) {
-                return new ResultBean<>("预选库中不存在此产品！");
-            } else {
-                Integer productPreId = productLibraryPre.getProductPreId();
-                ProductLibraryStandard productLibraryStandard = productLibraryStandardService.selectById(productPreId);
-                if (productLibraryStandard == null) {
-                    return new ResultBean<>("标准中不存在此产品");
-                } else {
 
-                    ProductLibraryConfiguration productLibraryConfiguration = productLibraryConfigurationService.selectById(addConProDto.getProductConId());
-                    synchronized (ProductLibraryConfiguration.class) {
-                        productLibraryConfiguration.setProductConNum(productLibraryConfiguration.getProductConNum() + 1);
-                        productLibraryConfigurationService.modifyConfiguration(productLibraryConfiguration);
-                    }
-                    productConfiguration.setPercentage(addConProDto.getPercentage());
-                    productConfiguration.setProductConId(addConProDto.getProductConId());
-                    productConfiguration.setProductStdId(productLibraryStandard.getProductStdId());
-                    productLibraryConfigurationService.addConfigurationProduction(productConfiguration);
-                }
+            Integer productPreId = productLibraryPre.getProductPreId();
+            ProductLibraryStandard productLibraryStandard = productLibraryStandardService.selectById(productPreId);
+
+            ProductLibraryConfiguration productLibraryConfiguration = productLibraryConfigurationService.selectById(addConProDto.getProductConId());
+            synchronized (ProductLibraryConfiguration.class) {
+                productLibraryConfiguration.setProductConNum(productLibraryConfiguration.getProductConNum() + 1);
+                productLibraryConfigurationService.modifyConfiguration(productLibraryConfiguration);
             }
+            productConfiguration.setPercentage(addConProDto.getPercentage());
+            productConfiguration.setProductConId(addConProDto.getProductConId());
+            productConfiguration.setProductStdId(productLibraryStandard.getProductStdId());
+            productLibraryConfigurationService.addConfigurationProduction(productConfiguration);
         } catch (Exception e) {
             return new ResultBean<>(e);
         }

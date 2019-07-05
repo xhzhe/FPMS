@@ -9,6 +9,7 @@ import com.fpms.service.StaffService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -115,6 +116,7 @@ public class StaffServiceImpl implements StaffService {
         staffRole.setStaffId(staff.getStaffId());
         count = staffRoleDao.insertSelective(staffRole);
         if(count<=0){
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
             throw new Exception("为该用户添加角色失败");
         }
         return true;
