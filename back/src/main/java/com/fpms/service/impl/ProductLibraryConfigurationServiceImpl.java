@@ -155,6 +155,8 @@ public class ProductLibraryConfigurationServiceImpl implements ProductLibraryCon
             throw new Exception("该配置不存在");
         }
         productLibraryConfiguration.setReviewStatus(Byte.parseByte("0"));
+        BigDecimal percent=productConfiguration.getPercentage();
+        productLibraryConfiguration.setProductConPrice(productLibraryConfiguration.getProductConPrice().subtract(percent.subtract(BigDecimal.valueOf(rate))));
         modifyConfiguration(productLibraryConfiguration);
         int count = productConfigurationDao.updateByPrimaryKeySelective(productConfiguration);
         if(count>0){

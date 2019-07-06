@@ -17,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
 import java.util.Map;
 
 /**
@@ -57,17 +58,18 @@ public class ProductConfigurationController {
             Integer productConfigId = Integer.valueOf(param.get("productConfigId"));
             Integer productStdId = Integer.valueOf(param.get("productStdId"));
             ProductLibraryConfiguration productLibraryConfiguration = productLibraryConfigurationService.selectById(productConfigId);
+            ProductConfiguration productConfiguration = productConfigurationDao.selectByPciAndPsi(productConfigId, productStdId);
             synchronized (ProductLibraryConfiguration.class) {
                 if (productLibraryConfiguration.getProductConNum() == 0) {
                     throw new Exception("产品配置数量错误，该配置中无产品");
                 }
+                BigDecimal percent=productConfiguration.getPercentage();
                 productLibraryConfiguration.setProductConNum(productLibraryConfiguration.getProductConNum() - 1);
                 productLibraryConfiguration.setReviewStatus(Byte.parseByte("0"));
+                productLibraryConfiguration.setProductConPrice(productLibraryConfiguration.getProductConPrice().subtract(percent));
                 productLibraryConfigurationService.modifyConfiguration(productLibraryConfiguration);
             }
-            ProductConfiguration productConfiguration = productConfigurationDao.selectByPciAndPsi(productConfigId, productStdId);
             productConfigurationDao.deleteByPrimaryKey(productConfiguration.getConfigurationId());
-
         }catch (MyBatisSystemException e){
             TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
             return new ResultBean<>("数据库错误，可能为返回数据数量和预定不匹配,即配置中存在相同产品");
@@ -102,8 +104,11 @@ public class ProductConfigurationController {
             synchronized (ProductLibraryConfiguration.class) {
                 productLibraryConfiguration.setProductConNum(productLibraryConfiguration.getProductConNum() + 1);
                 productLibraryConfiguration.setReviewStatus(Byte.parseByte("0"));
+                productLibraryConfiguration.setProductConPrice(productLibraryConfiguration.getProductConPrice().add(addConProDto.getPercentage()));
                 productLibraryConfigurationService.modifyConfiguration(productLibraryConfiguration);
+
             }
+
             productConfiguration.setPercentage(addConProDto.getPercentage());
             productConfiguration.setProductConId(addConProDto.getProductConId());
             productConfiguration.setProductStdId(productLibraryStandard.getProductStdId());
