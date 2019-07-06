@@ -62,6 +62,7 @@ public class ProductConfigurationController {
                     throw new Exception("产品配置数量错误，该配置中无产品");
                 }
                 productLibraryConfiguration.setProductConNum(productLibraryConfiguration.getProductConNum() - 1);
+                productLibraryConfiguration.setReviewStatus(Byte.parseByte("0"));
                 productLibraryConfigurationService.modifyConfiguration(productLibraryConfiguration);
             }
             ProductConfiguration productConfiguration = productConfigurationDao.selectByPciAndPsi(productConfigId, productStdId);
@@ -88,6 +89,7 @@ public class ProductConfigurationController {
      */
     @OperationLog(value = "增加配置中的产品")
     @PutMapping(value = "/configuration/production/actions/add")
+    @Transactional(rollbackFor = Exception.class)
     public ResultBean<Boolean> addConfigurationProduction(@RequestBody AddConProDto addConProDto) {
         try {
             ProductConfiguration productConfiguration = new ProductConfiguration();
@@ -99,6 +101,7 @@ public class ProductConfigurationController {
             ProductLibraryConfiguration productLibraryConfiguration = productLibraryConfigurationService.selectById(addConProDto.getProductConId());
             synchronized (ProductLibraryConfiguration.class) {
                 productLibraryConfiguration.setProductConNum(productLibraryConfiguration.getProductConNum() + 1);
+                productLibraryConfiguration.setReviewStatus(Byte.parseByte("0"));
                 productLibraryConfigurationService.modifyConfiguration(productLibraryConfiguration);
             }
             productConfiguration.setPercentage(addConProDto.getPercentage());
@@ -106,6 +109,7 @@ public class ProductConfigurationController {
             productConfiguration.setProductStdId(productLibraryStandard.getProductStdId());
             productLibraryConfigurationService.addConfigurationProduction(productConfiguration);
         } catch (Exception e) {
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
             return new ResultBean<>(e);
         }
         return new ResultBean<>(true);
@@ -122,20 +126,13 @@ public class ProductConfigurationController {
     @OperationLog(value = "修改配置")
     @PutMapping("/configuration")
     public ResultBean<Boolean> modifyConfiguration(@RequestBody ProductLibraryConfiguration productLibraryConfiguration) {
-        ResultBean<Boolean> res = new ResultBean<>();
         try {
-            boolean success = productLibraryConfigurationService.modifyConfiguration(productLibraryConfiguration);
-            if (success) {
-                res.setMsg(ResultBean.SUCC_MSG);
-                res.setState(ResultBean.SUCCESS);
-                res.setData(true);
-            } else {
-                throw new Exception("更新失败");
-            }
+            productLibraryConfiguration.setReviewStatus(Byte.parseByte("0"));
+            productLibraryConfigurationService.modifyConfiguration(productLibraryConfiguration);
+            return new ResultBean<>(true);
         } catch (Exception e) {
             return new ResultBean<>(e);
         }
-        return res;
     }
 
     /**
@@ -153,19 +150,11 @@ public class ProductConfigurationController {
     public ResultBean<Boolean> modifyConfigRate(@PathVariable Integer configId, @PathVariable Integer productStdId, @PathVariable double rate) {
         ResultBean<Boolean> res = new ResultBean<>();
         try {
-            boolean success = productLibraryConfigurationService.modifyConfigurationRate(configId, productStdId, rate);
-            if (success) {
-                res.setMsg(ResultBean.SUCC_MSG);
-                res.setState(ResultBean.SUCCESS);
-                res.setData(true);
-            } else {
-                throw new Exception("更新失败");
-            }
+            productLibraryConfigurationService.modifyConfigurationRate(configId, productStdId, rate);
+            return new ResultBean<>(true);
         } catch (Exception e) {
             return new ResultBean<>(e);
         }
-        return res;
-
     }
 
 

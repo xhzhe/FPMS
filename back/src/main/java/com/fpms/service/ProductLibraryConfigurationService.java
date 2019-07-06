@@ -93,7 +93,7 @@ public interface ProductLibraryConfigurationService {
      * @author : HuiZhe Xu
      * @date : Created in 2019/6/27 17:35
      */
-    boolean modifyConfiguration(ProductLibraryConfiguration productLibraryConfiguration);
+    boolean modifyConfiguration(ProductLibraryConfiguration productLibraryConfiguration) throws Exception;
 
     /**
      *  修改配置中产品比率
@@ -104,7 +104,7 @@ public interface ProductLibraryConfigurationService {
      * @param       rate
      * @return     : boolean
      */
-    boolean modifyConfigurationRate(Integer configId, Integer productStdId, double rate);
+    boolean modifyConfigurationRate(Integer configId, Integer productStdId, double rate) throws Exception;
 
     /**
      *  添加配置

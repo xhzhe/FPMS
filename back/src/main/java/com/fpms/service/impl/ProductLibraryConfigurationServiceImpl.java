@@ -120,17 +120,17 @@ public class ProductLibraryConfigurationServiceImpl implements ProductLibraryCon
      * @date : Created in 2019/6/27 17:35
      */
     @Override
-    public boolean modifyConfiguration(ProductLibraryConfiguration productLibraryConfiguration) {
+    public boolean modifyConfiguration(ProductLibraryConfiguration productLibraryConfiguration) throws Exception {
         Integer id = productLibraryConfiguration.getProductConId();
         ProductLibraryConfiguration productLibraryConfigurationTemp = productLibraryConfigurationDao.selectByPrimaryKey(id);
         if(productLibraryConfigurationTemp==null){
-            return false;
+           throw new Exception("配置id错误，配置库无对应配置");
         }
         int count=productLibraryConfigurationDao.updateByPrimaryKeySelective(productLibraryConfiguration);
         if(count>0){
             return true;
         }
-        return false;
+        throw new Exception("修改失败");
     }
 
     /**
@@ -144,17 +144,23 @@ public class ProductLibraryConfigurationServiceImpl implements ProductLibraryCon
      * @date : Created in 2019/6/27 17:54
      */
     @Override
-    public boolean modifyConfigurationRate(Integer productConId, Integer productStdId, double rate) {
+    public boolean modifyConfigurationRate(Integer productConId, Integer productStdId, double rate) throws Exception {
         ProductConfiguration productConfiguration=productConfigurationDao.selectByPciAndPsi(productConId,productStdId);
         if(productConfiguration==null){
-            return false;
+            throw new Exception("配置关联项不存在");
         }
         productConfiguration.setPercentage(BigDecimal.valueOf(rate));
+        ProductLibraryConfiguration productLibraryConfiguration=productLibraryConfigurationDao.selectByPrimaryKey(productConId);
+        if(productLibraryConfiguration==null){
+            throw new Exception("该配置不存在");
+        }
+        productLibraryConfiguration.setReviewStatus(Byte.parseByte("0"));
+        modifyConfiguration(productLibraryConfiguration);
         int count = productConfigurationDao.updateByPrimaryKeySelective(productConfiguration);
         if(count>0){
             return true;
         }
-        return false;
+        throw new Exception("修改失败");
     }
 
     /**
