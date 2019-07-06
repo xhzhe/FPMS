@@ -17,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
 import java.util.Map;
 
 /**
@@ -57,16 +58,18 @@ public class ProductConfigurationController {
             Integer productConfigId = Integer.valueOf(param.get("productConfigId"));
             Integer productStdId = Integer.valueOf(param.get("productStdId"));
             ProductLibraryConfiguration productLibraryConfiguration = productLibraryConfigurationService.selectById(productConfigId);
+            ProductConfiguration productConfiguration = productConfigurationDao.selectByPciAndPsi(productConfigId, productStdId);
             synchronized (ProductLibraryConfiguration.class) {
                 if (productLibraryConfiguration.getProductConNum() == 0) {
                     throw new Exception("产品配置数量错误，该配置中无产品");
                 }
+                BigDecimal percent=productConfiguration.getPercentage();
                 productLibraryConfiguration.setProductConNum(productLibraryConfiguration.getProductConNum() - 1);
+                productLibraryConfiguration.setReviewStatus(Byte.parseByte("0"));
+                productLibraryConfiguration.setProductConPrice(productLibraryConfiguration.getProductConPrice().subtract(percent));
                 productLibraryConfigurationService.modifyConfiguration(productLibraryConfiguration);
             }
-            ProductConfiguration productConfiguration = productConfigurationDao.selectByPciAndPsi(productConfigId, productStdId);
             productConfigurationDao.deleteByPrimaryKey(productConfiguration.getConfigurationId());
-
         }catch (MyBatisSystemException e){
             TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
             return new ResultBean<>("数据库错误，可能为返回数据数量和预定不匹配,即配置中存在相同产品");
@@ -88,24 +91,30 @@ public class ProductConfigurationController {
      */
     @OperationLog(value = "增加配置中的产品")
     @PutMapping(value = "/configuration/production/actions/add")
+    @Transactional(rollbackFor = Exception.class)
     public ResultBean<Boolean> addConfigurationProduction(@RequestBody AddConProDto addConProDto) {
         try {
             ProductConfiguration productConfiguration = new ProductConfiguration();
             ProductLibraryPre productLibraryPre = productLibraryPreService.selectByProductName(addConProDto.getProductName());
 
             Integer productPreId = productLibraryPre.getProductPreId();
-            ProductLibraryStandard productLibraryStandard = productLibraryStandardService.selectById(productPreId);
+            ProductLibraryStandard productLibraryStandard = productLibraryStandardService.selectByProductPreId(productPreId);
 
             ProductLibraryConfiguration productLibraryConfiguration = productLibraryConfigurationService.selectById(addConProDto.getProductConId());
             synchronized (ProductLibraryConfiguration.class) {
                 productLibraryConfiguration.setProductConNum(productLibraryConfiguration.getProductConNum() + 1);
+                productLibraryConfiguration.setReviewStatus(Byte.parseByte("0"));
+                productLibraryConfiguration.setProductConPrice(productLibraryConfiguration.getProductConPrice().add(addConProDto.getPercentage()));
                 productLibraryConfigurationService.modifyConfiguration(productLibraryConfiguration);
+
             }
+
             productConfiguration.setPercentage(addConProDto.getPercentage());
             productConfiguration.setProductConId(addConProDto.getProductConId());
             productConfiguration.setProductStdId(productLibraryStandard.getProductStdId());
             productLibraryConfigurationService.addConfigurationProduction(productConfiguration);
         } catch (Exception e) {
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
             return new ResultBean<>(e);
         }
         return new ResultBean<>(true);
@@ -122,20 +131,13 @@ public class ProductConfigurationController {
     @OperationLog(value = "修改配置")
     @PutMapping("/configuration")
     public ResultBean<Boolean> modifyConfiguration(@RequestBody ProductLibraryConfiguration productLibraryConfiguration) {
-        ResultBean<Boolean> res = new ResultBean<>();
         try {
-            boolean success = productLibraryConfigurationService.modifyConfiguration(productLibraryConfiguration);
-            if (success) {
-                res.setMsg(ResultBean.SUCC_MSG);
-                res.setState(ResultBean.SUCCESS);
-                res.setData(true);
-            } else {
-                throw new Exception("更新失败");
-            }
+            productLibraryConfiguration.setReviewStatus(Byte.parseByte("0"));
+            productLibraryConfigurationService.modifyConfiguration(productLibraryConfiguration);
+            return new ResultBean<>(true);
         } catch (Exception e) {
             return new ResultBean<>(e);
         }
-        return res;
     }
 
     /**
@@ -153,19 +155,11 @@ public class ProductConfigurationController {
     public ResultBean<Boolean> modifyConfigRate(@PathVariable Integer configId, @PathVariable Integer productStdId, @PathVariable double rate) {
         ResultBean<Boolean> res = new ResultBean<>();
         try {
-            boolean success = productLibraryConfigurationService.modifyConfigurationRate(configId, productStdId, rate);
-            if (success) {
-                res.setMsg(ResultBean.SUCC_MSG);
-                res.setState(ResultBean.SUCCESS);
-                res.setData(true);
-            } else {
-                throw new Exception("更新失败");
-            }
+            productLibraryConfigurationService.modifyConfigurationRate(configId, productStdId, rate);
+            return new ResultBean<>(true);
         } catch (Exception e) {
             return new ResultBean<>(e);
         }
-        return res;
-
     }
 
 
