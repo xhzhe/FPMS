@@ -14,8 +14,6 @@ import java.util.Date;
 public class Supplier {
     private Integer supplierId;
 
-    private String supplierPwd;
-
     private String supplierName;
 
     private String supplierPhone;
@@ -48,14 +46,6 @@ public class Supplier {
 
     public void setSupplierId(Integer supplierId) {
         this.supplierId = supplierId;
-    }
-
-    public String getSupplierPwd() {
-        return supplierPwd;
-    }
-
-    public void setSupplierPwd(String supplierPwd) {
-        this.supplierPwd = supplierPwd == null ? null : supplierPwd.trim();
     }
 
     public String getSupplierName() {
