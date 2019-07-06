@@ -66,11 +66,11 @@ public class ProductLibraryConfigurationServiceImpl implements ProductLibraryCon
      */
     @Override
     public boolean deleteConfiguration(Integer productConId)throws Exception {
-        int count=productConfigurationDao.deleteByProductConId(productConId);
-        if(count<=0){
-            throw new Exception("删除产品配置关联失败");
-        }
-        count = productLibraryConfigurationDao.deleteByPrimaryKey(productConId);
+        productConfigurationDao.deleteByProductConId(productConId);
+//        if(count<=0){
+//            throw new Exception("删除产品配置关联失败");
+//        }
+        int count = productLibraryConfigurationDao.deleteByPrimaryKey(productConId);
         if(count<=0){
             throw new Exception("删除配置主表失败");
         }
