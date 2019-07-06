@@ -165,6 +165,13 @@ public class OrderController {
             return new ResultBean<>("订单已支付，请勿重复支付！");
         }
         try{
+            //支付
+            User user = userService.getUserById(order1.getUserId());
+            BigDecimal userMoney = user.getUserMoney();
+            BigDecimal orderMoney = order1.getOrderMoney();
+            if(userMoney.subtract(orderMoney).doubleValue() < 0){
+                return new ResultBean<>("用户余额不足！");
+            }
             //更改订单状态
             Order order = new Order();
             order.setOrderId(orderId);
@@ -175,13 +182,6 @@ public class OrderController {
                 ProductLibraryStandard productLibraryStandard = productLibraryStandardService.selectById(order1.getProductStdId());
                 productLibraryStandard.setStock(productLibraryStandard.getStock() - 1);
                 productLibraryStandardService.updateProductStandard(productLibraryStandard);
-                //支付
-                User user = userService.getUserById(order1.getUserId());
-                BigDecimal userMoney = user.getUserMoney();
-                BigDecimal orderMoney = order1.getOrderMoney();
-                if(userMoney.subtract(orderMoney).doubleValue() < 0){
-                    return new ResultBean<>("用户余额不足！");
-                }
                 user.setUserMoney(userMoney.subtract(orderMoney));
                 userService.updateUser(user);
                 //放入个人产品库中
@@ -206,13 +206,6 @@ public class OrderController {
                 ProductLibraryConfiguration productLibraryConfiguration= productLibraryConfigurationService.selectById(order1.getProductConId());
                 productLibraryConfiguration.setStock(productLibraryConfiguration.getStock() - 1);
                 productLibraryConfigurationService.updateProductConfiguration(productLibraryConfiguration);
-                //支付
-                User user = userService.getUserById(order1.getUserId());
-                BigDecimal userMoney = user.getUserMoney();
-                BigDecimal orderMoney = order1.getOrderMoney();
-                if(userMoney.subtract(orderMoney).doubleValue() < 0){
-                    return new ResultBean<>("用户余额不足！");
-                }
                 user.setUserMoney(userMoney.subtract(orderMoney));
                 userService.updateUser(user);
                 //放入个人产品库中
