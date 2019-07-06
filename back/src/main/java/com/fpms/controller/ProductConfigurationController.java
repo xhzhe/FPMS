@@ -157,6 +157,9 @@ public class ProductConfigurationController {
     public ResultBean<Boolean> modifyConfigRate(@PathVariable Integer configId, @PathVariable Integer productStdId, @PathVariable double rate) {
         ResultBean<Boolean> res = new ResultBean<>();
         try {
+            if(rate>99999999){
+                throw new Exception("单个产品价格过高");
+            }
             productLibraryConfigurationService.modifyConfigurationRate(configId, productStdId, rate);
             return new ResultBean<>(true);
         } catch (Exception e) {
