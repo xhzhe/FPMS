@@ -64,7 +64,6 @@ public class ProductLibraryConfigurationServiceImpl implements ProductLibraryCon
             throw new Exception("插入产品失败");
         }
     }
-
     /**
      * 通过配置id删除配置
      * @author     ：YongBiao Liao
@@ -154,7 +153,7 @@ public class ProductLibraryConfigurationServiceImpl implements ProductLibraryCon
     @Override
     public boolean modifyConfigurationRate(Integer productConId, Integer productStdId, double rate) throws Exception {
         ProductLibraryPre productLibraryPre= productLibraryPreService.selectByStdId(productStdId);
-        if(productLibraryPre.getPurchaseStartPoint().compareTo(BigDecimal.valueOf(rate))<0){
+        if(productLibraryPre.getPurchaseStartPoint().compareTo(BigDecimal.valueOf(rate))>=0){
             throw new Exception("修改无效，产品没有达到起购价");
         }
         ProductConfiguration productConfiguration=productConfigurationDao.selectByPciAndPsi(productConId,productStdId);
