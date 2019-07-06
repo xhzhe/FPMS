@@ -2,10 +2,13 @@ package com.fpms.service.impl;
 
 import com.fpms.dao.ProductConfigurationDao;
 import com.fpms.dao.ProductLibraryConfigurationDao;
+import com.fpms.dao.ProductLibraryPreDao;
 import com.fpms.dto.ProductLibraryConfigurationDto;
 import com.fpms.entity.ProductConfiguration;
 import com.fpms.entity.ProductLibraryConfiguration;
+import com.fpms.entity.ProductLibraryPre;
 import com.fpms.service.ProductLibraryConfigurationService;
+import com.fpms.service.ProductLibraryPreService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -24,7 +27,12 @@ public class ProductLibraryConfigurationServiceImpl implements ProductLibraryCon
     private ProductLibraryConfigurationDao productLibraryConfigurationDao;
 
     private ProductConfigurationDao productConfigurationDao;
+    @Autowired
+    public void setProductLibraryPreService(ProductLibraryPreService productLibraryPreService) {
+        this.productLibraryPreService = productLibraryPreService;
+    }
 
+    private ProductLibraryPreService productLibraryPreService;
     @Autowired
     public ProductLibraryConfigurationServiceImpl(ProductConfigurationDao productConfigurationDao,ProductLibraryConfigurationDao productLibraryConfigurationDao){
         this.productLibraryConfigurationDao=productLibraryConfigurationDao;
@@ -145,6 +153,10 @@ public class ProductLibraryConfigurationServiceImpl implements ProductLibraryCon
      */
     @Override
     public boolean modifyConfigurationRate(Integer productConId, Integer productStdId, double rate) throws Exception {
+        ProductLibraryPre productLibraryPre= productLibraryPreService.selectByStdId(productStdId);
+        if(productLibraryPre.getPurchaseStartPoint().compareTo(BigDecimal.valueOf(rate))<0){
+            throw new Exception("修改无效，产品没有达到起购价");
+        }
         ProductConfiguration productConfiguration=productConfigurationDao.selectByPciAndPsi(productConId,productStdId);
         if(productConfiguration==null){
             throw new Exception("配置关联项不存在");

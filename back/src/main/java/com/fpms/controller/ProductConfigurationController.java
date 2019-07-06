@@ -99,7 +99,9 @@ public class ProductConfigurationController {
 
             Integer productPreId = productLibraryPre.getProductPreId();
             ProductLibraryStandard productLibraryStandard = productLibraryStandardService.selectByProductPreId(productPreId);
-
+            if(addConProDto.getPercentage().compareTo(productLibraryPre.getPurchaseStartPoint())<0){
+                throw new Exception("该产品没有达到产品的起购价");
+            }
             ProductLibraryConfiguration productLibraryConfiguration = productLibraryConfigurationService.selectById(addConProDto.getProductConId());
             synchronized (ProductLibraryConfiguration.class) {
                 productLibraryConfiguration.setProductConNum(productLibraryConfiguration.getProductConNum() + 1);
