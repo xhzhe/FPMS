@@ -3,6 +3,7 @@ package com.fpms.controller;
 import com.fpms.annotation.OperationLog;
 import com.fpms.dto.Product;
 import com.fpms.dto.ProductWithName;
+import com.fpms.entity.ProductLibraryPre;
 import com.fpms.entity.ProductLibraryStandard;
 import com.fpms.entity.pojo.ResultBean;
 import com.fpms.service.ProductLibraryPreService;
@@ -174,9 +175,14 @@ public class ProductLibraryStandardController {
             if(productPreId<0){
                 throw new Exception("不合法id");
             }
-            productLibraryPreService.selectById(productPreId);
+            ProductLibraryPre productLibraryPre = productLibraryPreService.selectById(productPreId);
+            if(productLibraryPre == null){
+                return new ResultBean<>("预选库Id不存在");
+            }
             ProductLibraryStandard productLibraryStandard=new ProductLibraryStandard();
             productLibraryStandard.setProductPreId(productPreId);
+            Double stock = productLibraryPre.getProductPrice().doubleValue() * productLibraryPre.getPurchaseLimit().doubleValue();
+            productLibraryStandard.setStock(stock.intValue());
             productLibraryStandardService.insertProductStd(productLibraryStandard);
             return new ResultBean<>(true);
         } catch (Exception e) {

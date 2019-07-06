@@ -109,6 +109,9 @@ public class OrderController {
                     getPurchaseStartPoint().doubleValue() ){
                 return new ResultBean<>("购买金额未达到起购点，无法下单!");
             }
+            if(order.getOrderMoney().doubleValue() > productLibraryStandard.getStock()){
+                return new ResultBean<>("购买金额超过最大金额限制！");
+            }
         }else if (order.getOrderType() == 2){
             if(order.getProductConId() == null || productLibraryConfigurationService.selectById(order.getProductConId()) == null){
                 return new ResultBean<>("配置库产品不存在!");
@@ -180,7 +183,7 @@ public class OrderController {
             if(order1.getOrderType() == 1){
                 //减少库存
                 ProductLibraryStandard productLibraryStandard = productLibraryStandardService.selectById(order1.getProductStdId());
-                productLibraryStandard.setStock(productLibraryStandard.getStock() - 1);
+                productLibraryStandard.setStock(productLibraryStandard.getStock() - order1.getOrderMoney().intValue());
                 productLibraryStandardService.updateProductStandard(productLibraryStandard);
                 user.setUserMoney(userMoney.subtract(orderMoney));
                 userService.updateUser(user);
