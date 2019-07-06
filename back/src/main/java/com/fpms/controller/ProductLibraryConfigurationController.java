@@ -134,6 +134,7 @@ public class ProductLibraryConfigurationController {
     public ResultBean<ConProDto> getConfiguration(@PathVariable Integer productConId){
         ConProDto conProDto = new ConProDto();
         try {
+            ProductLibraryConfiguration productLibraryConfiguration=productLibraryConfigurationService.selectById(productConId);
             List<ProductConfiguration> productConfigurationList = productLibraryConfigurationService.getProductConfigurationByproductConId(productConId);
             if(productConfigurationList == null){
                 return new ResultBean<>("该配置没有产品");
@@ -154,6 +155,10 @@ public class ProductLibraryConfigurationController {
                 conProDto.setProductName(productName);
                 conProDto.setPercentage(productPercentage);
                 conProDto.setProductStdId(productStdIds);
+                conProDto.setProductConDesc(productLibraryConfiguration.getProductConDesc());
+                conProDto.setProductConNum(productLibraryConfiguration.getProductConNum());
+                conProDto.setProductConPrice(productLibraryConfiguration.getProductConPrice());
+                conProDto.setProductConName(productLibraryConfiguration.getProductConName());
                 return new ResultBean<>(conProDto);
             }
         }catch (Exception e){

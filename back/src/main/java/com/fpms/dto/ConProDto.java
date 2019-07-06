@@ -1,6 +1,9 @@
 package com.fpms.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -16,6 +19,46 @@ public class ConProDto {
     private List<String> productName;
 
     private List<BigDecimal> percentage;
+
+    private String productConName;
+
+    public String getProductConName() {
+        return productConName;
+    }
+
+    public void setProductConName(String productConName) {
+        this.productConName = productConName;
+    }
+
+    public Integer getProductConNum() {
+        return productConNum;
+    }
+
+    public void setProductConNum(Integer productConNum) {
+        this.productConNum = productConNum;
+    }
+
+    public String getProductConDesc() {
+        return productConDesc;
+    }
+
+    public void setProductConDesc(String productConDesc) {
+        this.productConDesc = productConDesc;
+    }
+
+    public BigDecimal getProductConPrice() {
+        return productConPrice;
+    }
+
+    public void setProductConPrice(BigDecimal productConPrice) {
+        this.productConPrice = productConPrice;
+    }
+
+    private Integer productConNum;
+
+    private String productConDesc;
+
+    private BigDecimal productConPrice;
 
     public List<Integer> getProductStdId() {
         return productStdId;
