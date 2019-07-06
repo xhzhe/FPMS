@@ -160,13 +160,13 @@ public class ProductLibraryConfigurationServiceImpl implements ProductLibraryCon
         if(productConfiguration==null){
             throw new Exception("配置关联项不存在");
         }
+        BigDecimal percent=productConfiguration.getPercentage();
         productConfiguration.setPercentage(BigDecimal.valueOf(rate));
         ProductLibraryConfiguration productLibraryConfiguration=productLibraryConfigurationDao.selectByPrimaryKey(productConId);
         if(productLibraryConfiguration==null){
             throw new Exception("该配置不存在");
         }
         productLibraryConfiguration.setReviewStatus(Byte.parseByte("0"));
-        BigDecimal percent=productConfiguration.getPercentage();
         productLibraryConfiguration.setProductConPrice(productLibraryConfiguration.getProductConPrice().subtract(percent.subtract(BigDecimal.valueOf(rate))));
         modifyConfiguration(productLibraryConfiguration);
         int count = productConfigurationDao.updateByPrimaryKeySelective(productConfiguration);
