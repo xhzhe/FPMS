@@ -94,7 +94,7 @@ public class ProductConfigurationController {
             ProductLibraryPre productLibraryPre = productLibraryPreService.selectByProductName(addConProDto.getProductName());
 
             Integer productPreId = productLibraryPre.getProductPreId();
-            ProductLibraryStandard productLibraryStandard = productLibraryStandardService.selectById(productPreId);
+            ProductLibraryStandard productLibraryStandard = productLibraryStandardService.selectByProductPreId(productPreId);
 
             ProductLibraryConfiguration productLibraryConfiguration = productLibraryConfigurationService.selectById(addConProDto.getProductConId());
             synchronized (ProductLibraryConfiguration.class) {
