@@ -17,11 +17,10 @@ public interface ProductLibraryStandardService {
      * 下架产品
      *
      * @param id
-     * @return : java.lang.Boolean
      * @author : HuiZhe Xu
      * @date : Created in 2019/6/25 11:05
      */
-    Boolean obtainedProducts(Integer id) throws Exception;
+    void obtainedProducts(Integer id) throws Exception;
 
     /**
      * 通过标准库iD获取标准库产品
@@ -37,21 +36,19 @@ public interface ProductLibraryStandardService {
      * 通过标准库
      *
      * @param productLibraryStandard
-     * @return : boolean
      * @author ：HuiZhe Xu
      * @date ：Created in 2019/6/25 10:35
      */
-    boolean updateProductStandard(ProductLibraryStandard productLibraryStandard) throws Exception;
+    void updateProductStandard(ProductLibraryStandard productLibraryStandard) throws Exception;
 
     /**
      * 上架产品
      *
      * @param id
-     * @return : java.lang.Boolean
      * @author : HuiZhe Xu
      * @date : Created in 2019/6/26 10:35
      */
-    Boolean uploadProduct(Integer id) throws Exception;
+    void uploadProduct(Integer id) throws Exception;
 
     /**
      * 通过产品预选id查找标准库产品

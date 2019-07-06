@@ -95,10 +95,7 @@ public class ProductLibraryConfigurationController {
             if(!productConId.containsKey("productConId")){
                 throw new Exception("id为空");
             }
-            boolean success = productLibraryConfigurationService.deleteConfiguration((Integer)productConId.get("productConId"));
-            if(!success){
-                throw new Exception("删除失败");
-            }
+            productLibraryConfigurationService.deleteConfiguration((Integer)productConId.get("productConId"));
         }catch (Exception e){
             return new ResultBean<>(e);
         }

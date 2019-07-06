@@ -92,11 +92,10 @@ public class StaffServiceImpl implements StaffService {
      * @date       ：Created in 2019/6/26 14:50
      * @param       staff
      * @param       roleName
-     * @return     : boolean
      */
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public boolean addStaff(Staff staff, String roleName) throws Exception {
+    public void addStaff(Staff staff, String roleName) throws Exception {
         Staff staffTemp=staffDao.selectByStaffName(staff.getStaffName());
         if(staffTemp!=null){
             throw new Exception("员工名已存在");
@@ -119,7 +118,6 @@ public class StaffServiceImpl implements StaffService {
             TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
             throw new Exception("为该用户添加角色失败");
         }
-        return true;
     }
     /**
      *  获得单个员工的详细信息
@@ -218,15 +216,14 @@ public class StaffServiceImpl implements StaffService {
      * 删除员工
      *
      * @param id
-     * @return : boolean
      * @author : HuiZhe Xu
      * @date : Created in 2019/6/26 14:31
      */
     @Override
-    public boolean delStaff(Integer id) throws Exception {
+    public void delStaff(Integer id) throws Exception {
         int count=staffDao.deleteByPrimaryKey(id);
         if(count>0){
-            return true;
+            return;
         }
         throw new Exception("删除失败");
     }

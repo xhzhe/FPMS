@@ -2,14 +2,12 @@ package com.fpms.service.impl;
 
 import com.fpms.dao.ProductLibraryPreDao;
 import com.fpms.dao.ProductLibraryStandardDao;
-import com.fpms.dto.ProductDetail;
 import com.fpms.dto.ProductWithName;
 
 import com.fpms.entity.ProductLibraryPre;
 import com.fpms.entity.ProductLibraryStandard;
 
 import com.fpms.service.ProductLibraryStandardService;
-import org.apache.ibatis.exceptions.TooManyResultsException;
 import org.mybatis.spring.MyBatisSystemException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -42,10 +40,9 @@ public class ProductLibraryStandardServiceImpl implements ProductLibraryStandard
      * @author     : HuiZhe Xu
      * @date       : Created in 2019/6/25 11:05
      * @param       id
-     * @return     : java.lang.Boolean
      */
     @Override
-    public Boolean obtainedProducts(Integer id) throws Exception {
+    public void obtainedProducts(Integer id) throws Exception {
         ProductLibraryStandard productLibraryStandard=productLibraryStandardDao.selectByPrimaryKey(id);
         if(productLibraryStandard==null){
             throw new Exception("产品不存在");
@@ -55,7 +52,6 @@ public class ProductLibraryStandardServiceImpl implements ProductLibraryStandard
         if(count<=0){
             throw new Exception("下架失败");
         }
-        return true;
     }
     /**
      *  通过标准库iD获取标准库产品
@@ -78,13 +74,12 @@ public class ProductLibraryStandardServiceImpl implements ProductLibraryStandard
      * @author     ：HuiZhe Xu
      * @date       ：Created in 2019/6/25 10:35
      * @param       productLibraryStandard
-     * @return     : boolean
      */
     @Override
-    public synchronized boolean updateProductStandard(ProductLibraryStandard productLibraryStandard) throws Exception {
+    public synchronized void updateProductStandard(ProductLibraryStandard productLibraryStandard) throws Exception {
         int count=productLibraryStandardDao.updateByPrimaryKeySelective(productLibraryStandard);
         if(count>0){
-            return true;
+            return;
         }
         throw new Exception("更新失败");
     }
@@ -93,12 +88,11 @@ public class ProductLibraryStandardServiceImpl implements ProductLibraryStandard
      * 上架产品
      *
      * @param id
-     * @return : java.lang.Boolean
      * @author : HuiZhe Xu
      * @date : Created in 2019/6/26 10:35
      */
     @Override
-    public Boolean uploadProduct(Integer id) throws Exception {
+    public void uploadProduct(Integer id) throws Exception {
         ProductLibraryStandard productLibraryStandard=productLibraryStandardDao.selectByPrimaryKey(id);
         if(productLibraryStandard==null){
             throw new Exception("产品不存在");
@@ -106,7 +100,7 @@ public class ProductLibraryStandardServiceImpl implements ProductLibraryStandard
         productLibraryStandard.setIsSale(Byte.parseByte("1"));
         int count=productLibraryStandardDao.updateByPrimaryKeySelective(productLibraryStandard);
         if(count>0){
-            return true;
+            return;
         }
         throw new Exception("上架失败");
     }

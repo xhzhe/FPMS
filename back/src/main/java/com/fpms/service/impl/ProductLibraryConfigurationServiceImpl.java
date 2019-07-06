@@ -2,7 +2,6 @@ package com.fpms.service.impl;
 
 import com.fpms.dao.ProductConfigurationDao;
 import com.fpms.dao.ProductLibraryConfigurationDao;
-import com.fpms.dao.ProductLibraryPreDao;
 import com.fpms.dto.ProductLibraryConfigurationDto;
 import com.fpms.entity.ProductConfiguration;
 import com.fpms.entity.ProductLibraryConfiguration;
@@ -69,10 +68,9 @@ public class ProductLibraryConfigurationServiceImpl implements ProductLibraryCon
      * @author     ：YongBiao Liao
      * @date       ：Created in 2019/6/24 21:06
      * @param       productConId
-     * @return     : boolean
      */
     @Override
-    public boolean deleteConfiguration(Integer productConId)throws Exception {
+    public void deleteConfiguration(Integer productConId)throws Exception {
         productConfigurationDao.deleteByProductConId(productConId);
 //        if(count<=0){
 //            throw new Exception("删除产品配置关联失败");
@@ -81,7 +79,6 @@ public class ProductLibraryConfigurationServiceImpl implements ProductLibraryCon
         if(count<=0){
             throw new Exception("删除配置主表失败");
         }
-        return true;
     }
 
     @Override
@@ -122,12 +119,11 @@ public class ProductLibraryConfigurationServiceImpl implements ProductLibraryCon
      * 修改配置信息
      *
      * @param productLibraryConfiguration
-     * @return : boolean
      * @author : HuiZhe Xu
      * @date : Created in 2019/6/27 17:35
      */
     @Override
-    public boolean modifyConfiguration(ProductLibraryConfiguration productLibraryConfiguration) throws Exception {
+    public void modifyConfiguration(ProductLibraryConfiguration productLibraryConfiguration) throws Exception {
         Integer id = productLibraryConfiguration.getProductConId();
         ProductLibraryConfiguration productLibraryConfigurationTemp = productLibraryConfigurationDao.selectByPrimaryKey(id);
         if(productLibraryConfigurationTemp==null){
@@ -135,7 +131,7 @@ public class ProductLibraryConfigurationServiceImpl implements ProductLibraryCon
         }
         int count=productLibraryConfigurationDao.updateByPrimaryKeySelective(productLibraryConfiguration);
         if(count>0){
-            return true;
+            return;
         }
         throw new Exception("修改失败");
     }
@@ -146,12 +142,11 @@ public class ProductLibraryConfigurationServiceImpl implements ProductLibraryCon
      * @param productConId
      * @param productStdId
      * @param rate
-     * @return : boolean
      * @author : HuiZhe Xu
      * @date : Created in 2019/6/27 17:54
      */
     @Override
-    public boolean modifyConfigurationRate(Integer productConId, Integer productStdId, double rate) throws Exception {
+    public void modifyConfigurationRate(Integer productConId, Integer productStdId, double rate) throws Exception {
         ProductLibraryPre productLibraryPre= productLibraryPreService.selectByStdId(productStdId);
         if(productLibraryPre.getPurchaseStartPoint().compareTo(BigDecimal.valueOf(rate))>=0){
             throw new Exception("修改无效，产品没有达到起购价");
@@ -171,7 +166,7 @@ public class ProductLibraryConfigurationServiceImpl implements ProductLibraryCon
         modifyConfiguration(productLibraryConfiguration);
         int count = productConfigurationDao.updateByPrimaryKeySelective(productConfiguration);
         if(count>0){
-            return true;
+            return;
         }
         throw new Exception("修改失败");
     }

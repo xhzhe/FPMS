@@ -40,9 +40,8 @@ public interface StaffService {
      * @date       ：Created in 2019/6/26 14:50
      * @param       staff
      * @param       roleName
-     * @return     : boolean
      */
-    boolean addStaff(Staff staff, String roleName) throws Exception;
+    void addStaff(Staff staff, String roleName) throws Exception;
     /**
      *  获得单个员工的详细信息
      * @author     : HuiZhe Xu
@@ -81,7 +80,6 @@ public interface StaffService {
      * @author     : HuiZhe Xu
      * @date       : Created in 2019/6/26 14:31
      * @param       id
-     * @return     : boolean
      */
-    boolean delStaff(Integer id) throws Exception;
+    void delStaff(Integer id) throws Exception;
 }

@@ -38,12 +38,11 @@ public interface ProductLibraryConfigurationService {
      * 通过配置id删除配置
      *
      * @param : productConId
-     * @return : void
      * @author ：YongBiao Liao
      * @date ：Created in 2019/6/24 21:04
      * @exception Exception
      */
-    boolean deleteConfiguration(Integer productConId) throws Exception;
+    void deleteConfiguration(Integer productConId) throws Exception;
 
     /**
      * 通过配置Id获取配置
@@ -89,11 +88,10 @@ public interface ProductLibraryConfigurationService {
      * 修改配置信息
      *
      * @param productLibraryConfiguration
-     * @return : boolean
      * @author : HuiZhe Xu
      * @date : Created in 2019/6/27 17:35
      */
-    boolean modifyConfiguration(ProductLibraryConfiguration productLibraryConfiguration) throws Exception;
+    void modifyConfiguration(ProductLibraryConfiguration productLibraryConfiguration) throws Exception;
 
     /**
      *  修改配置中产品比率
@@ -102,9 +100,8 @@ public interface ProductLibraryConfigurationService {
      * @param       configId
      * @param       productStdId
      * @param       rate
-     * @return     : boolean
      */
-    boolean modifyConfigurationRate(Integer configId, Integer productStdId, double rate) throws Exception;
+    void modifyConfigurationRate(Integer configId, Integer productStdId, double rate) throws Exception;
 
     /**
      *  添加配置
