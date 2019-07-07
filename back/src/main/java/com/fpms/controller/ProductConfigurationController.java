@@ -63,18 +63,17 @@ public class ProductConfigurationController {
                 if (productLibraryConfiguration.getProductConNum() == 0) {
                     throw new Exception("产品配置数量错误，该配置中无产品");
                 }
-                BigDecimal percent=productConfiguration.getPercentage();
+                BigDecimal percent = productConfiguration.getPercentage();
                 productLibraryConfiguration.setProductConNum(productLibraryConfiguration.getProductConNum() - 1);
                 productLibraryConfiguration.setReviewStatus(Byte.parseByte("0"));
                 productLibraryConfiguration.setProductConPrice(productLibraryConfiguration.getProductConPrice().subtract(percent));
                 productLibraryConfigurationService.modifyConfiguration(productLibraryConfiguration);
             }
             productConfigurationDao.deleteByPrimaryKey(productConfiguration.getConfigurationId());
-        }catch (MyBatisSystemException e){
+        } catch (MyBatisSystemException e) {
             TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
             return new ResultBean<>("数据库错误，可能为返回数据数量和预定不匹配,即配置中存在相同产品");
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
             return new ResultBean<>(e);
         }
@@ -99,7 +98,7 @@ public class ProductConfigurationController {
 
             Integer productPreId = productLibraryPre.getProductPreId();
             ProductLibraryStandard productLibraryStandard = productLibraryStandardService.selectByProductPreId(productPreId);
-            if(addConProDto.getPercentage().compareTo(productLibraryPre.getPurchaseStartPoint())<0){
+            if (addConProDto.getPercentage().compareTo(productLibraryPre.getPurchaseStartPoint()) < 0) {
                 throw new Exception("该产品没有达到产品的起购价");
             }
             ProductLibraryConfiguration productLibraryConfiguration = productLibraryConfigurationService.selectById(addConProDto.getProductConId());
@@ -134,8 +133,9 @@ public class ProductConfigurationController {
     @PutMapping("/configuration")
     public ResultBean<Boolean> modifyConfiguration(@RequestBody ProductLibraryConfiguration productLibraryConfiguration) {
         try {
-            if(productLibraryConfiguration.getIsSale()==null){
-                //修改上下架型信息
+
+            if (productLibraryConfiguration.getProductConNum() != null || productLibraryConfiguration.getProductConDesc() != null
+                    || productLibraryConfiguration.getProductConName() != null || productLibraryConfiguration.getProductConPrice() != null) {
                 productLibraryConfiguration.setReviewStatus(Byte.parseByte("0"));
             }
             productLibraryConfigurationService.modifyConfiguration(productLibraryConfiguration);
@@ -160,7 +160,7 @@ public class ProductConfigurationController {
     public ResultBean<Boolean> modifyConfigRate(@PathVariable Integer configId, @PathVariable Integer productStdId, @PathVariable double rate) {
         ResultBean<Boolean> res = new ResultBean<>();
         try {
-            if(rate>99999999){
+            if (rate > 99999999) {
                 throw new Exception("单个产品价格过高");
             }
             productLibraryConfigurationService.modifyConfigurationRate(configId, productStdId, rate);
