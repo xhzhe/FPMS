@@ -134,7 +134,10 @@ public class ProductConfigurationController {
     @PutMapping("/configuration")
     public ResultBean<Boolean> modifyConfiguration(@RequestBody ProductLibraryConfiguration productLibraryConfiguration) {
         try {
-            productLibraryConfiguration.setReviewStatus(Byte.parseByte("0"));
+            if(productLibraryConfiguration.getIsSale()==null){
+                //修改上下架型信息
+                productLibraryConfiguration.setReviewStatus(Byte.parseByte("0"));
+            }
             productLibraryConfigurationService.modifyConfiguration(productLibraryConfiguration);
             return new ResultBean<>(true);
         } catch (Exception e) {
