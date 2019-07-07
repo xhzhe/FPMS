@@ -133,9 +133,10 @@ public class ProductConfigurationController {
     @PutMapping("/configuration")
     public ResultBean<Boolean> modifyConfiguration(@RequestBody ProductLibraryConfiguration productLibraryConfiguration) {
         try {
-
-            if (productLibraryConfiguration.getProductConNum() != null || productLibraryConfiguration.getProductConDesc() != null
-                    || productLibraryConfiguration.getProductConName() != null || productLibraryConfiguration.getProductConPrice() != null) {
+            if (productLibraryConfiguration.getProductConNum() != null || productLibraryConfiguration.getProductConPrice() != null) {
+                throw new Exception("不允许修改");
+            }
+            if (productLibraryConfiguration.getProductConDesc() != null || productLibraryConfiguration.getProductConName() != null) {
                 productLibraryConfiguration.setReviewStatus(Byte.parseByte("0"));
             }
             productLibraryConfigurationService.modifyConfiguration(productLibraryConfiguration);
