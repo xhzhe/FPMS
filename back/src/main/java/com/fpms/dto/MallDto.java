@@ -10,16 +10,16 @@ import java.util.List;
  */
 public class MallDto {
 
-    private List<ConfigurationDto> configurationDtoList;
+    private List<ConWithProNameDto> conWithProNameDtoList;
 
     private List<ProductDto> productDtoList;
 
-    public List<ConfigurationDto> getConfigurationDtoList() {
-        return configurationDtoList;
+    public List<ConWithProNameDto> getConWithProNameDtoList() {
+        return conWithProNameDtoList;
     }
 
-    public void setConfigurationDtoList(List<ConfigurationDto> configurationDtoList) {
-        this.configurationDtoList = configurationDtoList;
+    public void setConWithProNameDtoList(List<ConWithProNameDto> conWithProNameDtoList) {
+        this.conWithProNameDtoList = conWithProNameDtoList;
     }
 
     public List<ProductDto> getProductDtoList() {

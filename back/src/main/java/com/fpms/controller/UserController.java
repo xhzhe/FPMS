@@ -121,7 +121,8 @@ public class UserController {
     /**
      * 修改用户密码
      *
-     * @param userPwd
+     * @param newUserPwd1
+     * @param newUserPwd2
      * @param userId
      * @return : com.fpms.entity.pojo.ResultBean<java.lang.Boolean>
      * @author ：YongBiao Liao
@@ -129,19 +130,24 @@ public class UserController {
      */
     @OperationLog("用户修改密码")
     @PutMapping(value = "/user/{userId}/userPwd/actions/modify")
-    public ResultBean<Boolean> modifyUserPwd(@RequestParam("userPwd") String userPwd, @RequestParam("oldUserPwd") String oldUserPwd, @PathVariable Integer userId) {
-        try {
-            User user = userService.getUserById(userId);
-            if (EdsUtil.decryptBasedDes(user.getUserPwd()).equals(oldUserPwd)) {
-                user.setUserPwd(EdsUtil.encryptBasedDes(userPwd));
-                userService.updateUser(user);
-            } else {
-                return new ResultBean<>("原密码错误！");
+    public ResultBean<Boolean> modifyUserPwd(@RequestParam("newUserPwd1") String newUserPwd1, @RequestParam("newUserPwd2") String newUserPwd2,
+                                             @RequestParam("oldUserPwd") String oldUserPwd, @PathVariable Integer userId) {
+        if(newUserPwd1.equals(newUserPwd2)){
+            try {
+                User user = userService.getUserById(userId);
+                if (EdsUtil.decryptBasedDes(user.getUserPwd()).equals(oldUserPwd)) {
+                    user.setUserPwd(EdsUtil.encryptBasedDes(newUserPwd1));
+                    userService.updateUser(user);
+                } else {
+                    return new ResultBean<>("原密码错误！");
+                }
+            } catch (Exception e) {
+                return new ResultBean<>("修改失败！");
             }
-        } catch (Exception e) {
-            return new ResultBean<>("修改失败！");
+            return new ResultBean<>(true);
+        }else {
+            return new ResultBean<>("两次输入的新密码不一致！请重新输入！");
         }
-        return new ResultBean<>(true);
     }
 
     /**
@@ -200,7 +206,8 @@ public class UserController {
     /**
      * 用户修改支付密码
      *
-     * @param payPwd
+     * @param newPayPwd1
+     * @param newPayPwd2
      * @param userId
      * @return : com.fpms.entity.pojo.ResultBean<java.lang.Boolean>
      * @author ：YongBiao Liao
@@ -208,19 +215,24 @@ public class UserController {
      */
     @OperationLog("用户修改支付密码")
     @PutMapping(value = "/user/{userId}/payPwd/actions/modify")
-    public ResultBean<Boolean> modifyPayPwd(@RequestParam("payPwd") String payPwd, @RequestParam("oldPayPwd") String oldPayPwd, @PathVariable Integer userId) {
-        try {
-            User user = userService.getUserById(userId);
-            if (EdsUtil.decryptBasedDes(user.getPayPwd()).equals(oldPayPwd)) {
-                user.setPayPwd(EdsUtil.encryptBasedDes(payPwd));
-                userService.updateUser(user);
-            } else {
-                return new ResultBean<>("原支付密码错误！");
+    public ResultBean<Boolean> modifyPayPwd(@RequestParam("newPayPwd1") String newPayPwd1, @RequestParam("newPayPwd2") String newPayPwd2,
+                                            @RequestParam("oldPayPwd") String oldPayPwd, @PathVariable Integer userId) {
+        if(newPayPwd1.equals(newPayPwd2)){
+            try {
+                User user = userService.getUserById(userId);
+                if (EdsUtil.decryptBasedDes(user.getPayPwd()).equals(oldPayPwd)) {
+                    user.setPayPwd(EdsUtil.encryptBasedDes(newPayPwd1));
+                    userService.updateUser(user);
+                } else {
+                    return new ResultBean<>("原支付密码错误！");
+                }
+            } catch (Exception e) {
+                return new ResultBean<>("修改失败");
             }
-        } catch (Exception e) {
-            return new ResultBean<>("修改失败");
+            return new ResultBean<>(true);
+        }else {
+            return new ResultBean<>("两次输入的新支付密码不一致！请重新输入！");
         }
-        return new ResultBean<>(true);
     }
 
     /**
@@ -295,31 +307,33 @@ public class UserController {
             mallDto.setProductDtoList(productDtoArrayList);
 
             //获取已上架配置以及其包含的产品
-            ArrayList<ConfigurationDto> configurationDtoArrayList = new ArrayList<>();
+            ArrayList<ConWithProNameDto> conWithProNameDtoArrayList = new ArrayList<>();
             List<ProductLibraryConfiguration> productLibraryConfigurationList = productLibraryConfigurationService.getConfigurationsOnSale();
             for (int i = 0; i < productLibraryConfigurationList.size(); i++) {
-                ConfigurationDto configurationDto = new ConfigurationDto();
-                configurationDto.setProductLibraryConfiguration(productLibraryConfigurationList.get(i));
+                ConWithProNameDto ConWithProNameDto = new ConWithProNameDto();
+                ConWithProNameDto.setProductLibraryConfiguration(productLibraryConfigurationList.get(i));
                 List<ProductConfiguration> productConfigurationList = productLibraryConfigurationService.getProductConfigurationByproductConId(productLibraryConfigurationList.get(i).getProductConId());
                 if (productConfigurationList != null) {
-                    ArrayList<ProductLibraryStandard> productLibraryStandardArrayList = new ArrayList<>();
+                    ArrayList<ProductLibraryStandardWithName> productLibraryStandardWithNameArrayList = new ArrayList<>();
                     ArrayList<ProductLibraryPre> productLibraryPreArrayList1 = new ArrayList<>();
                     for (int j = 0; j < productConfigurationList.size(); j++) {
+                        ProductLibraryStandardWithName productLibraryStandardWithName = new ProductLibraryStandardWithName();
                         Integer productStdId = productConfigurationList.get(j).getProductStdId();
-                        ProductLibraryStandard productLibraryStandard = productLibraryStandardService.selectById(productStdId);
-                        Integer productPreId = productLibraryStandard.getProductPreId();
-                        productLibraryStandardArrayList.add(productLibraryStandard);
+                        productLibraryStandardWithName.setProductLibraryStandard(productLibraryStandardService.selectById(productStdId));
+                        Integer productPreId = productLibraryStandardWithName.getProductLibraryStandard().getProductPreId();
                         ProductLibraryPre productLibraryPre = productLibraryPreService.selectById(productPreId);
                         productLibraryPreArrayList1.add(productLibraryPre);
+                        productLibraryStandardWithName.setProductName(productLibraryPre.getProductName());
+                        productLibraryStandardWithNameArrayList.add(productLibraryStandardWithName);
                     }
-                    configurationDto.setProductLibraryPreList(productLibraryPreArrayList1);
-                    configurationDto.setProductLibraryStandardList(productLibraryStandardArrayList);
-                    configurationDtoArrayList.add(configurationDto);
+                    ConWithProNameDto.setProductLibraryPreList(productLibraryPreArrayList1);
+                    ConWithProNameDto.setProductLibraryStandardWithNameList(productLibraryStandardWithNameArrayList);
+                    conWithProNameDtoArrayList.add(ConWithProNameDto);
                 } else {
                     continue;
                 }
             }
-            mallDto.setConfigurationDtoList(configurationDtoArrayList);
+            mallDto.setConWithProNameDtoList(conWithProNameDtoArrayList);
             return new ResultBean<>(mallDto);
         } catch (Exception e) {
             return new ResultBean<>("获取失败！");

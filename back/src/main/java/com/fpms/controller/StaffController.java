@@ -310,34 +310,40 @@ public class StaffController {
      *
      * @param staffId
      * @param oldPassword
-     * @param password
+     * @param newPassword1
+     * @param newPassword2
      * @return : com.fpms.entity.pojo.ResultBean<java.lang.Boolean>
      * @author : HuiZhe Xu
      * @date : Created in 2019/6/27 20:31
      */
     @OperationLog("修改密码")
     @PutMapping("/staff/{staffId}/password")
-    public ResultBean<Boolean> modifyPassword(@PathVariable Integer staffId, String oldPassword, String password) {
-        try {
-            Staff staffTemp = staffService.getSingleStaffDetail(staffId);
-            if (staffTemp == null) {
-                throw new Exception("找不到该员工");
-            }
-            if (oldPassword == null) {
-                throw new Exception("没有旧密码传入");
-            }
-            if (oldPassword.equals(EdsUtil.decryptBasedDes(staffTemp.getStaffPwd()))) {
-                staffTemp.setStaffPwd(EdsUtil.encryptBasedDes(password));
-                boolean success = staffService.updateStaff(staffTemp);
-                if (!success) {
-                    throw new Exception("修改密码失败");
+    public ResultBean<Boolean> modifyPassword(@PathVariable Integer staffId, String oldPassword,
+                                              String newPassword1, String newPassword2) {
+        if (newPassword1.equals(newPassword2)) {
+            try {
+                Staff staffTemp = staffService.getSingleStaffDetail(staffId);
+                if (staffTemp == null) {
+                    throw new Exception("找不到该员工");
                 }
-            } else {
-                throw new Exception("旧密码不正确");
+                if (oldPassword == null) {
+                    throw new Exception("没有旧密码传入");
+                }
+                if (oldPassword.equals(EdsUtil.decryptBasedDes(staffTemp.getStaffPwd()))) {
+                    staffTemp.setStaffPwd(EdsUtil.encryptBasedDes(newPassword1));
+                    boolean success = staffService.updateStaff(staffTemp);
+                    if (!success) {
+                        throw new Exception("修改密码失败");
+                    }
+                } else {
+                    throw new Exception("旧密码不正确");
+                }
+            } catch (Exception e) {
+                return new ResultBean<>(e);
             }
-        } catch (Exception e) {
-            return new ResultBean<>(e);
+            return new ResultBean<>(true);
+        } else {
+            return new ResultBean<>("两次输入的新密码不一致！请重新输入！");
         }
-        return new ResultBean<>(true);
     }
 }
