@@ -139,15 +139,18 @@ public class ProductLibraryConfigurationController {
                 List<String> productName = new ArrayList<>();
                 List<BigDecimal> productPercentage = new ArrayList<>();
                 List<Integer> productStdIds = new ArrayList<>();
+                List<Integer> productPreIds = new ArrayList<>();
                 for(int i = 0; i < productConfigurationList.size(); i++){
                     Integer productStdId = productConfigurationList.get(i).getProductStdId();
                     ProductLibraryStandard productLibraryStandard = productLibraryStandardService.selectById(productStdId);
                     Integer productPreId = productLibraryStandard.getProductPreId();
+                    productPreIds.add(productPreId);
                     ProductLibraryPre productLibraryPre = productLibraryPreService.selectById(productPreId);
                     productName.add(productLibraryPre.getProductName());
                     productPercentage.add(productConfigurationList.get(i).getPercentage());
                     productStdIds.add(productStdId);
                 }
+                conProDto.setProductPreId(productPreIds);
                 conProDto.setProductConId(productConId);
                 conProDto.setProductName(productName);
                 conProDto.setPercentage(productPercentage);

@@ -16,6 +16,16 @@ public class ConProDto {
 
     private Integer productConId;
 
+    public List<Integer> getProductPreId() {
+        return productPreId;
+    }
+
+    public void setProductPreId(List<Integer> productPreId) {
+        this.productPreId = productPreId;
+    }
+
+    private List<Integer> productPreId;
+
     private List<String> productName;
 
     private List<BigDecimal> percentage;
