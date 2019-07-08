@@ -183,7 +183,7 @@ public class UserController {
                 return new ResultBean<>("地址过长！");
             } else if (userEmail.length() > 255) {
                 return new ResultBean<>("邮箱过长！");
-            } else if (zipCode.length() != 6) {
+            } else if (zipCode!=null&&zipCode.length() != 6) {
                 throw new Exception("邮政编码不为6位");
             } else if (!("m".equals(gender.toLowerCase()) || "f".equals(gender.toLowerCase()))) {
                 throw new Exception("性别不正确");
