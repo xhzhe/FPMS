@@ -5,10 +5,13 @@ import com.fpms.dao.ProductLibraryStandardDao;
 import com.fpms.entity.ProductLibraryPre;
 import com.fpms.entity.ProductLibraryStandard;
 import com.fpms.service.ProductLibraryPreService;
+import com.fpms.service.ProductLibraryStandardService;
 import com.fpms.service.StaffService;
 import com.fpms.service.SupplierService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
 import java.util.List;
 
@@ -24,6 +27,11 @@ public class ProductLibraryPreServiceImpl implements ProductLibraryPreService {
     private ProductLibraryStandardDao productLibraryStandardDao;
     private StaffService staffService;
     private SupplierService supplierService;
+    private ProductLibraryStandardService productLibraryStandardService;
+    @Autowired
+    public void setProductLibraryStandardService(ProductLibraryStandardService productLibraryStandardService) {
+        this.productLibraryStandardService = productLibraryStandardService;
+    }
 
     @Autowired
     public void setProductLibraryStandardDao(ProductLibraryStandardDao productLibraryStandardDao) {
@@ -53,15 +61,24 @@ public class ProductLibraryPreServiceImpl implements ProductLibraryPreService {
      * @exception Exception when nothing found there
      */
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public void modifyProduct(ProductLibraryPre productLibraryPre) throws Exception {
         ProductLibraryPre productLibraryPrepare = selectById(productLibraryPre.getProductPreId());
         if (productLibraryPrepare == null) {
             throw new Exception("预选库没有该产品");
         }
+        ProductLibraryStandard productLibraryStandard=productLibraryStandardDao.selectByProductPreId(productLibraryPre.getProductPreId());
+        if(productLibraryStandard!=null){
+            int count = productLibraryStandardDao.deleteByPrimaryKey(productLibraryStandard.getProductStdId());
+            if(count<=0){
+                throw new Exception("删除标准库失败");
+            }
+        }
         int count = productLibraryPreDao.updateByPrimaryKeySelective(productLibraryPre);
         if (count > 0) {
             return;
         }
+        TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
         throw new Exception("更新失败");
     }
 

@@ -81,6 +81,13 @@ public class ProductLibraryConfigurationServiceImpl implements ProductLibraryCon
         }
     }
 
+    /**
+     *  通过id查询配置库配置
+     * @author     : HuiZhe Xu
+     * @date       : Created in 2019/7/7 20:40
+     * @param       productConId
+     * @return     : com.fpms.entity.ProductLibraryConfiguration
+     */
     @Override
     public ProductLibraryConfiguration selectById(Integer productConId) throws Exception {
         ProductLibraryConfiguration productLibraryConfiguration = productLibraryConfigurationDao.selectByPrimaryKey(productConId);
