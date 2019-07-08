@@ -76,6 +76,9 @@ public class ProductLibraryPreServiceImpl implements ProductLibraryPreService {
                     throw new Exception("修改标准库状体失败");
                 }
             }
+            if(productLibraryStandard.getIsSale().equals(Byte.parseByte("1"))){
+                throw new Exception("非法操作，不允许的修改");
+            }
         }
         int count = productLibraryPreDao.updateByPrimaryKeySelective(productLibraryPre);
         if (count > 0) {
