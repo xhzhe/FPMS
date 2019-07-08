@@ -158,9 +158,27 @@ public class UserController {
     public ResultBean<Boolean> modifyUser(String userEmail, String userPhone,
                                           String userAddress, String career, @PathVariable Integer userId, String gender, String zipCode, String birthDate) {
         try {
-            if(userEmail==null){
-                throw new Exception("没有传入邮箱");
-            }
+//            if(userEmail==null){
+//                throw new Exception("没有传入邮箱");
+//            }
+//            if(userPhone==null){
+//                throw new Exception("没有传入电话");
+//            }
+//            if(userAddress==null){
+//                throw new Exception("没有传入地址");
+//            }
+//            if(career==null){
+//                throw new Exception("没有传入职业");
+//            }
+//            if(gender==null){
+//                throw new Exception("没有传入性别");
+//            }
+//            if(zipCode==null){
+//                throw new Exception("没有传入邮政编码");
+//            }
+//            if(birthDate==null){
+//                throw new Exception("没有传入生日");
+//            }
             if (userAddress.length() > 1023) {
                 return new ResultBean<>("地址过长！");
             } else if (userEmail.length() > 255) {
@@ -182,9 +200,11 @@ public class UserController {
                     user.setCareer(career);
                     user.setUserGender(gender);
                     user.setZipCode(zipCode);
-                    DateFormat fmt = new SimpleDateFormat("yyyy-MM-dd");
-                    Date date = fmt.parse(birthDate);
-                    user.setUserBrithday(date);
+                    if(birthDate!=null) {
+                        DateFormat fmt = new SimpleDateFormat("yyyy-MM-dd");
+                        Date date = fmt.parse(birthDate);
+                        user.setUserBrithday(date);
+                    }
                     userService.updateUser(user);
                     return new ResultBean<>(true);
                 } else {
