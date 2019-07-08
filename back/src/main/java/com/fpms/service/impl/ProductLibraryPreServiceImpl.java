@@ -1,5 +1,7 @@
 package com.fpms.service.impl;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.fpms.dao.ProductLibraryPreDao;
 import com.fpms.dao.ProductLibraryStandardDao;
 import com.fpms.entity.ProductLibraryPre;
@@ -13,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -45,16 +48,17 @@ public class ProductLibraryPreServiceImpl implements ProductLibraryPreService {
     }
 
     @Autowired
-    public ProductLibraryPreServiceImpl(ProductLibraryPreDao productLibraryPreDao){
-        this.productLibraryPreDao=productLibraryPreDao;
+    public ProductLibraryPreServiceImpl(ProductLibraryPreDao productLibraryPreDao) {
+        this.productLibraryPreDao = productLibraryPreDao;
     }
 
     /**
      * 修改产品属性
+     *
      * @param productLibraryPre
+     * @throws Exception when nothing found there
      * @author : HuiZhe Xu
      * @date : Created in 2019/6/25 11:06
-     * @exception Exception when nothing found there
      */
     @Override
     @Transactional(rollbackFor = Exception.class)
@@ -63,9 +67,9 @@ public class ProductLibraryPreServiceImpl implements ProductLibraryPreService {
         if (productLibraryPrepare == null) {
             throw new Exception("预选库没有该产品");
         }
-        ProductLibraryStandard productLibraryStandard=productLibraryStandardDao.selectByProductPreId(productLibraryPre.getProductPreId());
-        if(productLibraryStandard!=null){
-            if(productLibraryStandard.getIsSale().equals(Byte.parseByte("1"))) {
+        ProductLibraryStandard productLibraryStandard = productLibraryStandardDao.selectByProductPreId(productLibraryPre.getProductPreId());
+        if (productLibraryStandard != null) {
+            if (productLibraryStandard.getIsSale().equals(Byte.parseByte("0"))) {
                 productLibraryStandard.setIsSale(Byte.parseByte("-1"));
                 int count = productLibraryStandardDao.updateByPrimaryKeySelective(productLibraryStandard);
                 if (count <= 0) {
@@ -83,20 +87,21 @@ public class ProductLibraryPreServiceImpl implements ProductLibraryPreService {
 
     /**
      * 添加产品
+     *
      * @param productLibraryPre
      * @author : HuiZhe Xu
      * @date : Created in 2019/6/25 11:06
      */
     @Override
     public void addProduct(ProductLibraryPre productLibraryPre) throws Exception {
-        if(productLibraryPre.getProductName()==null){
+        if (productLibraryPre.getProductName() == null) {
             throw new Exception("没有产品名");
         }
-        if(productLibraryPre.getStaffId()==null){
+        if (productLibraryPre.getStaffId() == null) {
             throw new Exception("非法操作，没有员工执行的操作");
         }
         staffService.getSingleStaffDetail(productLibraryPre.getStaffId());
-        if(productLibraryPre.getSupplierId()==null){
+        if (productLibraryPre.getSupplierId() == null) {
             throw new Exception("不合理产品，该产品没有供应商");
         }
         supplierService.getSupplier(productLibraryPre.getSupplierId());
@@ -109,6 +114,7 @@ public class ProductLibraryPreServiceImpl implements ProductLibraryPreService {
 
     /**
      * 查询预选库产品
+     *
      * @param productPreId
      * @return : com.fpms.entity.ProductLibraryPre
      * @author : HuiZhe Xu
@@ -125,6 +131,7 @@ public class ProductLibraryPreServiceImpl implements ProductLibraryPreService {
 
     /**
      * 获取未评估产品列表
+     *
      * @param
      * @return : java.util.List<com.fpms.entity.ProductLibraryPre>
      * @author : HuiZhe Xu
@@ -141,18 +148,34 @@ public class ProductLibraryPreServiceImpl implements ProductLibraryPreService {
 
     /**
      * 获取所有预选库产品
+     *
      * @param
-     * @return : java.util.List<com.fpms.entity.ProductLibraryPre>
+     * @return : String
      * @author ：YongBiao Liao
      * @date ：Created in 2019/6/26 11:41
      */
     @Override
-    public List<ProductLibraryPre> getAllProductPres() throws Exception {
+    public List<String> getAllProductPres() throws Exception {
         List<ProductLibraryPre> productLibraryPres = productLibraryPreDao.getAllProductPres();
+        List<String> products = new ArrayList<>();
         if (productLibraryPres == null) {
             throw new Exception("预选库为空");
         }
-        return productLibraryPres;
+        for (ProductLibraryPre productLibraryPre : productLibraryPres) {
+            Integer productPreId = productLibraryPre.getProductPreId();
+            ProductLibraryStandard productLibraryStandard = productLibraryStandardDao.selectByProductPreId(productPreId);
+            Byte isSale;
+            if (productLibraryStandard != null) {
+                isSale = productLibraryStandard.getIsSale();
+            } else {
+                isSale = null;
+            }
+            String productPreWithIsSale = JSON.toJSONString(productLibraryPre);
+            StringBuffer product = new StringBuffer(productPreWithIsSale);
+            product.insert(-1, ",isSale:" + (isSale == null ? "null" : isSale.toString()));
+            products.add(product.toString());
+        }
+        return products;
     }
 
     /**
@@ -178,6 +201,7 @@ public class ProductLibraryPreServiceImpl implements ProductLibraryPreService {
 
     /**
      * 通过产品名查找产品
+     *
      * @param productName
      * @return : com.fpms.entity.ProductLibraryPre
      * @author ：YongBiao Liao

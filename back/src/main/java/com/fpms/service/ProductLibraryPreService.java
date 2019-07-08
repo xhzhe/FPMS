@@ -50,9 +50,9 @@ public interface ProductLibraryPreService {
      * @author     ：YongBiao Liao
      * @date       ：Created in 2019/6/26 11:40
      * @param
-     * @return     : java.util.List<com.fpms.entity.ProductLibraryPre>
+     * @return     : String
      */
-    List<ProductLibraryPre> getAllProductPres() throws Exception;
+    List<String> getAllProductPres() throws Exception;
 
     /**
      *  通过标准库Id获得预选库的产品信息

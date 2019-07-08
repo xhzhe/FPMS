@@ -1,6 +1,7 @@
 package com.fpms.controller;
 
 import com.fpms.annotation.OperationLog;
+import com.fpms.dao.ProductLibraryStandardDao;
 import com.fpms.dto.Product;
 import com.fpms.dto.ProductWithName;
 import com.fpms.entity.ProductLibraryPre;
@@ -9,6 +10,8 @@ import com.fpms.entity.pojo.ResultBean;
 import com.fpms.service.ProductLibraryPreService;
 import com.fpms.service.ProductLibraryStandardService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.interceptor.TransactionAspectSupport;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -31,15 +34,25 @@ public class ProductLibraryStandardController {
      */
     private ProductLibraryStandardService productLibraryStandardService;
 
+    private ProductLibraryStandardDao productLibraryStandardDao;
+
     private ProductLibraryPreService productLibraryPreService;
+
+    @Autowired
+    public void setProductLibraryStandardService(ProductLibraryStandardService productLibraryStandardService) {
+        this.productLibraryStandardService = productLibraryStandardService;
+    }
+
     @Autowired
     public ProductLibraryStandardController(ProductLibraryStandardService productLibraryStandardService) {
         this.productLibraryStandardService = productLibraryStandardService;
     }
+
     @Autowired
     public void setProductLibraryPreService(ProductLibraryPreService productLibraryPreService) {
         this.productLibraryPreService = productLibraryPreService;
     }
+
     /**
      * 下架产品
      *
@@ -159,31 +172,44 @@ public class ProductLibraryStandardController {
     }
 
     /**
-     *  根据预选库插入标准库产品
-     * @author     : HuiZhe Xu
-     * @date       : Created in 2019/7/3 16:53
-     * @param       productPreId
-     * @return     : com.fpms.entity.pojo.ResultBean<java.lang.Boolean>
+     * 根据预选库插入标准库产品
+     *
+     * @param productPreId
+     * @return : com.fpms.entity.pojo.ResultBean<java.lang.Boolean>
+     * @author : HuiZhe Xu
+     * @date : Created in 2019/7/3 16:53
      */
     @OperationLog("根据预选库插入标准库产品")
     @PostMapping("/productStd/productPre/{productPreId}")
+    @Transactional(rollbackFor = Exception.class)
     public ResultBean<Boolean> addProductStd(@PathVariable Integer productPreId) {
         try {
-            if(productPreId==null){
+            if (productPreId == null) {
                 throw new Exception("没有传入id");
             }
-            if(productPreId<0){
+            if (productPreId < 0) {
                 throw new Exception("不合法id");
             }
             ProductLibraryPre productLibraryPre = productLibraryPreService.selectById(productPreId);
-            if(productLibraryPre == null){
+            if (productLibraryPre == null) {
                 return new ResultBean<>("预选库Id不存在");
             }
-            ProductLibraryStandard productLibraryStandard=new ProductLibraryStandard();
-            productLibraryStandard.setProductPreId(productPreId);
-            productLibraryStandardService.insertProductStd(productLibraryStandard);
+            ProductLibraryStandard productLibraryStandardTemp = productLibraryStandardService.selectByProductPreId(productPreId);
+            if (productLibraryStandardTemp == null) {
+                ProductLibraryStandard productLibraryStandard = new ProductLibraryStandard();
+                productLibraryStandard.setProductPreId(productPreId);
+                productLibraryStandardService.insertProductStd(productLibraryStandard);
+                return new ResultBean<>(true);
+            } else {
+                if (Byte.valueOf("-1").equals(productLibraryStandardTemp.getIsSale())) {
+                    productLibraryStandardTemp.setIsSale(Byte.valueOf("0"));
+                    productLibraryStandardService.updateProductStandard(productLibraryStandardTemp);
+                    return new ResultBean<>(true);
+                }
+            }
             return new ResultBean<>(true);
         } catch (Exception e) {
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
             return new ResultBean<>(e);
         }
     }
