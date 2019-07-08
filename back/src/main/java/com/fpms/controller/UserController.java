@@ -328,31 +328,33 @@ public class UserController {
             mallDto.setProductDtoList(productDtoArrayList);
 
             //获取已上架配置以及其包含的产品
-            ArrayList<ConfigurationDto> configurationDtoArrayList = new ArrayList<>();
+            ArrayList<ConWithProNameDto> conWithProNameDtoArrayList = new ArrayList<>();
             List<ProductLibraryConfiguration> productLibraryConfigurationList = productLibraryConfigurationService.getConfigurationsOnSale();
             for (int i = 0; i < productLibraryConfigurationList.size(); i++) {
-                ConfigurationDto configurationDto = new ConfigurationDto();
-                configurationDto.setProductLibraryConfiguration(productLibraryConfigurationList.get(i));
+                ConWithProNameDto ConWithProNameDto = new ConWithProNameDto();
+                ConWithProNameDto.setProductLibraryConfiguration(productLibraryConfigurationList.get(i));
                 List<ProductConfiguration> productConfigurationList = productLibraryConfigurationService.getProductConfigurationByproductConId(productLibraryConfigurationList.get(i).getProductConId());
                 if (productConfigurationList != null) {
-                    ArrayList<ProductLibraryStandard> productLibraryStandardArrayList = new ArrayList<>();
+                    ArrayList<ProductLibraryStandardWithName> productLibraryStandardWithNameArrayList = new ArrayList<>();
                     ArrayList<ProductLibraryPre> productLibraryPreArrayList1 = new ArrayList<>();
                     for (int j = 0; j < productConfigurationList.size(); j++) {
+                        ProductLibraryStandardWithName productLibraryStandardWithName = new ProductLibraryStandardWithName();
                         Integer productStdId = productConfigurationList.get(j).getProductStdId();
-                        ProductLibraryStandard productLibraryStandard = productLibraryStandardService.selectById(productStdId);
-                        Integer productPreId = productLibraryStandard.getProductPreId();
-                        productLibraryStandardArrayList.add(productLibraryStandard);
+                        productLibraryStandardWithName.setProductLibraryStandard(productLibraryStandardService.selectById(productStdId));
+                        Integer productPreId = productLibraryStandardWithName.getProductLibraryStandard().getProductPreId();
                         ProductLibraryPre productLibraryPre = productLibraryPreService.selectById(productPreId);
                         productLibraryPreArrayList1.add(productLibraryPre);
+                        productLibraryStandardWithName.setProductName(productLibraryPre.getProductName());
+                        productLibraryStandardWithNameArrayList.add(productLibraryStandardWithName);
                     }
-                    configurationDto.setProductLibraryPreList(productLibraryPreArrayList1);
-                    configurationDto.setProductLibraryStandardList(productLibraryStandardArrayList);
-                    configurationDtoArrayList.add(configurationDto);
+                    ConWithProNameDto.setProductLibraryPreList(productLibraryPreArrayList1);
+                    ConWithProNameDto.setProductLibraryStandardWithNameList(productLibraryStandardWithNameArrayList);
+                    conWithProNameDtoArrayList.add(ConWithProNameDto);
                 } else {
                     continue;
                 }
             }
-            mallDto.setConfigurationDtoList(configurationDtoArrayList);
+            mallDto.setConWithProNameDtoList(conWithProNameDtoArrayList);
             return new ResultBean<>(mallDto);
         } catch (Exception e) {
             return new ResultBean<>("获取失败！");
