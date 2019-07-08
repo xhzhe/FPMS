@@ -1,9 +1,7 @@
 package com.fpms.controller;
 
 import com.fpms.annotation.OperationLog;
-import com.fpms.dto.ConProDto;
-import com.fpms.dto.ConfigurationDto;
-import com.fpms.dto.ProductLibraryConfigurationDto;
+import com.fpms.dto.*;
 import com.fpms.entity.ProductConfiguration;
 import com.fpms.entity.ProductLibraryConfiguration;
 import com.fpms.entity.ProductLibraryPre;
@@ -48,28 +46,30 @@ public class ProductLibraryConfigurationController {
      * @return     : com.fpms.entity.pojo.ResultBean<java.util.List<com.fpms.entity.ProductLibraryConfiguration>>
      */
     @GetMapping(value = "/configurations")
-    public ResultBean<List<ConfigurationDto>> getAllConfiguration(){
-        ArrayList<ConfigurationDto> configurationDtoArrayList = new ArrayList<>();
+    public ResultBean<List<ConWithProNameDto>> getAllConfiguration(){
+        ArrayList<ConWithProNameDto> conWithProNameDtoArrayList = new ArrayList<>();
         try{
             List<ProductLibraryConfiguration> productLibraryConfigurationList = productLibraryConfigurationService.getAllConfiguration();
             for(int i = 0; i < productLibraryConfigurationList.size(); i++){
-                ConfigurationDto configurationDto = new ConfigurationDto();
-                configurationDto.setProductLibraryConfiguration(productLibraryConfigurationList.get(i));
+                ConWithProNameDto conWithProNameDto = new ConWithProNameDto();
+                conWithProNameDto.setProductLibraryConfiguration(productLibraryConfigurationList.get(i));
                 List<ProductConfiguration> productConfigurationList = productLibraryConfigurationService.getProductConfigurationByproductConId(productLibraryConfigurationList.get(i).getProductConId());
                 if(productConfigurationList != null){
-                    ArrayList<ProductLibraryStandard> productLibraryStandardArrayList = new ArrayList<>();
+                    ArrayList<ProductLibraryStandardWithName> productLibraryStandardWithNameArrayList = new ArrayList<>();
                     ArrayList<ProductLibraryPre> productLibraryPreArrayList = new ArrayList<>();
                     for(int j = 0; j < productConfigurationList.size(); j++){
+                        ProductLibraryStandardWithName productLibraryStandardWithName = new ProductLibraryStandardWithName();
                         Integer productStdId = productConfigurationList.get(j).getProductStdId();
-                        ProductLibraryStandard productLibraryStandard = productLibraryStandardService.selectById(productStdId);
-                        Integer productPreId = productLibraryStandard.getProductPreId();
-                        productLibraryStandardArrayList.add(productLibraryStandard);
+                        productLibraryStandardWithName.setProductLibraryStandard(productLibraryStandardService.selectById(productStdId));
+                        Integer productPreId = productLibraryStandardWithName.getProductLibraryStandard().getProductPreId();
                         ProductLibraryPre productLibraryPre = productLibraryPreService.selectById(productPreId);
+                        productLibraryStandardWithName.setProductName(productLibraryPre.getProductName());
+                        productLibraryStandardWithNameArrayList.add(productLibraryStandardWithName);
                         productLibraryPreArrayList.add(productLibraryPre);
                     }
-                    configurationDto.setProductLibraryPreList(productLibraryPreArrayList);
-                    configurationDto.setProductLibraryStandardList(productLibraryStandardArrayList);
-                    configurationDtoArrayList.add(configurationDto);
+                    conWithProNameDto.setProductLibraryPreList(productLibraryPreArrayList);
+                    conWithProNameDto.setProductLibraryStandardWithNameList(productLibraryStandardWithNameArrayList);
+                    conWithProNameDtoArrayList.add(conWithProNameDto);
                 }else {
                     continue;
                 }
@@ -77,7 +77,7 @@ public class ProductLibraryConfigurationController {
         }catch (Exception e){
             return new ResultBean<>(e.getMessage());
         }
-        return new ResultBean<>(configurationDtoArrayList);
+        return new ResultBean<>(conWithProNameDtoArrayList);
     }
 
     /**
