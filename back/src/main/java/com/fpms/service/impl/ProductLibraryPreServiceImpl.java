@@ -155,9 +155,9 @@ public class ProductLibraryPreServiceImpl implements ProductLibraryPreService {
      * @date ：Created in 2019/6/26 11:41
      */
     @Override
-    public List<String> getAllProductPres() throws Exception {
+    public List<Object> getAllProductPres() throws Exception {
         List<ProductLibraryPre> productLibraryPres = productLibraryPreDao.getAllProductPres();
-        List<String> products = new ArrayList<>();
+        List<Object> products = new ArrayList<>();
         if (productLibraryPres == null) {
             throw new Exception("预选库为空");
         }
@@ -172,8 +172,9 @@ public class ProductLibraryPreServiceImpl implements ProductLibraryPreService {
             }
             String productPreWithIsSale = JSON.toJSONString(productLibraryPre);
             StringBuffer product = new StringBuffer(productPreWithIsSale);
-            product.insert(-1, ",isSale:" + (isSale == null ? "null" : isSale.toString()));
-            products.add(product.toString());
+            product.insert(product.length()-1, ",isSale:" + (isSale == null ? "null" : isSale.toString()));
+            Object pro=JSON.parse(product.toString());
+            products.add(pro);
         }
         return products;
     }

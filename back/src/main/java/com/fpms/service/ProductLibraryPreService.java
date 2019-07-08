@@ -50,9 +50,9 @@ public interface ProductLibraryPreService {
      * @author     ：YongBiao Liao
      * @date       ：Created in 2019/6/26 11:40
      * @param
-     * @return     : String
+     * @return     : Object
      */
-    List<String> getAllProductPres() throws Exception;
+    List<Object> getAllProductPres() throws Exception;
 
     /**
      *  通过标准库Id获得预选库的产品信息

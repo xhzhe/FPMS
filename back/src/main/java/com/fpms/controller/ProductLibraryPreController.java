@@ -107,8 +107,8 @@ public class ProductLibraryPreController {
      * @date ：Created in 2019/6/26 11:46
      */
     @GetMapping(value = "/productPres")
-    public ResultBean<List<String>> getAllProductPres() {
-        List<String> productLibraryPres;
+    public ResultBean<List<Object>> getAllProductPres() {
+        List<Object> productLibraryPres;
         try {
             productLibraryPres = productLibraryPreService.getAllProductPres();
         } catch (Exception e) {
