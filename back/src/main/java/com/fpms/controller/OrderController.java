@@ -207,7 +207,7 @@ public class OrderController {
             else if(order1.getOrderType() == 2){
                 //减少库存
                 ProductLibraryConfiguration productLibraryConfiguration= productLibraryConfigurationService.selectById(order1.getProductConId());
-                productLibraryConfiguration.setStock(productLibraryConfiguration.getStock() - 1);
+                productLibraryConfiguration.setStock(productLibraryConfiguration.getStock() -  productLibraryConfiguration.getProductConPrice().intValue());
                 productLibraryConfigurationService.updateProductConfiguration(productLibraryConfiguration);
                 user.setUserMoney(userMoney.subtract(orderMoney));
                 userService.updateUser(user);
