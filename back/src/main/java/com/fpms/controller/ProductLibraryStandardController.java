@@ -181,8 +181,6 @@ public class ProductLibraryStandardController {
             }
             ProductLibraryStandard productLibraryStandard=new ProductLibraryStandard();
             productLibraryStandard.setProductPreId(productPreId);
-//            Double stock = productLibraryPre.getProductPrice().doubleValue() * productLibraryPre.getPurchaseLimit().doubleValue();
-//            productLibraryStandard.setStock(stock.intValue());
             productLibraryStandardService.insertProductStd(productLibraryStandard);
             return new ResultBean<>(true);
         } catch (Exception e) {

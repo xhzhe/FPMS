@@ -69,9 +69,10 @@ public class ProductLibraryPreServiceImpl implements ProductLibraryPreService {
         }
         ProductLibraryStandard productLibraryStandard=productLibraryStandardDao.selectByProductPreId(productLibraryPre.getProductPreId());
         if(productLibraryStandard!=null){
-            int count = productLibraryStandardDao.deleteByPrimaryKey(productLibraryStandard.getProductStdId());
+            productLibraryStandard.setIsSale(Byte.parseByte("-1"));
+            int count = productLibraryStandardDao.updateByPrimaryKeySelective(productLibraryStandard);
             if(count<=0){
-                throw new Exception("删除标准库失败");
+                throw new Exception("修改标准库状体失败");
             }
         }
         int count = productLibraryPreDao.updateByPrimaryKeySelective(productLibraryPre);
