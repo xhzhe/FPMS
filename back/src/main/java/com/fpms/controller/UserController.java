@@ -12,7 +12,11 @@ import com.fpms.utils.EdsUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -39,28 +43,27 @@ public class UserController {
 
     /**
      * 注册用户
-     * @author     ：YongBiao Liao
-     * @date       ：Created in 2019/6/19 19:38
+     *
      * @param
-     * @return     : com.fpms.entity.pojo.ResultBean<java.lang.Boolean>
+     * @return : com.fpms.entity.pojo.ResultBean<java.lang.Boolean>
+     * @author ：YongBiao Liao
+     * @date ：Created in 2019/6/19 19:38
      */
     @PostMapping(value = "/user/actions/register")
     public ResultBean<Boolean> register(String userName, String userPwd, String userGender, /*String userBrithday,*/ String userPhone,
-                                        String userEmail, String certificateType, String certificateNum, String career){
+                                        String userEmail, String certificateType, String certificateNum, String career) {
         ResultBean<Boolean> resultBean = new ResultBean<>();
-        try{
-            if(userName.length() > 1023 || userEmail.length() >255
-                    || userPhone.length() > 11 || career.length() > 255){
+        try {
+            if (userName.length() > 1023 || userEmail.length() > 255
+                    || userPhone.length() > 11 || career.length() > 255) {
                 return new ResultBean<>("用户名过长！");
-            }else if (userEmail.length() >255){
+            } else if (userEmail.length() > 255) {
                 return new ResultBean<>("邮箱过长！");
-            }
-            else if (userPhone.length() > 11){
+            } else if (userPhone.length() > 11) {
                 return new ResultBean<>("电话过长！");
-            }
-            else if (career.length() > 255) {
+            } else if (career.length() > 255) {
                 return new ResultBean<>("职业过长！");
-            }else {
+            } else {
                 User user = new User();
                 user.setUserName(userName);
                 user.setUserPwd(EdsUtil.encryptBasedDes(userPwd));
@@ -73,17 +76,17 @@ public class UserController {
                 user.setCertificateNum(certificateNum);
                 user.setCareer(career);
                 int result = userService.register(user);
-                if(result == 0){
+                if (result == 0) {
                     resultBean.setState(1);
                     resultBean.setMsg("用户已存在");
-                }else if (result == 1){
+                } else if (result == 1) {
 
-                }else if (result == 2){
+                } else if (result == 2) {
                     resultBean.setState(1);
                     resultBean.setMsg("注册失败");
                 }
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             resultBean.setState(1);
             resultBean.setMsg(e.getMessage());
         }
@@ -92,13 +95,14 @@ public class UserController {
 
     /**
      * 根据用户id获取用户的详细信息
-     * @author     ：YongBiao Liao
-     * @date       ：Created in 2019/6/19 14:06
-     * @param       userId
-     * @return     : com.fpms.entity.pojo.ResultBean<com.fpms.entity.User>
+     *
+     * @param userId
+     * @return : com.fpms.entity.pojo.ResultBean<com.fpms.entity.User>
+     * @author ：YongBiao Liao
+     * @date ：Created in 2019/6/19 14:06
      */
     @GetMapping(value = "/user/{userId}")
-    public ResultBean<User> getUserById(@PathVariable Integer userId){
+    public ResultBean<User> getUserById(@PathVariable Integer userId) {
         try {
             User user = userService.getUserById(userId);
             ResultBean<User> resultBean = new ResultBean<>();
@@ -109,32 +113,32 @@ public class UserController {
                 resultBean = new ResultBean<>(user);
             }
             return resultBean;
-        }catch (Exception e){
+        } catch (Exception e) {
             return new ResultBean<>(e);
         }
     }
 
     /**
-     *  修改用户密码
-     * @author     ：YongBiao Liao
-     * @date       ：Created in 2019/6/19 16:21
-     * @param       userPwd
-     * @param       userId
-     * @return     : com.fpms.entity.pojo.ResultBean<java.lang.Boolean>
+     * 修改用户密码
+     *
+     * @param userPwd
+     * @param userId
+     * @return : com.fpms.entity.pojo.ResultBean<java.lang.Boolean>
+     * @author ：YongBiao Liao
+     * @date ：Created in 2019/6/19 16:21
      */
     @OperationLog("用户修改密码")
     @PutMapping(value = "/user/{userId}/userPwd/actions/modify")
-    public ResultBean<Boolean> modifyUserPwd(@RequestParam("userPwd") String userPwd, @RequestParam("oldUserPwd") String oldUserPwd ,@PathVariable Integer userId){
-        try{
+    public ResultBean<Boolean> modifyUserPwd(@RequestParam("userPwd") String userPwd, @RequestParam("oldUserPwd") String oldUserPwd, @PathVariable Integer userId) {
+        try {
             User user = userService.getUserById(userId);
-            if(EdsUtil.decryptBasedDes(user.getUserPwd()).equals(oldUserPwd)) {
+            if (EdsUtil.decryptBasedDes(user.getUserPwd()).equals(oldUserPwd)) {
                 user.setUserPwd(EdsUtil.encryptBasedDes(userPwd));
                 userService.updateUser(user);
-            }else {
+            } else {
                 return new ResultBean<>("原密码错误！");
             }
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             return new ResultBean<>("修改失败！");
         }
         return new ResultBean<>(true);
@@ -142,68 +146,76 @@ public class UserController {
 
     /**
      * 用户修改信息
-     * @author     ：YongBiao Liao
-     * @date       ：Created in 2019/6/19 23:29
+     *
      * @param
-     * @param       userId
-     * @return     : com.fpms.entity.pojo.ResultBean<java.lang.Boolean>
+     * @param userId
+     * @return : com.fpms.entity.pojo.ResultBean<java.lang.Boolean>
+     * @author ：YongBiao Liao
+     * @date ：Created in 2019/6/19 23:29
      */
     @OperationLog("用户修改信息")
     @PutMapping(value = "/user/{userId}")
-    public ResultBean<Boolean> modifyUser(String userEmail,String userPhone ,
-                                          String userAddress,String career, @PathVariable Integer userId){
-        try{
-            if(userAddress.length() > 1023 || userEmail.length() >255
-                    || userPhone.length() > 11 || career.length() > 255){
+    public ResultBean<Boolean> modifyUser(String userEmail, String userPhone,
+                                          String userAddress, String career, @PathVariable Integer userId, String gender, String zipCode, String birthDate) {
+        try {
+            if (userAddress.length() > 1023) {
                 return new ResultBean<>("地址过长！");
-            }else if (userEmail.length() >255){
+            } else if (userEmail.length() > 255) {
                 return new ResultBean<>("邮箱过长！");
-            }
-            else if (userPhone.length() > 11){
+            } else if (zipCode.length() != 6) {
+                throw new Exception("邮政编码不为6位");
+            } else if (!("m".equals(gender.toLowerCase()) || "f".equals(gender.toLowerCase()))) {
+                throw new Exception("性别不正确");
+            } else if (userPhone.length() > 11) {
                 return new ResultBean<>("电话过长！");
-            }
-            else if (career.length() > 255){
+            } else if (career.length() > 255) {
                 return new ResultBean<>("职业过长！");
-            }else {
+            } else {
                 User user = userService.getUserById(userId);
-                if(user != null ) {
+                if (user != null) {
                     user.setUserEmail(userEmail);
                     user.setUserPhone(userPhone);
                     user.setUserAddress(userAddress);
                     user.setCareer(career);
+                    user.setUserGender(gender);
+                    user.setZipCode(zipCode);
+                    DateFormat fmt = new SimpleDateFormat("yyyy-MM-dd");
+                    Date date = fmt.parse(birthDate);
+                    user.setUserBrithday(date);
                     userService.updateUser(user);
                     return new ResultBean<>();
-                }else {
+                } else {
                     return new ResultBean<>("此用户不存在！");
                 }
             }
-        }
-        catch (Exception e){
-            return new ResultBean<>("修改失败！");
+        } catch (ParseException e) {
+            return new ResultBean<>("日期格式错误");
+        } catch (Exception e) {
+            return new ResultBean<>(e);
         }
     }
 
     /**
      * 用户修改支付密码
-     * @author     ：YongBiao Liao
-     * @date       ：Created in 2019/6/19 23:59
-     * @param       payPwd
-     * @param       userId
-     * @return     : com.fpms.entity.pojo.ResultBean<java.lang.Boolean>
+     *
+     * @param payPwd
+     * @param userId
+     * @return : com.fpms.entity.pojo.ResultBean<java.lang.Boolean>
+     * @author ：YongBiao Liao
+     * @date ：Created in 2019/6/19 23:59
      */
     @OperationLog("用户修改支付密码")
     @PutMapping(value = "/user/{userId}/payPwd/actions/modify")
-    public ResultBean<Boolean> modifyPayPwd(@RequestParam("payPwd") String payPwd, @RequestParam("oldPayPwd") String oldPayPwd, @PathVariable Integer userId){
-        try{
+    public ResultBean<Boolean> modifyPayPwd(@RequestParam("payPwd") String payPwd, @RequestParam("oldPayPwd") String oldPayPwd, @PathVariable Integer userId) {
+        try {
             User user = userService.getUserById(userId);
-            if(EdsUtil.decryptBasedDes(user.getPayPwd()).equals(oldPayPwd)) {
+            if (EdsUtil.decryptBasedDes(user.getPayPwd()).equals(oldPayPwd)) {
                 user.setPayPwd(EdsUtil.encryptBasedDes(payPwd));
                 userService.updateUser(user);
-            }else {
+            } else {
                 return new ResultBean<>("原支付密码错误！");
             }
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             return new ResultBean<>("修改失败");
         }
         return new ResultBean<>(true);
@@ -211,46 +223,47 @@ public class UserController {
 
     /**
      * 获取用户的支付密码
-     * @author     ：YongBiao Liao
-     * @date       ：Created in 2019/6/27 14:51
-     * @param       userId
-     * @return     : com.fpms.entity.pojo.ResultBean<java.lang.String>
+     *
+     * @param userId
+     * @return : com.fpms.entity.pojo.ResultBean<java.lang.String>
+     * @author ：YongBiao Liao
+     * @date ：Created in 2019/6/27 14:51
      */
     @GetMapping(value = "/user/{userId}/payPwd")
-    public ResultBean<String> getPayPwd(@PathVariable Integer userId){
-        try{
+    public ResultBean<String> getPayPwd(@PathVariable Integer userId) {
+        try {
             User user = userService.getUserById(userId);
-            if(user == null){
+            if (user == null) {
                 return new ResultBean<>("用户不存在！");
-            }else {
+            } else {
                 String payPwd = EdsUtil.decryptBasedDes(user.getPayPwd());
                 ResultBean<String> resultBean = new ResultBean<>();
                 resultBean.setData(payPwd);
                 return resultBean;
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             return new ResultBean<>("获取失败！");
         }
     }
 
     /**
      * 用户设置支付密码
-     * @author     ：YongBiao Liao
-     * @date       ：Created in 2019/6/28 11:23
-     * @param       userId
-     * @param       payPwd
-     * @return     : com.fpms.entity.pojo.ResultBean<java.lang.Boolean>
+     *
+     * @param userId
+     * @param payPwd
+     * @return : com.fpms.entity.pojo.ResultBean<java.lang.Boolean>
+     * @author ：YongBiao Liao
+     * @date ：Created in 2019/6/28 11:23
      */
     @OperationLog("用户设置支付密码")
     @PutMapping(value = "/user/{userId}/payPwd")
-    public ResultBean<Boolean> setPayPwd(@PathVariable Integer userId, @RequestParam("payPwd") String payPwd){
-        try{
+    public ResultBean<Boolean> setPayPwd(@PathVariable Integer userId, @RequestParam("payPwd") String payPwd) {
+        try {
             User user = new User();
             user.setUserId(userId);
             user.setPayPwd(EdsUtil.encryptBasedDes(payPwd));
             userService.updateUser(user);
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             return new ResultBean<>("设置失败！");
         }
         return new ResultBean<>(true);
@@ -261,13 +274,13 @@ public class UserController {
     public ResultBean<MallDto> getOnSale() throws Exception {
         MallDto mallDto = new MallDto();
 
-        try{
+        try {
             //获取已上架产品
             ArrayList<ProductDto> productDtoArrayList = new ArrayList<>();
             List<ProductLibraryStandard> productLibraryStandardList = productLibraryStandardService.getProductsOnSale();
             ArrayList<ProductLibraryPre> productLibraryPreArrayList = new ArrayList<>();
-            if(productLibraryStandardList != null){
-                for(int i = 0; i < productLibraryStandardList.size(); i++) {
+            if (productLibraryStandardList != null) {
+                for (int i = 0; i < productLibraryStandardList.size(); i++) {
                     ProductDto productDto = new ProductDto();
                     ProductLibraryStandard productLibraryStandard = productLibraryStandardList.get(i);
                     ProductLibraryPre productLibraryPre = productLibraryPreService.selectById(productLibraryStandard.getProductPreId());
@@ -282,14 +295,14 @@ public class UserController {
             //获取已上架配置以及其包含的产品
             ArrayList<ConfigurationDto> configurationDtoArrayList = new ArrayList<>();
             List<ProductLibraryConfiguration> productLibraryConfigurationList = productLibraryConfigurationService.getConfigurationsOnSale();
-            for(int i = 0; i < productLibraryConfigurationList.size(); i++){
+            for (int i = 0; i < productLibraryConfigurationList.size(); i++) {
                 ConfigurationDto configurationDto = new ConfigurationDto();
                 configurationDto.setProductLibraryConfiguration(productLibraryConfigurationList.get(i));
                 List<ProductConfiguration> productConfigurationList = productLibraryConfigurationService.getProductConfigurationByproductConId(productLibraryConfigurationList.get(i).getProductConId());
-                if(productConfigurationList != null){
+                if (productConfigurationList != null) {
                     ArrayList<ProductLibraryStandard> productLibraryStandardArrayList = new ArrayList<>();
                     ArrayList<ProductLibraryPre> productLibraryPreArrayList1 = new ArrayList<>();
-                    for(int j = 0; j < productConfigurationList.size(); j++){
+                    for (int j = 0; j < productConfigurationList.size(); j++) {
                         Integer productStdId = productConfigurationList.get(j).getProductStdId();
                         ProductLibraryStandard productLibraryStandard = productLibraryStandardService.selectById(productStdId);
                         Integer productPreId = productLibraryStandard.getProductPreId();
@@ -300,13 +313,13 @@ public class UserController {
                     configurationDto.setProductLibraryPreList(productLibraryPreArrayList1);
                     configurationDto.setProductLibraryStandardList(productLibraryStandardArrayList);
                     configurationDtoArrayList.add(configurationDto);
-                }else {
+                } else {
                     continue;
                 }
             }
             mallDto.setConfigurationDtoList(configurationDtoArrayList);
             return new ResultBean<>(mallDto);
-        }catch (Exception e){
+        } catch (Exception e) {
             return new ResultBean<>("获取失败！");
         }
     }
