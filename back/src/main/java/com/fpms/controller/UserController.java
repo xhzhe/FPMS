@@ -158,27 +158,6 @@ public class UserController {
     public ResultBean<Boolean> modifyUser(String userEmail, String userPhone,
                                           String userAddress, String career, @PathVariable Integer userId, String gender, String zipCode, String birthDate) {
         try {
-//            if(userEmail==null){
-//                throw new Exception("没有传入邮箱");
-//            }
-//            if(userPhone==null){
-//                throw new Exception("没有传入电话");
-//            }
-//            if(userAddress==null){
-//                throw new Exception("没有传入地址");
-//            }
-//            if(career==null){
-//                throw new Exception("没有传入职业");
-//            }
-//            if(gender==null){
-//                throw new Exception("没有传入性别");
-//            }
-//            if(zipCode==null){
-//                throw new Exception("没有传入邮政编码");
-//            }
-//            if(birthDate==null){
-//                throw new Exception("没有传入生日");
-//            }
             if (userAddress.length() > 1023) {
                 return new ResultBean<>("地址过长！");
             } else if (userEmail.length() > 255) {

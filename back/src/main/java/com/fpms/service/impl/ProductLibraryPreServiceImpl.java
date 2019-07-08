@@ -2,6 +2,7 @@ package com.fpms.service.impl;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.fpms.dao.ProductLibraryPreDao;
 import com.fpms.dao.ProductLibraryStandardDao;
 import com.fpms.entity.ProductLibraryPre;
@@ -173,7 +174,7 @@ public class ProductLibraryPreServiceImpl implements ProductLibraryPreService {
             } else {
                 isSale = null;
             }
-            String productPreWithIsSale = JSON.toJSONString(productLibraryPre);
+            String productPreWithIsSale = JSON.toJSONStringWithDateFormat(productLibraryPre,"yyyy-MM-dd HH:MM:SS", SerializerFeature.WriteDateUseDateFormat);
             StringBuffer product = new StringBuffer(productPreWithIsSale);
             product.insert(product.length()-1, ",isSale:" + (isSale == null ? "null" : isSale.toString()));
             Object pro=JSON.parse(product.toString());
