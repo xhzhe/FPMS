@@ -183,7 +183,7 @@ public class UserController {
                     Date date = fmt.parse(birthDate);
                     user.setUserBrithday(date);
                     userService.updateUser(user);
-                    return new ResultBean<>();
+                    return new ResultBean<>(true);
                 } else {
                     return new ResultBean<>("此用户不存在！");
                 }

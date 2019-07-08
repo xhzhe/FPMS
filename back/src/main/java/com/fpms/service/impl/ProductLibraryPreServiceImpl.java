@@ -5,7 +5,7 @@ import com.fpms.dao.ProductLibraryStandardDao;
 import com.fpms.entity.ProductLibraryPre;
 import com.fpms.entity.ProductLibraryStandard;
 import com.fpms.service.ProductLibraryPreService;
-import com.fpms.service.ProductLibraryStandardService;
+
 import com.fpms.service.StaffService;
 import com.fpms.service.SupplierService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,11 +27,7 @@ public class ProductLibraryPreServiceImpl implements ProductLibraryPreService {
     private ProductLibraryStandardDao productLibraryStandardDao;
     private StaffService staffService;
     private SupplierService supplierService;
-    private ProductLibraryStandardService productLibraryStandardService;
-    @Autowired
-    public void setProductLibraryStandardService(ProductLibraryStandardService productLibraryStandardService) {
-        this.productLibraryStandardService = productLibraryStandardService;
-    }
+
 
     @Autowired
     public void setProductLibraryStandardDao(ProductLibraryStandardDao productLibraryStandardDao) {
