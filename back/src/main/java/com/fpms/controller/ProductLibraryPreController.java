@@ -7,6 +7,8 @@ import com.fpms.entity.ProductLibraryPre;
 import com.fpms.entity.pojo.ResultBean;
 import com.fpms.service.ProductLibraryPreService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.interceptor.TransactionAspectSupport;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -44,6 +46,7 @@ public class ProductLibraryPreController {
      */
     @OperationLog(value = "修改产品属性")
     @PutMapping("/product")
+    @Transactional(rollbackFor = Exception.class)
     public ResultBean<Boolean> modifyProduct(@RequestBody ProductLibraryPre product) {
         ResultBean<Boolean> res = new ResultBean<>();
         try {
@@ -53,6 +56,7 @@ public class ProductLibraryPreController {
             productLibraryPreService.modifyProduct(product);
             res.setData(true);
         } catch (Exception e) {
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
             return new ResultBean<>(e);
         }
         return res;

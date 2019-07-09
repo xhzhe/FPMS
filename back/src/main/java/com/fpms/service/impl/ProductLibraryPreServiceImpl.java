@@ -78,7 +78,7 @@ public class ProductLibraryPreServiceImpl implements ProductLibraryPreService {
      * @date : Created in 2019/6/25 11:06
      */
     @Override
-    @Transactional(rollbackFor = Exception.class)
+
     public void modifyProduct(ProductLibraryPre productLibraryPre) throws Exception {
         ProductLibraryPre productLibraryPrepare = productLibraryPreDao.selectByPrimaryKey(productLibraryPre.getProductPreId());
         if (productLibraryPrepare == null) {
@@ -101,7 +101,6 @@ public class ProductLibraryPreServiceImpl implements ProductLibraryPreService {
         if (count > 0) {
             return;
         }
-        TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
         throw new Exception("更新失败");
     }
 
@@ -133,11 +132,12 @@ public class ProductLibraryPreServiceImpl implements ProductLibraryPreService {
     }
 
     /**
-     *  新的获取productpre
-     * @author     : HuiZhe Xu
-     * @date       : Created in 2019/7/9 11:46
-     * @param       productPreId
-     * @return     : java.lang.Object
+     * 新的获取productpre
+     *
+     * @param productPreId
+     * @return : java.lang.Object
+     * @author : HuiZhe Xu
+     * @date : Created in 2019/7/9 11:46
      */
     @Override
     public Object selectByIdNew(Integer productPreId) throws Exception {
@@ -146,46 +146,31 @@ public class ProductLibraryPreServiceImpl implements ProductLibraryPreService {
             throw new Exception("预选库中没有该产品");
         }
         ProductLibraryStandard productLibraryStandard = productLibraryStandardDao.selectByProductPreId(productPreId);
-        Byte isSale;
-        if (productLibraryStandard != null) {
-            isSale = productLibraryStandard.getIsSale();
-        } else {
-            isSale = null;
-        }
+        Byte isSale = productLibraryStandard == null ? null : productLibraryStandard.getIsSale();
         Integer categoryId = productLibraryPre.getCategoryId();
-        ProductCategory productCategory;
-        if (categoryId == null) {
-            productCategory = null;
-        } else {
-            productCategory = productCategoryDao.selectByPrimaryKey(categoryId);
-        }
+        ProductCategory productCategory = categoryId == null ? null : productCategoryDao.selectByPrimaryKey(categoryId);
         Integer supplierId = productLibraryPre.getSupplierId();
-        Supplier supplier;
-        if (supplierId != null) {
-            supplier = supplierDao.selectByPrimaryKey(supplierId);
-        } else {
-            supplier = null;
-        }
+        Supplier supplier = supplierId == null ? null : supplierDao.selectByPrimaryKey(supplierId);
         String productPreWithIsSale = JSON.toJSONStringWithDateFormat(productLibraryPre, "yyyy-MM-dd HH:MM:SS", SerializerFeature.WriteDateUseDateFormat);
         StringBuffer product = new StringBuffer(productPreWithIsSale);
         product.insert(product.length() - 1, ",isSale:" + (isSale == null ? "null" : isSale.toString()));
         product.insert(product.length() - 1, ",supplierName:" + (supplier == null ? "null" : "\"" + supplier.getSupplierName() + "\""));
         product.insert(product.length() - 1, ",categoryName:" + (productCategory == null ? "null" : "\"" + productCategory.getCategoryName() + "\""));
-        Object pro = JSON.parse(product.toString());
-        return pro;
+        return JSON.parse(product.toString());
     }
 
     /**
-     *  通过预选库Id获取预选库产品
-     * @author     ：TianHong Liao
-     * @date       ：Created in 2019/6/25 12:04
-     * @param       productPreId
-     * @return     : com.fpms.entity.ProductLibraryPre
+     * 通过预选库Id获取预选库产品
+     *
+     * @param productPreId
+     * @return : com.fpms.entity.ProductLibraryPre
+     * @author ：TianHong Liao
+     * @date ：Created in 2019/6/25 12:04
      */
     @Override
-    public ProductLibraryPre selectById(Integer productPreId) throws Exception{
+    public ProductLibraryPre selectById(Integer productPreId) throws Exception {
         ProductLibraryPre productLibraryPre = productLibraryPreDao.selectByPrimaryKey(productPreId);
-        if(productLibraryPre==null){
+        if (productLibraryPre == null) {
             throw new Exception("不存在该预选库产品");
         }
         return productLibraryPre;
@@ -226,34 +211,6 @@ public class ProductLibraryPreServiceImpl implements ProductLibraryPreService {
         for (ProductLibraryPre productLibraryPre : productLibraryPres) {
             Integer productPreId = productLibraryPre.getProductPreId();
             products.add(selectByIdNew(productPreId));
-//            ProductLibraryStandard productLibraryStandard = productLibraryStandardDao.selectByProductPreId(productPreId);
-//            Byte isSale;
-//            if (productLibraryStandard != null) {
-//                isSale = productLibraryStandard.getIsSale();
-//            } else {
-//                isSale = null;
-//            }
-//            Integer categoryId = productLibraryPre.getCategoryId();
-//            ProductCategory productCategory;
-//            if (categoryId == null) {
-//                productCategory = null;
-//            } else {
-//                productCategory = productCategoryDao.selectByPrimaryKey(categoryId);
-//            }
-//            Integer supplierId = productLibraryPre.getSupplierId();
-//            Supplier supplier;
-//            if (supplierId != null) {
-//                supplier = supplierDao.selectByPrimaryKey(supplierId);
-//            } else {
-//                supplier = null;
-//            }
-//            String productPreWithIsSale = JSON.toJSONStringWithDateFormat(productLibraryPre, "yyyy-MM-dd HH:MM:SS", SerializerFeature.WriteDateUseDateFormat);
-//            StringBuffer product = new StringBuffer(productPreWithIsSale);
-//            product.insert(product.length() - 1, ",isSale:" + (isSale == null ? "null" : isSale.toString()));
-//            product.insert(product.length() - 1, ",supplierName:" + (supplier == null ? "null" : "\"" + supplier.getSupplierName() + "\""));
-//            product.insert(product.length() - 1, ",categoryName:" + (productCategory == null ? "null" : "\"" + productCategory.getCategoryName() + "\""));
-//            Object pro = JSON.parse(product.toString());
-//            products.add(pro);
         }
         return products;
     }
