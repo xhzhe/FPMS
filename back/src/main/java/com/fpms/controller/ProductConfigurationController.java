@@ -93,6 +93,9 @@ public class ProductConfigurationController {
     @Transactional(rollbackFor = Exception.class)
     public ResultBean<Boolean> addConfigurationProduction(@RequestBody AddConProDto addConProDto) {
         try {
+            if (addConProDto.getPercentage().doubleValue() > 99999999) {
+                throw new Exception("单个产品价格过高");
+            }
             ProductConfiguration productConfiguration = new ProductConfiguration();
             ProductLibraryPre productLibraryPre = productLibraryPreService.selectByProductName(addConProDto.getProductName());
 
