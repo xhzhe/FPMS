@@ -207,9 +207,11 @@ public class OrderController {
             else if(order1.getOrderType() == 2){
                 //减少库存
                 ProductLibraryConfiguration productLibraryConfiguration= productLibraryConfigurationService.selectById(order1.getProductConId());
-                productLibraryConfiguration.setStock(productLibraryConfiguration.getStock() -  productLibraryConfiguration.getProductConPrice().intValue());
+                //配置按个购买
+                productLibraryConfiguration.setStock(productLibraryConfiguration.getStock() -  1);
                 productLibraryConfigurationService.updateProductConfiguration(productLibraryConfiguration);
-                user.setUserMoney(userMoney.subtract(orderMoney));
+                //减少金额按照配置金额
+                user.setUserMoney(userMoney.subtract(productLibraryConfiguration.getProductConPrice()));
                 userService.updateUser(user);
                 //放入个人产品库中
                 ProductUser productUser = new ProductUser();

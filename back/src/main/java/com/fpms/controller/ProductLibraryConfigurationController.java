@@ -176,7 +176,6 @@ public class ProductLibraryConfigurationController {
     @OperationLog(value="添加配置")
     @PostMapping("/config/{configName}")
     public ResultBean<Integer> addConfig(@PathVariable String configName){
-        ResultBean<Integer> res = new ResultBean<>();
         try{
             ProductLibraryConfiguration productLibraryConfiguration=new ProductLibraryConfiguration();
             productLibraryConfiguration.setProductConName(configName);
@@ -184,14 +183,11 @@ public class ProductLibraryConfigurationController {
             if(id==null){
                 throw new Exception("添加失败");
             }else{
-                res.setData(id);
-                res.setState(ResultBean.SUCCESS);
-                res.setMsg(ResultBean.SUCC_MSG);
+                return new ResultBean<>(id);
             }
         }catch (Exception e){
             return new ResultBean<>(e);
         }
-        return res;
     }
 
     /**
