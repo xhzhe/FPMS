@@ -42,24 +42,25 @@ public class ProductLibraryConfigurationController {
 
     /**
      * 获取所有配置的信息以及其包含的产品
-     * @author     ：YongBiao Liao
-     * @date       ：Created in 2019/6/26 16:05
+     *
      * @param
-     * @return     : com.fpms.entity.pojo.ResultBean<java.util.List<com.fpms.entity.ProductLibraryConfiguration>>
+     * @return : com.fpms.entity.pojo.ResultBean<java.util.List<com.fpms.entity.ProductLibraryConfiguration>>
+     * @author ：YongBiao Liao
+     * @date ：Created in 2019/6/26 16:05
      */
     @GetMapping(value = "/configurations")
-    public ResultBean<List<ConWithProNameDto>> getAllConfiguration(){
+    public ResultBean<List<ConWithProNameDto>> getAllConfiguration() {
         ArrayList<ConWithProNameDto> conWithProNameDtoArrayList = new ArrayList<>();
-        try{
+        try {
             List<ProductLibraryConfiguration> productLibraryConfigurationList = productLibraryConfigurationService.getAllConfiguration();
-            for(int i = 0; i < productLibraryConfigurationList.size(); i++){
+            for (int i = 0; i < productLibraryConfigurationList.size(); i++) {
                 ConWithProNameDto conWithProNameDto = new ConWithProNameDto();
                 conWithProNameDto.setProductLibraryConfiguration(productLibraryConfigurationList.get(i));
                 List<ProductConfiguration> productConfigurationList = productLibraryConfigurationService.getProductConfigurationByproductConId(productLibraryConfigurationList.get(i).getProductConId());
-                if(productConfigurationList != null){
+                if (productConfigurationList != null) {
                     ArrayList<ProductLibraryStandardWithName> productLibraryStandardWithNameArrayList = new ArrayList<>();
                     ArrayList<ProductLibraryPre> productLibraryPreArrayList = new ArrayList<>();
-                    for(int j = 0; j < productConfigurationList.size(); j++){
+                    for (int j = 0; j < productConfigurationList.size(); j++) {
                         ProductLibraryStandardWithName productLibraryStandardWithName = new ProductLibraryStandardWithName();
                         Integer productStdId = productConfigurationList.get(j).getProductStdId();
                         productLibraryStandardWithName.setProductLibraryStandard(productLibraryStandardService.selectById(productStdId));
@@ -72,11 +73,11 @@ public class ProductLibraryConfigurationController {
                     conWithProNameDto.setProductLibraryPreList(productLibraryPreArrayList);
                     conWithProNameDto.setProductLibraryStandardWithNameList(productLibraryStandardWithNameArrayList);
                     conWithProNameDtoArrayList.add(conWithProNameDto);
-                }else {
+                } else {
                     continue;
                 }
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             return new ResultBean<>(e.getMessage());
         }
         return new ResultBean<>(conWithProNameDtoArrayList);
@@ -84,21 +85,22 @@ public class ProductLibraryConfigurationController {
 
     /**
      * 通过配置id删除配置
-     * @author     ：YongBiao Liao
-     * @date       ：Created in 2019/6/24 21:20
-     * @param       productConId
-     * @return     : com.fpms.entity.pojo.ResultBean<java.lang.Boolean>
+     *
+     * @param productConId
+     * @return : com.fpms.entity.pojo.ResultBean<java.lang.Boolean>
+     * @author ：YongBiao Liao
+     * @date ：Created in 2019/6/24 21:20
      */
     @OperationLog(value = "删除配置")
     @DeleteMapping(value = "/configurations")
     @Transactional(rollbackFor = Exception.class)
-    public ResultBean<Boolean> deleteConfiguration(@RequestBody Map productConId){
+    public ResultBean<Boolean> deleteConfiguration(@RequestBody Map productConId) {
         try {
-            if(!productConId.containsKey("productConId")){
+            if (!productConId.containsKey("productConId")) {
                 throw new Exception("id为空");
             }
-            productLibraryConfigurationService.deleteConfiguration((Integer)productConId.get("productConId"));
-        }catch (Exception e){
+            productLibraryConfigurationService.deleteConfiguration((Integer) productConId.get("productConId"));
+        } catch (Exception e) {
             TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
             return new ResultBean<>(e);
         }
@@ -106,18 +108,19 @@ public class ProductLibraryConfigurationController {
     }
 
     /**
-     *  获取未评估的配置产品列表
-     * @author     ：TianHong Liao
-     * @date       ：Created in 2019/6/25 14:01
+     * 获取未评估的配置产品列表
+     *
      * @param
-     * @return     : com.fpms.entity.pojo.ResultBean<java.util.List<com.fpms.entity.ProductLibraryConfiguration>>
+     * @return : com.fpms.entity.pojo.ResultBean<java.util.List<com.fpms.entity.ProductLibraryConfiguration>>
+     * @author ：TianHong Liao
+     * @date ：Created in 2019/6/25 14:01
      */
     @GetMapping("/unReviewProductCons")
-    public  ResultBean<List<ProductLibraryConfigurationDto>> getUnReviewProductCon(){
+    public ResultBean<List<ProductLibraryConfigurationDto>> getUnReviewProductCon() {
         List<ProductLibraryConfigurationDto> unReviewProductList = new ArrayList<>();
-        try{
+        try {
             unReviewProductList = productLibraryConfigurationService.getUnReviewProductList();
-        }catch (Exception e){
+        } catch (Exception e) {
             return new ResultBean<>(e);
         }
         return new ResultBean<>(unReviewProductList);
@@ -125,25 +128,26 @@ public class ProductLibraryConfigurationController {
 
     /**
      * 通过productConId获取配置的所有产品的名字和比例
-     * @author     ：YongBiao Liaocon
-     * @date       ：Created in 2019/6/28 10:05
-     * @param       productConId
-     * @return     : com.fpms.entity.pojo.ResultBean<com.fpms.dto.ConProDto>
+     *
+     * @param productConId
+     * @return : com.fpms.entity.pojo.ResultBean<com.fpms.dto.ConProDto>
+     * @author ：YongBiao Liaocon
+     * @date ：Created in 2019/6/28 10:05
      */
     @GetMapping(value = "/configuration/{productConId}")
-    public ResultBean<ConProDto> getConfiguration(@PathVariable Integer productConId){
+    public ResultBean<ConProDto> getConfiguration(@PathVariable Integer productConId) {
         ConProDto conProDto = new ConProDto();
         try {
-            ProductLibraryConfiguration productLibraryConfiguration=productLibraryConfigurationService.selectById(productConId);
+            ProductLibraryConfiguration productLibraryConfiguration = productLibraryConfigurationService.selectById(productConId);
             List<ProductConfiguration> productConfigurationList = productLibraryConfigurationService.getProductConfigurationByproductConId(productConId);
-            if(productConfigurationList == null){
+            if (productConfigurationList == null) {
                 return new ResultBean<>("该配置没有产品");
-            }else {
+            } else {
                 List<String> productName = new ArrayList<>();
                 List<BigDecimal> productPercentage = new ArrayList<>();
                 List<Integer> productStdIds = new ArrayList<>();
                 List<Integer> productPreIds = new ArrayList<>();
-                for(int i = 0; i < productConfigurationList.size(); i++){
+                for (int i = 0; i < productConfigurationList.size(); i++) {
                     Integer productStdId = productConfigurationList.get(i).getProductStdId();
                     ProductLibraryStandard productLibraryStandard = productLibraryStandardService.selectById(productStdId);
                     Integer productPreId = productLibraryStandard.getProductPreId();
@@ -164,48 +168,50 @@ public class ProductLibraryConfigurationController {
                 conProDto.setProductConName(productLibraryConfiguration.getProductConName());
                 return new ResultBean<>(conProDto);
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             return new ResultBean<>(e);
         }
     }
 
     /**
-     *  添加配置
-     * @author     : HuiZhe Xu
-     * @date       : Created in 2019/6/28 10:31
-     * @param       configName
-     * @return     : com.fpms.entity.pojo.ResultBean<java.lang.Integer>
+     * 添加配置
+     *
+     * @param configName
+     * @return : com.fpms.entity.pojo.ResultBean<java.lang.Integer>
+     * @author : HuiZhe Xu
+     * @date : Created in 2019/6/28 10:31
      */
-    @OperationLog(value="添加配置")
+    @OperationLog(value = "添加配置")
     @PostMapping("/config/{configName}")
-    public ResultBean<Integer> addConfig(@PathVariable String configName){
-        try{
-            ProductLibraryConfiguration productLibraryConfiguration=new ProductLibraryConfiguration();
+    public ResultBean<Integer> addConfig(@PathVariable String configName) {
+        try {
+            ProductLibraryConfiguration productLibraryConfiguration = new ProductLibraryConfiguration();
             productLibraryConfiguration.setProductConName(configName);
             Integer id = productLibraryConfigurationService.addConfig(configName);
-            if(id==null){
+            if (id == null) {
                 throw new Exception("添加失败");
-            }else{
+            } else {
                 return new ResultBean<>(id);
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             return new ResultBean<>(e);
         }
     }
 
     /**
      * 获取所有的配置
-     * @author     ：YongBiao Liao
-     * @date       ：Created in 2019/6/29 13:54
+     *
      * @param
-     * @return     : com.fpms.entity.pojo.ResultBean<java.util.List<com.fpms.entity.ProductLibraryConfiguration>>
+     * @return : com.fpms.entity.pojo.ResultBean<java.util.List<com.fpms.entity.ProductLibraryConfiguration>>
+     * @author ：YongBiao Liao
+     * @date ：Created in 2019/6/29 13:54
      */
     @GetMapping(value = "/productLibraryConfigurations")
-    public ResultBean<List<ProductLibraryConfiguration>> getProductLibraryConfigurations(){
+    public ResultBean<List<ProductLibraryConfiguration>> getProductLibraryConfigurations() {
         try {
             List<ProductLibraryConfiguration> productLibraryConfigurationList = productLibraryConfigurationService.getAllConfiguration();
             return new ResultBean<>(productLibraryConfigurationList);
-        }catch (Exception e){
+        } catch (Exception e) {
             return new ResultBean<>(e);
         }
     }

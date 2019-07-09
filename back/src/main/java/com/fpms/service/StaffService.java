@@ -19,67 +19,81 @@ import java.util.ArrayList;
 
 public interface StaffService {
     /**
-     *  从ID获取配置详细信息
-     * @author     : HuiZhe Xu
-     * @date       : Created in 2019/6/25 11:00
-     * @param       configId
-     * @return     : com.fpms.dto.ConfigDetail
+     * 从ID获取配置详细信息
+     *
+     * @param configId
+     * @return : com.fpms.dto.ConfigDetail
+     * @author : HuiZhe Xu
+     * @date : Created in 2019/6/25 11:00
      */
     ConfigDetail getConfigById(Integer configId) throws Exception;
+
     /**
-     *  获取所有配置和产品
-     * @author     : HuiZhe Xu
-     * @date       : Created in 2019/6/25 11:00
+     * 获取所有配置和产品
+     *
      * @param
-     * @return     : com.fpms.dto.ProductsAndConfigs
+     * @return : com.fpms.dto.ProductsAndConfigs
+     * @author : HuiZhe Xu
+     * @date : Created in 2019/6/25 11:00
      */
     ProductsAndConfigs getAllMall();
+
     /**
-     *  添加员工
-     * @author     ：TianHong Liao
-     * @date       ：Created in 2019/6/26 14:50
-     * @param       staff
-     * @param       roleName
+     * 添加员工
+     *
+     * @param staff
+     * @param roleName
+     * @author ：TianHong Liao
+     * @date ：Created in 2019/6/26 14:50
      */
     void addStaff(Staff staff, String roleName) throws Exception;
+
     /**
-     *  获得单个员工的详细信息
-     * @author     : HuiZhe Xu
-     * @date       : Created in 2019/6/25 11:01
-     * @param       staffId
-     * @return     : com.fpms.entity.Staff
+     * 获得单个员工的详细信息
+     *
+     * @param staffId
+     * @return : com.fpms.entity.Staff
+     * @author : HuiZhe Xu
+     * @date : Created in 2019/6/25 11:01
      */
     Staff getSingleStaffDetail(Integer staffId) throws Exception;
+
     /**
-     *  获取产品简介
-     * @author     : HuiZhe Xu
-     * @date       : Created in 2019/6/25 11:01
-     * @param       productId
-     * @return     : com.fpms.dto.ProductDetail
+     * 获取产品简介
+     *
+     * @param productId
+     * @return : com.fpms.dto.ProductDetail
+     * @author : HuiZhe Xu
+     * @date : Created in 2019/6/25 11:01
      */
     ProductDetail getProductInfo(Integer productId) throws Exception;
+
     /**
-     *  获取所有员工
-     * @author     : HuiZhe Xu
-     * @date       : Created in 2019/6/25 11:01
+     * 获取所有员工
+     *
      * @param
-     * @return     : java.util.ArrayList<com.fpms.entity.Staff>
+     * @return : java.util.ArrayList<com.fpms.entity.Staff>
+     * @author : HuiZhe Xu
+     * @date : Created in 2019/6/25 11:01
      */
     ArrayList<Staff> getStaffs() throws Exception;
 
     /**
-     *  更新职工信息
-     * @author     ：TianHong Liao
-     * @date       ：Created in 2019/6/26 13:42
-     * @param       staff
-     * @return     : boolean
+     * 更新职工信息
+     *
+     * @param staff
+     * @return : boolean
+     * @author ：TianHong Liao
+     * @date ：Created in 2019/6/26 13:42
      */
     boolean updateStaff(Staff staff);
+
     /**
-     *  删除员工
-     * @author     : HuiZhe Xu
-     * @date       : Created in 2019/6/26 14:31
-     * @param       id
+     * 删除员工
+     *
+     * @param id
+     * @author : HuiZhe Xu
+     * @date : Created in 2019/6/26 14:31
      */
     void delStaff(Integer id) throws Exception;
 }

@@ -33,6 +33,7 @@ public class ProductLibraryStandardController {
      * @date : Created in 2019/7/2 10:03
      */
     private ProductLibraryStandardService productLibraryStandardService;
+
     @Autowired
     public void setProductLibraryStandardDao(ProductLibraryStandardDao productLibraryStandardDao) {
         this.productLibraryStandardDao = productLibraryStandardDao;
@@ -207,9 +208,9 @@ public class ProductLibraryStandardController {
                     productLibraryStandardTemp.setIsSale(Byte.valueOf("0"));
                     productLibraryStandardService.updateProductStandard(productLibraryStandardTemp);
                     return new ResultBean<>(true);
-                }else if(Byte.valueOf("1").equals(productLibraryStandardTemp.getIsSale())){
+                } else if (Byte.valueOf("1").equals(productLibraryStandardTemp.getIsSale())) {
                     throw new Exception("非法操作");
-                }else {
+                } else {
                     return new ResultBean<>(true);
                 }
             }

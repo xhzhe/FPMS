@@ -38,8 +38,9 @@ public class StaffController {
 
     private RoleService roleService;
 
-    private final int MAX_USER_NAME_LENGTH =255;
-    private final int MAX_PASSWORD_LENGTH =20;
+    private final int MAX_USER_NAME_LENGTH = 255;
+    private final int MAX_PASSWORD_LENGTH = 20;
+
     @Autowired
     public StaffController(StaffService staffService) {
         this.staffService = staffService;
@@ -228,14 +229,14 @@ public class StaffController {
                                         @RequestParam String staffGender, @RequestParam String roleName) {
         ResultBean<Boolean> res = new ResultBean<>();
         try {
-            if (staffName.length() == 0 || staffPwd.length() == 0 || staffDepartment.length() == 0||roleName.length()==0||staffGender.length()==0) {
+            if (staffName.length() == 0 || staffPwd.length() == 0 || staffDepartment.length() == 0 || roleName.length() == 0 || staffGender.length() == 0) {
                 throw new Exception("缺少参数");
             }
-            if(staffName.length()> MAX_USER_NAME_LENGTH){
+            if (staffName.length() > MAX_USER_NAME_LENGTH) {
                 throw new Exception("用户名过长");
             }
-            String password=EdsUtil.encryptBasedDes(staffPwd);
-            if(password.length()> MAX_PASSWORD_LENGTH){
+            String password = EdsUtil.encryptBasedDes(staffPwd);
+            if (password.length() > MAX_PASSWORD_LENGTH) {
                 throw new Exception("密码设置过长");
             }
             Staff staff = new Staff();

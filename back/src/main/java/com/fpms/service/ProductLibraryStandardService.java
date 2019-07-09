@@ -71,29 +71,32 @@ public interface ProductLibraryStandardService {
     ArrayList<ProductWithName> getAll() throws Exception;
 
     /**
-     *  查找单个标准库产品
-     * @author     : HuiZhe Xu
-     * @date       : Created in 2019/7/2 16:05
-     * @param       id
-     * @return     : com.fpms.dto.ProductWithName
+     * 查找单个标准库产品
+     *
+     * @param id
+     * @return : com.fpms.dto.ProductWithName
+     * @author : HuiZhe Xu
+     * @date : Created in 2019/7/2 16:05
      */
     ProductWithName getProductStd(Integer id) throws Exception;
 
     /**
-     *  插入标准库产品
-     * @author     : HuiZhe Xu
-     * @date       : Created in 2019/7/3 16:51
-     * @param       productLibraryStandard
-     * @return     : void
+     * 插入标准库产品
+     *
+     * @param productLibraryStandard
+     * @return : void
+     * @author : HuiZhe Xu
+     * @date : Created in 2019/7/3 16:51
      */
     void insertProductStd(ProductLibraryStandard productLibraryStandard) throws Exception;
 
     /**
      * 获取所有上架的产品
-     * @author     ：YongBiao Liao
-     * @date       ：Created in 2019/7/3 22:57
+     *
      * @param
-     * @return     : java.util.List<com.fpms.entity.ProductLibraryStandard>
+     * @return : java.util.List<com.fpms.entity.ProductLibraryStandard>
+     * @author ：YongBiao Liao
+     * @date ：Created in 2019/7/3 22:57
      */
     List<ProductLibraryStandard> getProductsOnSale();
 }

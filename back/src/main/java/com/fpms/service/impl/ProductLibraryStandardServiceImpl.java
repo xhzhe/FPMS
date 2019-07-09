@@ -33,52 +33,58 @@ public class ProductLibraryStandardServiceImpl implements ProductLibraryStandard
 
     @Autowired
     public ProductLibraryStandardServiceImpl(ProductLibraryStandardDao productLibraryStandardDao) {
-        this.productLibraryStandardDao=productLibraryStandardDao;
+        this.productLibraryStandardDao = productLibraryStandardDao;
     }
+
     /**
-     *  下架产品
-     * @author     : HuiZhe Xu
-     * @date       : Created in 2019/6/25 11:05
-     * @param       id
+     * 下架产品
+     *
+     * @param id
+     * @author : HuiZhe Xu
+     * @date : Created in 2019/6/25 11:05
      */
     @Override
     public void obtainedProducts(Integer id) throws Exception {
-        ProductLibraryStandard productLibraryStandard=productLibraryStandardDao.selectByPrimaryKey(id);
-        if(productLibraryStandard==null){
+        ProductLibraryStandard productLibraryStandard = productLibraryStandardDao.selectByPrimaryKey(id);
+        if (productLibraryStandard == null) {
             throw new Exception("产品不存在");
         }
         productLibraryStandard.setIsSale(Byte.parseByte("0"));
-        int count=productLibraryStandardDao.updateByPrimaryKeySelective(productLibraryStandard);
-        if(count<=0){
+        int count = productLibraryStandardDao.updateByPrimaryKeySelective(productLibraryStandard);
+        if (count <= 0) {
             throw new Exception("下架失败");
         }
     }
+
     /**
-     *  通过标准库iD获取标准库产品
-     * @author     ：HuiZhe Xu
-     * @date       ：Created in 2019/6/25 10:34
-     * @param       productStdId
-     * @return     : com.fpms.entity.ProductLibraryStandard
+     * 通过标准库iD获取标准库产品
+     *
+     * @param productStdId
+     * @return : com.fpms.entity.ProductLibraryStandard
+     * @author ：HuiZhe Xu
+     * @date ：Created in 2019/6/25 10:34
      */
     @Override
     public ProductLibraryStandard selectById(Integer productStdId) throws Exception {
         ProductLibraryStandard productLibraryStandard = productLibraryStandardDao.selectByPrimaryKey(productStdId);
-        if(productLibraryStandard==null){
+        if (productLibraryStandard == null) {
             throw new Exception("没有该产品");
         }
 
         return productLibraryStandard;
     }
+
     /**
-     *  通过标准库
-     * @author     ：HuiZhe Xu
-     * @date       ：Created in 2019/6/25 10:35
-     * @param       productLibraryStandard
+     * 通过标准库
+     *
+     * @param productLibraryStandard
+     * @author ：HuiZhe Xu
+     * @date ：Created in 2019/6/25 10:35
      */
     @Override
     public synchronized void updateProductStandard(ProductLibraryStandard productLibraryStandard) throws Exception {
-        int count=productLibraryStandardDao.updateByPrimaryKeySelective(productLibraryStandard);
-        if(count>0){
+        int count = productLibraryStandardDao.updateByPrimaryKeySelective(productLibraryStandard);
+        if (count > 0) {
             return;
         }
         throw new Exception("更新失败");
@@ -93,13 +99,13 @@ public class ProductLibraryStandardServiceImpl implements ProductLibraryStandard
      */
     @Override
     public void uploadProduct(Integer id) throws Exception {
-        ProductLibraryStandard productLibraryStandard=productLibraryStandardDao.selectByPrimaryKey(id);
-        if(productLibraryStandard==null){
+        ProductLibraryStandard productLibraryStandard = productLibraryStandardDao.selectByPrimaryKey(id);
+        if (productLibraryStandard == null) {
             throw new Exception("产品不存在");
         }
         productLibraryStandard.setIsSale(Byte.parseByte("1"));
-        int count=productLibraryStandardDao.updateByPrimaryKeySelective(productLibraryStandard);
-        if(count>0){
+        int count = productLibraryStandardDao.updateByPrimaryKeySelective(productLibraryStandard);
+        if (count > 0) {
             return;
         }
         throw new Exception("上架失败");
@@ -107,54 +113,58 @@ public class ProductLibraryStandardServiceImpl implements ProductLibraryStandard
 
     /**
      * 通过产品预选id选择标准库产品
-     * @author     ：YongBiao Liao
-     * @date       ：Created in 2019/6/28 16:45
-     * @param       productPreId
-     * @return     : com.fpms.entity.ProductLibraryStandard
+     *
+     * @param productPreId
+     * @return : com.fpms.entity.ProductLibraryStandard
+     * @author ：YongBiao Liao
+     * @date ：Created in 2019/6/28 16:45
      */
     @Override
     public ProductLibraryStandard selectByProductPreId(Integer productPreId) throws Exception {
         ProductLibraryStandard productLibraryStandard;
         try {
             productLibraryStandard = productLibraryStandardDao.selectByProductPreId(productPreId);
-        }catch (MyBatisSystemException e){
+        } catch (MyBatisSystemException e) {
             throw new Exception("数据库异常，有多个标准库产品和一个预选库产品对应");
         }
-        if(productLibraryStandard==null){
+        if (productLibraryStandard == null) {
             throw new Exception("标准库中无该产品");
         }
         return productLibraryStandard;
     }
 
     /**
-     *  获取所有标准库产品
-     * @author     ：TianHong Liao
-     * @date       ：Created in 2019/6/28 16:50
+     * 获取所有标准库产品
+     *
      * @param
-     * @return     : ArrayList<ProductWithName>
+     * @return : ArrayList<ProductWithName>
+     * @author ：TianHong Liao
+     * @date ：Created in 2019/6/28 16:50
      */
     @Override
     public ArrayList<ProductWithName> getAll() throws Exception {
-        ArrayList<ProductWithName> productWithNames= new ArrayList<>();
+        ArrayList<ProductWithName> productWithNames = new ArrayList<>();
         List<ProductLibraryStandard> productLibraryStandards = productLibraryStandardDao.selectAll();
-        if(productLibraryStandards==null){
-           throw new Exception("标准库中无产品");
+        if (productLibraryStandards == null) {
+            throw new Exception("标准库中无产品");
         }
-        for(ProductLibraryStandard productLibraryStandard: productLibraryStandards){
+        for (ProductLibraryStandard productLibraryStandard : productLibraryStandards) {
             productWithNames.add(makeProductWithName(productLibraryStandard));
         }
         return productWithNames;
     }
+
     /**
-     *  查找单个标准库产品
-     * @author     : HuiZhe Xu
-     * @date       : Created in 2019/7/2 16:05
-     * @param       id
-     * @return     : com.fpms.dto.ProductWithName
+     * 查找单个标准库产品
+     *
+     * @param id
+     * @return : com.fpms.dto.ProductWithName
+     * @author : HuiZhe Xu
+     * @date : Created in 2019/7/2 16:05
      */
     @Override
     public ProductWithName getProductStd(Integer id) throws Exception {
-        ProductLibraryStandard productLibraryStandard=selectById(id);
+        ProductLibraryStandard productLibraryStandard = selectById(id);
         return makeProductWithName(productLibraryStandard);
     }
 
@@ -168,33 +178,33 @@ public class ProductLibraryStandardServiceImpl implements ProductLibraryStandard
      */
     @Override
     public void insertProductStd(ProductLibraryStandard productLibraryStandard) throws Exception {
-        try{
+        try {
             selectByProductPreId(productLibraryStandard.getProductPreId());
             throw new RuntimeException("标准库存在该预选库产品");
-        }catch (RuntimeException e){
+        } catch (RuntimeException e) {
             throw e;
-        } catch (Exception e){
-            if(!"标准库中无该产品".equals(e.getMessage())){
+        } catch (Exception e) {
+            if (!"标准库中无该产品".equals(e.getMessage())) {
                 throw e;
             }
         }
         int count = productLibraryStandardDao.insertSelective(productLibraryStandard);
-        if(count>0){
+        if (count > 0) {
             return;
         }
         throw new Exception("插入失败");
     }
 
     private ProductWithName makeProductWithName(ProductLibraryStandard productLibraryStandard) throws Exception {
-        if(productLibraryStandard.getProductPreId()==null){
+        if (productLibraryStandard.getProductPreId() == null) {
             throw new Exception("非法产品，不存在预选库id");
         }
-        ProductLibraryPre productLibraryPre=productLibraryPreDao.selectByPrimaryKey(productLibraryStandard.getProductPreId());
-        if(productLibraryPre==null){
+        ProductLibraryPre productLibraryPre = productLibraryPreDao.selectByPrimaryKey(productLibraryStandard.getProductPreId());
+        if (productLibraryPre == null) {
             throw new Exception("标准库中产品没有出现在预选库中，不合法产品");
         }
-        String name=productLibraryPre.getProductName();
-        ProductWithName productWithName=new ProductWithName();
+        String name = productLibraryPre.getProductName();
+        ProductWithName productWithName = new ProductWithName();
         productWithName.setCreateTime(productLibraryStandard.getCreateTime());
         productWithName.setIsSale(productLibraryStandard.getIsSale());
         productWithName.setCreditRiskIndex(productLibraryStandard.getCreditRiskIndex());
@@ -217,10 +227,11 @@ public class ProductLibraryStandardServiceImpl implements ProductLibraryStandard
 
     /**
      * 获取所有上架的产品
-     * @author     ：YongBiao Liao
-     * @date       ：Created in 2019/7/3 23:09
+     *
      * @param
-     * @return     : java.util.List<com.fpms.entity.ProductLibraryStandard>
+     * @return : java.util.List<com.fpms.entity.ProductLibraryStandard>
+     * @author ：YongBiao Liao
+     * @date ：Created in 2019/7/3 23:09
      */
     @Override
     public List<ProductLibraryStandard> getProductsOnSale() {

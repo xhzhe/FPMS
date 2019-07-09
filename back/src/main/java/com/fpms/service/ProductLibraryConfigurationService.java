@@ -38,9 +38,9 @@ public interface ProductLibraryConfigurationService {
      * 通过配置id删除配置
      *
      * @param : productConId
+     * @throws Exception
      * @author ：YongBiao Liao
      * @date ：Created in 2019/6/24 21:04
-     * @exception Exception
      */
     void deleteConfiguration(Integer productConId) throws Exception;
 
@@ -94,30 +94,33 @@ public interface ProductLibraryConfigurationService {
     void modifyConfiguration(ProductLibraryConfiguration productLibraryConfiguration) throws Exception;
 
     /**
-     *  修改配置中产品比率
-     * @author     : HuiZhe Xu
-     * @date       : Created in 2019/6/27 17:54
-     * @param       configId
-     * @param       productStdId
-     * @param       rate
+     * 修改配置中产品比率
+     *
+     * @param configId
+     * @param productStdId
+     * @param rate
+     * @author : HuiZhe Xu
+     * @date : Created in 2019/6/27 17:54
      */
     void modifyConfigurationRate(Integer configId, Integer productStdId, double rate) throws Exception;
 
     /**
-     *  添加配置
-     * @author     : HuiZhe Xu
-     * @date       : Created in 2019/6/28 10:22
-     * @param       configName
-     * @return     : Integer
+     * 添加配置
+     *
+     * @param configName
+     * @return : Integer
+     * @author : HuiZhe Xu
+     * @date : Created in 2019/6/28 10:22
      */
     Integer addConfig(String configName);
 
     /**
      * 获取已上架的所有配置
-     * @author     ：YongBiao Liao
-     * @date       ：Created in 2019/7/3 23:41
+     *
      * @param
-     * @return     : java.util.List<com.fpms.entity.ProductLibraryConfiguration>
+     * @return : java.util.List<com.fpms.entity.ProductLibraryConfiguration>
+     * @author ：YongBiao Liao
+     * @date ：Created in 2019/7/3 23:41
      */
     List<ProductLibraryConfiguration> getConfigurationsOnSale();
 }
