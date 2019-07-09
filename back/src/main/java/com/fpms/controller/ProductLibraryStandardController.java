@@ -33,6 +33,10 @@ public class ProductLibraryStandardController {
      * @date : Created in 2019/7/2 10:03
      */
     private ProductLibraryStandardService productLibraryStandardService;
+    @Autowired
+    public void setProductLibraryStandardDao(ProductLibraryStandardDao productLibraryStandardDao) {
+        this.productLibraryStandardDao = productLibraryStandardDao;
+    }
 
     private ProductLibraryStandardDao productLibraryStandardDao;
 
@@ -190,11 +194,8 @@ public class ProductLibraryStandardController {
             if (productPreId < 0) {
                 throw new Exception("不合法id");
             }
-            ProductLibraryPre productLibraryPre = productLibraryPreService.selectById(productPreId);
-            if (productLibraryPre == null) {
-                return new ResultBean<>("预选库Id不存在");
-            }
-            ProductLibraryStandard productLibraryStandardTemp = productLibraryStandardService.selectByProductPreId(productPreId);
+            productLibraryPreService.selectById(productPreId);
+            ProductLibraryStandard productLibraryStandardTemp = productLibraryStandardDao.selectByProductPreId(productPreId);
             if (productLibraryStandardTemp == null) {
                 ProductLibraryStandard productLibraryStandard = new ProductLibraryStandard();
                 productLibraryStandard.setProductPreId(productPreId);
@@ -205,10 +206,14 @@ public class ProductLibraryStandardController {
                     productLibraryStandardTemp.setIsSale(Byte.valueOf("0"));
                     productLibraryStandardService.updateProductStandard(productLibraryStandardTemp);
                     return new ResultBean<>(true);
+                }else if(Byte.valueOf("1").equals(productLibraryStandardTemp.getIsSale())){
+                    throw new Exception("非法操作");
+                }else {
+                    return new ResultBean<>(true);
                 }
             }
-            return new ResultBean<>(true);
         } catch (Exception e) {
+            e.printStackTrace();
             TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
             return new ResultBean<>(e);
         }
