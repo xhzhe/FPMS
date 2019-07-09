@@ -71,10 +71,16 @@ public class ProductLibraryConfigurationServiceImpl implements ProductLibraryCon
      */
     @Override
     public void deleteConfiguration(Integer productConId)throws Exception {
+        ProductLibraryConfiguration productLibraryConfiguration = productLibraryConfigurationDao.selectByPrimaryKey(productConId);
+        if(productLibraryConfiguration==null){
+            throw new Exception("要删除的配置不存在");
+        }
+        if(productLibraryConfiguration.getReviewStatus().equals(Byte.parseByte("1"))){
+            //处于已审核状态的删除，设置为已过期
+            productLibraryConfiguration.setReviewStatus(Byte.parseByte("-2"));
+            return;
+        }
         productConfigurationDao.deleteByProductConId(productConId);
-//        if(count<=0){
-//            throw new Exception("删除产品配置关联失败");
-//        }
         int count = productLibraryConfigurationDao.deleteByPrimaryKey(productConId);
         if(count<=0){
             throw new Exception("删除配置主表失败");
@@ -136,6 +142,7 @@ public class ProductLibraryConfigurationServiceImpl implements ProductLibraryCon
         if(productLibraryConfigurationTemp==null){
            throw new Exception("配置id错误，配置库无对应配置");
         }
+
         int count=productLibraryConfigurationDao.updateByPrimaryKeySelective(productLibraryConfiguration);
         if(count>0){
             return;

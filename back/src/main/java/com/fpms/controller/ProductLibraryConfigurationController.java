@@ -12,6 +12,8 @@ import com.fpms.service.ProductLibraryPreService;
 import com.fpms.service.ProductLibraryStandardService;
 import io.swagger.models.auth.In;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.interceptor.TransactionAspectSupport;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
@@ -89,14 +91,15 @@ public class ProductLibraryConfigurationController {
      */
     @OperationLog(value = "删除配置")
     @DeleteMapping(value = "/configurations")
+    @Transactional(rollbackFor = Exception.class)
     public ResultBean<Boolean> deleteConfiguration(@RequestBody Map productConId){
-
         try {
             if(!productConId.containsKey("productConId")){
                 throw new Exception("id为空");
             }
             productLibraryConfigurationService.deleteConfiguration((Integer)productConId.get("productConId"));
         }catch (Exception e){
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
             return new ResultBean<>(e);
         }
         return new ResultBean<>(true);
