@@ -199,6 +199,7 @@ public class ProductLibraryStandardController {
             if (productLibraryStandardTemp == null) {
                 ProductLibraryStandard productLibraryStandard = new ProductLibraryStandard();
                 productLibraryStandard.setProductPreId(productPreId);
+                productLibraryStandard.setStock(0);
                 productLibraryStandardService.insertProductStd(productLibraryStandard);
                 return new ResultBean<>(true);
             } else {
