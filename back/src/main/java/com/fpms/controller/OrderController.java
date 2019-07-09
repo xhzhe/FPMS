@@ -117,10 +117,16 @@ public class OrderController {
                 return new ResultBean<>("购买金额超过最大金额限制！");
             }
         } else if (order.getOrderType() == 2) {
-            if (order.getProductConId() == null || productLibraryConfigurationService.selectById(order.getProductConId()) == null) {
+            ProductLibraryConfiguration productLibraryConfiguration=productLibraryConfigurationService.selectById(order.getProductConId());
+            if (order.getProductConId() == null || productLibraryConfiguration == null) {
                 return new ResultBean<>("配置库产品不存在!");
             }
-            ProductLibraryConfiguration productLibraryConfiguration = productLibraryConfigurationService.selectById(order.getProductConId());
+            if(!productLibraryConfiguration.getReviewStatus().equals(Byte.parseByte("1"))){
+                return new ResultBean<>("该配置不处于审核通过状态，可能已被弃用");
+            }
+            if(!productLibraryConfiguration.getIsSale().equals(Byte.parseByte("1"))){
+                return new ResultBean<>("该配置不处于上架状态，不允许购买");
+            }
             if (productLibraryConfiguration.getStock() == 0) {
                 return new ResultBean<>("库存不足，无法下单!");
             }
