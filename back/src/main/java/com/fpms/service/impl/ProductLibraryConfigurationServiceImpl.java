@@ -63,7 +63,7 @@ public class ProductLibraryConfigurationServiceImpl implements ProductLibraryCon
      */
     @Override
     public void addConfigurationProduction(ProductConfiguration productConfiguration) throws Exception {
-        int count = productConfigurationDao.insert(productConfiguration);
+        int count = productConfigurationDao.insertSelective(productConfiguration);
         if (count <= 0) {
             throw new Exception("插入产品失败");
         }
