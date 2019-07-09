@@ -37,6 +37,14 @@ public interface ProductLibraryPreService {
     ProductLibraryPre selectById(Integer productPreId) throws Exception;
 
     /**
+     *  新的获取productpre
+     * @author     : HuiZhe Xu
+     * @date       : Created in 2019/7/9 11:46
+     * @param       productPreId
+     * @return     : java.lang.Object
+     */
+    Object selectByIdNew(Integer productPreId) throws Exception;
+    /**
      *  获取未评审的产品
      * @author     ：TianHong Liao
      * @date       ：Created in 2019/6/25 12:54

@@ -80,7 +80,7 @@ public class ProductLibraryPreServiceImpl implements ProductLibraryPreService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void modifyProduct(ProductLibraryPre productLibraryPre) throws Exception {
-        ProductLibraryPre productLibraryPrepare = selectById(productLibraryPre.getProductPreId());
+        ProductLibraryPre productLibraryPrepare = productLibraryPreDao.selectByPrimaryKey(productLibraryPre.getProductPreId());
         if (productLibraryPrepare == null) {
             throw new Exception("预选库没有该产品");
         }
@@ -93,7 +93,7 @@ public class ProductLibraryPreServiceImpl implements ProductLibraryPreService {
                     throw new Exception("修改标准库状体失败");
                 }
             }
-            if(productLibraryStandard.getIsSale().equals(Byte.parseByte("1"))){
+            if (productLibraryStandard.getIsSale().equals(Byte.parseByte("1"))) {
                 throw new Exception("非法操作，不允许的修改");
             }
         }
@@ -133,18 +133,60 @@ public class ProductLibraryPreServiceImpl implements ProductLibraryPreService {
     }
 
     /**
-     * 查询预选库产品
-     *
-     * @param productPreId
-     * @return : com.fpms.entity.ProductLibraryPre
-     * @author : HuiZhe Xu
-     * @date : Created in 2019/7/1 16:47
+     *  新的获取productpre
+     * @author     : HuiZhe Xu
+     * @date       : Created in 2019/7/9 11:46
+     * @param       productPreId
+     * @return     : java.lang.Object
      */
     @Override
-    public ProductLibraryPre selectById(Integer productPreId) throws Exception {
+    public Object selectByIdNew(Integer productPreId) throws Exception {
         ProductLibraryPre productLibraryPre = productLibraryPreDao.selectByPrimaryKey(productPreId);
         if (productLibraryPre == null) {
             throw new Exception("预选库中没有该产品");
+        }
+        ProductLibraryStandard productLibraryStandard = productLibraryStandardDao.selectByProductPreId(productPreId);
+        Byte isSale;
+        if (productLibraryStandard != null) {
+            isSale = productLibraryStandard.getIsSale();
+        } else {
+            isSale = null;
+        }
+        Integer categoryId = productLibraryPre.getCategoryId();
+        ProductCategory productCategory;
+        if (categoryId == null) {
+            productCategory = null;
+        } else {
+            productCategory = productCategoryDao.selectByPrimaryKey(categoryId);
+        }
+        Integer supplierId = productLibraryPre.getSupplierId();
+        Supplier supplier;
+        if (supplierId != null) {
+            supplier = supplierDao.selectByPrimaryKey(supplierId);
+        } else {
+            supplier = null;
+        }
+        String productPreWithIsSale = JSON.toJSONStringWithDateFormat(productLibraryPre, "yyyy-MM-dd HH:MM:SS", SerializerFeature.WriteDateUseDateFormat);
+        StringBuffer product = new StringBuffer(productPreWithIsSale);
+        product.insert(product.length() - 1, ",isSale:" + (isSale == null ? "null" : isSale.toString()));
+        product.insert(product.length() - 1, ",supplierName:" + (supplier == null ? "null" : "\"" + supplier.getSupplierName() + "\""));
+        product.insert(product.length() - 1, ",categoryName:" + (productCategory == null ? "null" : "\"" + productCategory.getCategoryName() + "\""));
+        Object pro = JSON.parse(product.toString());
+        return pro;
+    }
+
+    /**
+     *  通过预选库Id获取预选库产品
+     * @author     ：TianHong Liao
+     * @date       ：Created in 2019/6/25 12:04
+     * @param       productPreId
+     * @return     : com.fpms.entity.ProductLibraryPre
+     */
+    @Override
+    public ProductLibraryPre selectById(Integer productPreId) throws Exception{
+        ProductLibraryPre productLibraryPre = productLibraryPreDao.selectByPrimaryKey(productPreId);
+        if(productLibraryPre==null){
+            throw new Exception("不存在该预选库产品");
         }
         return productLibraryPre;
     }
@@ -183,34 +225,35 @@ public class ProductLibraryPreServiceImpl implements ProductLibraryPreService {
         }
         for (ProductLibraryPre productLibraryPre : productLibraryPres) {
             Integer productPreId = productLibraryPre.getProductPreId();
-            ProductLibraryStandard productLibraryStandard = productLibraryStandardDao.selectByProductPreId(productPreId);
-            Byte isSale;
-            if (productLibraryStandard != null) {
-                isSale = productLibraryStandard.getIsSale();
-            } else {
-                isSale = null;
-            }
-            Integer categoryId = productLibraryPre.getCategoryId();
-            ProductCategory productCategory;
-            if(categoryId==null){
-                productCategory=null;
-            }else {
-                productCategory = productCategoryDao.selectByPrimaryKey(categoryId);
-            }
-            Integer supplierId=productLibraryPre.getSupplierId();
-            Supplier supplier;
-            if(supplierId!=null) {
-                supplier  = supplierDao.selectByPrimaryKey(supplierId);
-            }else{
-                supplier=null;
-            }
-            String productPreWithIsSale = JSON.toJSONStringWithDateFormat(productLibraryPre,"yyyy-MM-dd HH:MM:SS", SerializerFeature.WriteDateUseDateFormat);
-            StringBuffer product = new StringBuffer(productPreWithIsSale);
-            product.insert(product.length()-1, ",isSale:" + (isSale == null ? "null" : isSale.toString()));
-            product.insert(product.length()-1, ",supplierName:" + (supplier == null ? "null" : supplier.getSupplierName()));
-            product.insert(product.length()-1, ",categoryName:" + (productCategory == null ? "null" : productCategory.getCategoryName()));
-            Object pro=JSON.parse(product.toString());
-            products.add(pro);
+            products.add(selectByIdNew(productPreId));
+//            ProductLibraryStandard productLibraryStandard = productLibraryStandardDao.selectByProductPreId(productPreId);
+//            Byte isSale;
+//            if (productLibraryStandard != null) {
+//                isSale = productLibraryStandard.getIsSale();
+//            } else {
+//                isSale = null;
+//            }
+//            Integer categoryId = productLibraryPre.getCategoryId();
+//            ProductCategory productCategory;
+//            if (categoryId == null) {
+//                productCategory = null;
+//            } else {
+//                productCategory = productCategoryDao.selectByPrimaryKey(categoryId);
+//            }
+//            Integer supplierId = productLibraryPre.getSupplierId();
+//            Supplier supplier;
+//            if (supplierId != null) {
+//                supplier = supplierDao.selectByPrimaryKey(supplierId);
+//            } else {
+//                supplier = null;
+//            }
+//            String productPreWithIsSale = JSON.toJSONStringWithDateFormat(productLibraryPre, "yyyy-MM-dd HH:MM:SS", SerializerFeature.WriteDateUseDateFormat);
+//            StringBuffer product = new StringBuffer(productPreWithIsSale);
+//            product.insert(product.length() - 1, ",isSale:" + (isSale == null ? "null" : isSale.toString()));
+//            product.insert(product.length() - 1, ",supplierName:" + (supplier == null ? "null" : "\"" + supplier.getSupplierName() + "\""));
+//            product.insert(product.length() - 1, ",categoryName:" + (productCategory == null ? "null" : "\"" + productCategory.getCategoryName() + "\""));
+//            Object pro = JSON.parse(product.toString());
+//            products.add(pro);
         }
         return products;
     }

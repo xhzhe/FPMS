@@ -112,6 +112,7 @@ public class ProductLibraryPreController {
         try {
             productLibraryPres = productLibraryPreService.getAllProductPres();
         } catch (Exception e) {
+            e.printStackTrace();
             return new ResultBean<>(e);
         }
         return new ResultBean<>(productLibraryPres);
@@ -121,16 +122,16 @@ public class ProductLibraryPreController {
      * 查找预选库产品
      *
      * @param productPreId
-     * @return : com.fpms.entity.pojo.ResultBean<com.fpms.entity.ProductLibraryPre>
+     * @return : Object
      * @author : HuiZhe Xu
      * @date : Created in 2019/7/2 15:57
      */
     @OperationLog("按id查找预选库产品")
     @GetMapping("/productPre/{productPreId}")
-    public ResultBean<ProductLibraryPre> getProductPre(@PathVariable Integer productPreId) {
+    public ResultBean<Object> getProductPre(@PathVariable Integer productPreId) {
         try {
-            ProductLibraryPre productLibraryPre = productLibraryPreService.selectById(productPreId);
-            ResultBean<ProductLibraryPre> res = new ResultBean<>();
+            Object productLibraryPre = productLibraryPreService.selectByIdNew(productPreId);
+            ResultBean<Object> res = new ResultBean<>();
             res.setData(productLibraryPre);
             return res;
         } catch (Exception e) {
