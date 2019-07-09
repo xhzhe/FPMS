@@ -6,6 +6,7 @@ import com.fpms.entity.ProductReview;
 import com.fpms.entity.pojo.ResultBean;
 import com.fpms.service.ProductLibraryPreService;
 import com.fpms.service.ProductReviewService;
+import com.fpms.utils.HtmlUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -55,7 +56,7 @@ public class ProductReviewController {
             ProductReview productReview = new ProductReview();
             productReview.setProductPreId(productPreId);
             productReview.setStaffId(staffId);
-            productReview.setReviewDesc(param.get("reviewDesc"));
+            productReview.setReviewDesc(HtmlUtil.Html2Text(param.get("reviewDesc")));
             productReviewService.addReview(productReview);
             //修改评估状态
             ProductLibraryPre productLibraryPre = new ProductLibraryPre();

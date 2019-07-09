@@ -6,6 +6,8 @@ import com.fpms.entity.ConfigurationReview;
 import com.fpms.entity.ProductLibraryConfiguration;
 import com.fpms.entity.pojo.ResultBean;
 import com.fpms.service.ConfigurationReviewService;
+import com.fpms.utils.HtmlUtil;
+import jdk.nashorn.internal.runtime.regexp.joni.Regex;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -57,7 +59,7 @@ public class ConfigurationReviewController {
             ConfigurationReview configurationReview = new ConfigurationReview();
             configurationReview.setProductConId(productConId);
             configurationReview.setStaffId(staffId);
-            configurationReview.setReviewDesc(param.get("reviewDesc"));
+            configurationReview.setReviewDesc(HtmlUtil.Html2Text(param.get("reviewDesc")));
             configurationReviewService.addReview(configurationReview);
             ProductLibraryConfiguration productLibraryConfiguration = new ProductLibraryConfiguration();
             productLibraryConfiguration.setProductConId(productConId);
