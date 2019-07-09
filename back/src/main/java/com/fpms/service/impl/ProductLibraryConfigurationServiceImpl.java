@@ -78,6 +78,7 @@ public class ProductLibraryConfigurationServiceImpl implements ProductLibraryCon
         if(productLibraryConfiguration.getReviewStatus().equals(Byte.parseByte("1"))){
             //处于已审核状态的删除，设置为已过期
             productLibraryConfiguration.setReviewStatus(Byte.parseByte("-2"));
+            productLibraryConfigurationDao.updateByPrimaryKeySelective(productLibraryConfiguration);
             return;
         }
         productConfigurationDao.deleteByProductConId(productConId);

@@ -3,10 +3,15 @@ package com.fpms.service.impl;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.serializer.SerializerFeature;
+import com.fpms.dao.ProductCategoryDao;
 import com.fpms.dao.ProductLibraryPreDao;
 import com.fpms.dao.ProductLibraryStandardDao;
+import com.fpms.dao.SupplierDao;
+import com.fpms.entity.ProductCategory;
 import com.fpms.entity.ProductLibraryPre;
 import com.fpms.entity.ProductLibraryStandard;
+import com.fpms.entity.Supplier;
+import com.fpms.service.ProductCategoryService;
 import com.fpms.service.ProductLibraryPreService;
 
 import com.fpms.service.StaffService;
@@ -31,7 +36,18 @@ public class ProductLibraryPreServiceImpl implements ProductLibraryPreService {
     private ProductLibraryStandardDao productLibraryStandardDao;
     private StaffService staffService;
     private SupplierService supplierService;
+    private ProductCategoryDao productCategoryDao;
+    private SupplierDao supplierDao;
 
+    @Autowired
+    public void setSupplierDao(SupplierDao supplierDao) {
+        this.supplierDao = supplierDao;
+    }
+
+    @Autowired
+    public void setProductCategoryDao(ProductCategoryDao productCategoryDao) {
+        this.productCategoryDao = productCategoryDao;
+    }
 
     @Autowired
     public void setProductLibraryStandardDao(ProductLibraryStandardDao productLibraryStandardDao) {
@@ -174,9 +190,25 @@ public class ProductLibraryPreServiceImpl implements ProductLibraryPreService {
             } else {
                 isSale = null;
             }
+            Integer categoryId = productLibraryPre.getCategoryId();
+            ProductCategory productCategory;
+            if(categoryId==null){
+                productCategory=null;
+            }else {
+                productCategory = productCategoryDao.selectByPrimaryKey(categoryId);
+            }
+            Integer supplierId=productLibraryPre.getSupplierId();
+            Supplier supplier;
+            if(supplierId!=null) {
+                supplier  = supplierDao.selectByPrimaryKey(supplierId);
+            }else{
+                supplier=null;
+            }
             String productPreWithIsSale = JSON.toJSONStringWithDateFormat(productLibraryPre,"yyyy-MM-dd HH:MM:SS", SerializerFeature.WriteDateUseDateFormat);
             StringBuffer product = new StringBuffer(productPreWithIsSale);
             product.insert(product.length()-1, ",isSale:" + (isSale == null ? "null" : isSale.toString()));
+            product.insert(product.length()-1, ",supplierName:" + (supplier == null ? "null" : supplier.getSupplierName()));
+            product.insert(product.length()-1, ",categoryName:" + (productCategory == null ? "null" : productCategory.getCategoryName()));
             Object pro=JSON.parse(product.toString());
             products.add(pro);
         }
