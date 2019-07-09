@@ -6,6 +6,8 @@ import com.fpms.entity.*;
 import com.fpms.entity.pojo.ResultBean;
 import com.fpms.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.interceptor.TransactionAspectSupport;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -162,6 +164,7 @@ public class OrderController {
      * @date ：Created in 2019/6/28 9:39
      */
     @PutMapping("/order/{orderId}")
+    @Transactional(rollbackFor = Exception.class)
     public ResultBean<Boolean> updateOrder(@PathVariable Integer orderId) {
         if (orderService.selectOrderByOrderId(orderId) == null) {
             return new ResultBean<>("要结算的订单不存在！");
@@ -208,16 +211,15 @@ public class OrderController {
                 logMoney.setRemark(order1.getProductStdId().toString());
                 logMoneyService.addLogMoney(logMoney);
             } else if (order1.getOrderType() == 2) {
-
                 //减少库存
                 ProductLibraryConfiguration productLibraryConfiguration = productLibraryConfigurationService.selectById(order1.getProductConId());
+                if (userMoney.subtract(productLibraryConfiguration.getProductConPrice().multiply(orderMoney)).doubleValue() < 0) {
+                    return new ResultBean<>("用户余额不足！ 需要购买的配置数量：" + orderMoney.toString() + "每个配置的单价：" +
+                            productLibraryConfiguration.getProductConPrice() + "需要的总金额：" + productLibraryConfiguration.getProductConPrice().multiply(orderMoney));
+                }
                 //配置按个购买
                 productLibraryConfiguration.setStock(productLibraryConfiguration.getStock() - 1);
                 productLibraryConfigurationService.updateProductConfiguration(productLibraryConfiguration);
-
-                if (userMoney.subtract(productLibraryConfiguration.getProductConPrice().multiply(orderMoney)).doubleValue() < 0) {
-                    return new ResultBean<>("用户余额不足！ 需要购买的配置数量：" + orderMoney.toString() + "每个配置的单价：" + productLibraryConfiguration.getProductConPrice());
-                }
                 //更改订单状态
                 Order order = new Order();
                 order.setOrderId(orderId);
@@ -245,6 +247,7 @@ public class OrderController {
             }
 
         } catch (Exception e) {
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
             return new ResultBean<>(e);
         }
         return new ResultBean<>(true);
