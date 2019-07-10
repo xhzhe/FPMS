@@ -102,7 +102,7 @@ public class ProductConfigurationController {
             Integer productPreId = productLibraryPre.getProductPreId();
             ProductLibraryStandard productLibraryStandard = productLibraryStandardService.selectByProductPreId(productPreId);
             if (addConProDto.getPercentage().compareTo(productLibraryPre.getPurchaseStartPoint()) < 0) {
-                throw new Exception("该产品没有达到产品的起购价");
+                throw new Exception("该产品没有达到产品的起购价，起购价为：" + productLibraryPre.getPurchaseStartPoint().toString());
             }
             //不对标准库库存进行操作，配置独立
 //            if(addConProDto.getPercentage().intValue()>productLibraryStandard.getStock()){
