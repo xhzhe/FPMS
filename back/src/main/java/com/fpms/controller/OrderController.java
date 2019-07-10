@@ -283,6 +283,7 @@ public class OrderController {
                 } else if (order.getOrderType() == 2) {
                     ProductLibraryConfiguration productLibraryConfiguration = productLibraryConfigurationService.selectById(order.getProductConId());
                     orderDto.setProductName(productLibraryConfiguration.getProductConName());
+                    orderDto.setProductLibraryConfiguration(productLibraryConfiguration);
                     orderDto.setConfigDetail(staffService.getConfigById(order.getProductConId()));
                 }
                 orderDtoList.add(orderDto);
