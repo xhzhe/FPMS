@@ -78,10 +78,11 @@ public class ProductLibraryPreController {
     public ResultBean<Boolean> addProduct(@RequestBody ProductLibraryPre product) {
         ResultBean<Boolean> res = new ResultBean<>();
         try {
-            if(product.getUnitNetValue().compareTo(new BigDecimal("9999999"))>=0){
+
+            if(product.getUnitNetValue()!=null&&product.getUnitNetValue().compareTo(new BigDecimal("9999999"))>=0){
                 throw new Exception("单位挣值过高");
             }
-            if(product.getCumulativeNetValue().compareTo(new BigDecimal("9999999"))>=0){
+            if(product.getCumulativeNetValue()!=null&&product.getCumulativeNetValue().compareTo(new BigDecimal("9999999"))>=0){
                 throw new Exception("累计挣值过高");
             }
             productLibraryPreService.addProduct(product);
