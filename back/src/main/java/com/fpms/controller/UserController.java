@@ -216,8 +216,14 @@ public class UserController {
     @PutMapping(value = "/user/{userId}/payPwd/actions/modify")
     public ResultBean<Boolean> modifyPayPwd(@RequestParam("newPayPwd1") String newPayPwd1, @RequestParam("newPayPwd2") String newPayPwd2,
                                             @RequestParam("oldPayPwd") String oldPayPwd, @PathVariable Integer userId) {
+        if(newPayPwd1.length()==0||newPayPwd2.length()==0){
+            return new ResultBean<>("没有传入两个新密码");
+        }
         if(newPayPwd1.equals(newPayPwd2)){
             try {
+                if(oldPayPwd.length()==0){
+                    throw new Exception("没有传入旧密码");
+                }
                 User user = userService.getUserById(userId);
                 if (EdsUtil.decryptBasedDes(user.getPayPwd()).equals(oldPayPwd)) {
                     user.setPayPwd(EdsUtil.encryptBasedDes(newPayPwd1));
@@ -272,6 +278,9 @@ public class UserController {
     @PutMapping(value = "/user/{userId}/payPwd")
     public ResultBean<Boolean> setPayPwd(@PathVariable Integer userId, @RequestParam("payPwd") String payPwd) {
         try {
+            if(payPwd.length()==0){
+                throw new Exception("没有输入支付密码");
+            }
             User user = new User();
             user.setUserId(userId);
             user.setPayPwd(EdsUtil.encryptBasedDes(payPwd));
@@ -284,7 +293,7 @@ public class UserController {
 
 
     @GetMapping("/user/mall")
-    public ResultBean<MallDto> getOnSale() throws Exception {
+    public ResultBean<MallDto> getOnSale() {
         MallDto mallDto = new MallDto();
 
         try {
