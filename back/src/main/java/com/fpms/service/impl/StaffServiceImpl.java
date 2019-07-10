@@ -212,17 +212,16 @@ public class StaffServiceImpl implements StaffService {
      * 更新职工信息
      *
      * @param staff
-     * @return : boolean
      * @author ：TianHong Liao
      * @date ：Created in 2019/6/26 13:47
      */
     @Override
-    public boolean updateStaff(Staff staff) {
+    public void updateStaff(Staff staff) throws Exception {
         int count = staffDao.updateByPrimaryKeySelective(staff);
         if (count > 0) {
-            return true;
+            return;
         }
-        return false;
+        throw new Exception("修改失败");
     }
 
     /**

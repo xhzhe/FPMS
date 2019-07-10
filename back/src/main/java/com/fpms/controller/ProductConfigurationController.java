@@ -56,6 +56,18 @@ public class ProductConfigurationController {
     @Transactional(rollbackFor = Exception.class)
     public ResultBean<Boolean> deleteConfigurationProduction(@RequestBody Map<String, String> param) {
         try {
+            if(!param.containsKey("productConfigId")){
+                throw new Exception("没有配置id");
+            }
+            if(!param.containsKey("productStdId")){
+                throw new Exception("没有标准库id");
+            }
+            if(param.get("productConfigId")==null){
+                throw new Exception("配置id为null");
+            }
+            if(param.get("productStdId")==null){
+                throw new Exception("标准库id为null");
+            }
             Integer productConfigId = Integer.valueOf(param.get("productConfigId"));
             Integer productStdId = Integer.valueOf(param.get("productStdId"));
             ProductLibraryConfiguration productLibraryConfiguration = productLibraryConfigurationService.selectById(productConfigId);
@@ -94,10 +106,18 @@ public class ProductConfigurationController {
     @Transactional(rollbackFor = Exception.class)
     public ResultBean<Boolean> addConfigurationProduction(@RequestBody AddConProDto addConProDto) {
         try {
+            if(addConProDto.getPercentage()==null){
+                throw new Exception("没有产品的价格");
+            }
+            if(addConProDto.getProductConId()==null){
+                throw new Exception("没有配置id");
+            }
+            if(addConProDto.getProductName()==null){
+                throw new Exception("没有产品名字");
+            }
             if (addConProDto.getPercentage().doubleValue() > 99999999) {
                 throw new Exception("单个产品价格过高");
             }
-
             ProductConfiguration productConfiguration = new ProductConfiguration();
             ProductLibraryPre productLibraryPre = productLibraryPreService.selectByProductName(addConProDto.getProductName());
 
@@ -178,7 +198,6 @@ public class ProductConfigurationController {
     @OperationLog(value = "修改产品比例")
     @PutMapping("/configuration/{configId}/{productStdId}/{rate}")
     public ResultBean<Boolean> modifyConfigRate(@PathVariable Integer configId, @PathVariable Integer productStdId, @PathVariable double rate) {
-        ResultBean<Boolean> res = new ResultBean<>();
         try {
             if (rate > 99999999) {
                 throw new Exception("单个产品价格过高");

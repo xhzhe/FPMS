@@ -42,7 +42,7 @@ public class SupplierController {
             if (supplier.getSupplierId() != null) {
                 throw new Exception("禁止传入id");
             }
-            if(supplier.getRegisterCapital().compareTo(new BigDecimal("999999999"))>=0){
+            if (supplier.getRegisterCapital() != null && supplier.getRegisterCapital().compareTo(new BigDecimal("999999999")) >= 0) {
                 throw new Exception("该公司注册资本过高");
             }
             supplierService.addSupplier(supplier);

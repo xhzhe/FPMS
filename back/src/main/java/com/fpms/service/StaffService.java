@@ -82,11 +82,10 @@ public interface StaffService {
      * 更新职工信息
      *
      * @param staff
-     * @return : boolean
      * @author ：TianHong Liao
      * @date ：Created in 2019/6/26 13:42
      */
-    boolean updateStaff(Staff staff);
+    void updateStaff(Staff staff) throws Exception;
 
     /**
      * 删除员工

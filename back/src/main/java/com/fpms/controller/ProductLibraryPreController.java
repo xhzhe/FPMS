@@ -79,10 +79,10 @@ public class ProductLibraryPreController {
         ResultBean<Boolean> res = new ResultBean<>();
         try {
 
-            if(product.getUnitNetValue()!=null&&product.getUnitNetValue().compareTo(new BigDecimal("9999999"))>=0){
+            if (product.getUnitNetValue() != null && product.getUnitNetValue().compareTo(new BigDecimal("9999999")) >= 0) {
                 throw new Exception("单位挣值过高");
             }
-            if(product.getCumulativeNetValue()!=null&&product.getCumulativeNetValue().compareTo(new BigDecimal("9999999"))>=0){
+            if (product.getCumulativeNetValue() != null && product.getCumulativeNetValue().compareTo(new BigDecimal("9999999")) >= 0) {
                 throw new Exception("累计挣值过高");
             }
             productLibraryPreService.addProduct(product);
@@ -165,7 +165,7 @@ public class ProductLibraryPreController {
     @GetMapping("/productPre/productStd/{productStdId}")
     public ResultBean<Object> getProductPreByStdId(@PathVariable Integer productStdId) {
         try {
-            ProductLibraryPre productPre= productLibraryPreService.selectByStdId(productStdId);
+            ProductLibraryPre productPre = productLibraryPreService.selectByStdId(productStdId);
             Object productLibraryPre = productLibraryPreService.selectByIdNew(productPre.getProductPreId());
             ResultBean<Object> res = new ResultBean<>();
             res.setData(productLibraryPre);

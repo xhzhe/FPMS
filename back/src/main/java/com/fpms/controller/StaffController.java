@@ -292,14 +292,8 @@ public class StaffController {
     @PutMapping("/staff/{staffId}")
     public ResultBean<Boolean> modifyStaffInfo(@PathVariable Integer staffId, Staff staff) {
         try {
-            Staff staffTemp = staffService.getSingleStaffDetail(staffId);
-            if (staffTemp == null) {
-                throw new Exception("找不到该员工");
-            }
-            boolean success = staffService.updateStaff(staff);
-            if (!success) {
-                throw new Exception("修改失败");
-            }
+            staffService.getSingleStaffDetail(staffId);
+            staffService.updateStaff(staff);
         } catch (Exception e) {
             return new ResultBean<>(e);
         }
@@ -321,6 +315,9 @@ public class StaffController {
     @PutMapping("/staff/{staffId}/password")
     public ResultBean<Boolean> modifyPassword(@PathVariable Integer staffId, String oldPassword,
                                               String newPassword1, String newPassword2) {
+        if(newPassword1==null||newPassword2==null||newPassword1.length()==0||newPassword2.length()==0){
+            return new ResultBean<>("没有传入两个新密码");
+        }
         if (newPassword1.equals(newPassword2)) {
             try {
                 Staff staffTemp = staffService.getSingleStaffDetail(staffId);
@@ -330,12 +327,10 @@ public class StaffController {
                 if (oldPassword == null) {
                     throw new Exception("没有旧密码传入");
                 }
+
                 if (oldPassword.equals(EdsUtil.decryptBasedDes(staffTemp.getStaffPwd()))) {
                     staffTemp.setStaffPwd(EdsUtil.encryptBasedDes(newPassword1));
-                    boolean success = staffService.updateStaff(staffTemp);
-                    if (!success) {
-                        throw new Exception("修改密码失败");
-                    }
+                    staffService.updateStaff(staffTemp);
                 } else {
                     throw new Exception("旧密码不正确");
                 }
