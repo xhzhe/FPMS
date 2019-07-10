@@ -4,8 +4,10 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.fpms.annotation.OperationLog;
 import com.fpms.entity.ProductLibraryPre;
+import com.fpms.entity.ProductLibraryStandard;
 import com.fpms.entity.pojo.ResultBean;
 import com.fpms.service.ProductLibraryPreService;
+import com.fpms.service.ProductLibraryStandardService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
@@ -142,6 +144,28 @@ public class ProductLibraryPreController {
     public ResultBean<Object> getProductPre(@PathVariable Integer productPreId) {
         try {
             Object productLibraryPre = productLibraryPreService.selectByIdNew(productPreId);
+            ResultBean<Object> res = new ResultBean<>();
+            res.setData(productLibraryPre);
+            return res;
+        } catch (Exception e) {
+            return new ResultBean<>(e);
+        }
+    }
+
+    /**
+     * 查找预选库产品
+     *
+     * @param productStdId
+     * @return : Object
+     * @author : HuiZhe Xu
+     * @date : Created in 2019/7/2 15:57
+     */
+    @OperationLog("按Stdid查找预选库产品")
+    @GetMapping("/productPre/productStd/{productStdId}")
+    public ResultBean<Object> getProductPreByStdId(@PathVariable Integer productStdId) {
+        try {
+            ProductLibraryPre productPre= productLibraryPreService.selectByStdId(productStdId);
+            Object productLibraryPre = productLibraryPreService.selectByIdNew(productPre.getProductPreId());
             ResultBean<Object> res = new ResultBean<>();
             res.setData(productLibraryPre);
             return res;
