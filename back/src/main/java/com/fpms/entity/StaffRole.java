@@ -16,7 +16,7 @@ public class StaffRole {
     private Integer staffId;
 
     private Integer roleId;
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+0")
+
     private Date createTime;
 
     public Integer getStaffRoleId() {

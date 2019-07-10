@@ -16,7 +16,7 @@ public class Privilege {
     private String privilegeName;
 
     private String privilegeCode;
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+0")
+
     private Date createTime;
 
     public Integer getPrivilegeId() {
