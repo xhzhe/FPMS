@@ -54,8 +54,7 @@ public class UserController {
                                         String userEmail, String certificateType, String certificateNum, String career) {
         ResultBean<Boolean> resultBean = new ResultBean<>();
         try {
-            if (userName.length() > 1023 || userEmail.length() > 255
-                    || userPhone.length() > 11 || career.length() > 255) {
+            if (userName.length() > 1023) {
                 return new ResultBean<>("用户名过长！");
             } else if (userEmail.length() > 255) {
                 return new ResultBean<>("邮箱过长！");

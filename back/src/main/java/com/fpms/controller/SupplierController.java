@@ -7,6 +7,7 @@ import com.fpms.service.SupplierService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -40,6 +41,9 @@ public class SupplierController {
         try {
             if (supplier.getSupplierId() != null) {
                 throw new Exception("禁止传入id");
+            }
+            if(supplier.getRegisterCapital().compareTo(new BigDecimal("999999999"))>=0){
+                throw new Exception("该公司注册资本过高");
             }
             supplierService.addSupplier(supplier);
             res.setData(true);

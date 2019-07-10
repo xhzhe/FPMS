@@ -17,6 +17,7 @@ import java.util.Date;
 public class OrderDto {
     private Order order;
     private String userName;
+    private ConfigDetail configDetail;
     private ProductLibraryConfiguration productLibraryConfiguration;
     private ProductLibraryStandard productLibraryStandard;
     private String productName;
@@ -36,14 +37,6 @@ public class OrderDto {
         this.userName = userName;
     }
 
-    public ProductLibraryConfiguration getProductLibraryConfiguration() {
-        return productLibraryConfiguration;
-    }
-
-    public void setProductLibraryConfiguration(ProductLibraryConfiguration productLibraryConfiguration) {
-        this.productLibraryConfiguration = productLibraryConfiguration;
-    }
-
     public ProductLibraryStandard getProductLibraryStandard() {
         return productLibraryStandard;
     }
@@ -58,5 +51,21 @@ public class OrderDto {
 
     public void setProductName(String productName) {
         this.productName = productName;
+    }
+
+    public ConfigDetail getConfigDetail() {
+        return configDetail;
+    }
+
+    public void setConfigDetail(ConfigDetail configDetail) {
+        this.configDetail = configDetail;
+    }
+
+    public ProductLibraryConfiguration getProductLibraryConfiguration() {
+        return productLibraryConfiguration;
+    }
+
+    public void setProductLibraryConfiguration(ProductLibraryConfiguration productLibraryConfiguration) {
+        this.productLibraryConfiguration = productLibraryConfiguration;
     }
 }

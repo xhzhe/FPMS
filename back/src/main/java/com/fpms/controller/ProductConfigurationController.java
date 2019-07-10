@@ -2,6 +2,7 @@ package com.fpms.controller;
 
 import com.fpms.annotation.OperationLog;
 import com.fpms.dao.ProductConfigurationDao;
+import com.fpms.dao.ProductLibraryStandardDao;
 import com.fpms.dto.AddConProDto;
 import com.fpms.entity.ProductConfiguration;
 import com.fpms.entity.ProductLibraryConfiguration;
@@ -96,13 +97,18 @@ public class ProductConfigurationController {
             if (addConProDto.getPercentage().doubleValue() > 99999999) {
                 throw new Exception("单个产品价格过高");
             }
+
             ProductConfiguration productConfiguration = new ProductConfiguration();
             ProductLibraryPre productLibraryPre = productLibraryPreService.selectByProductName(addConProDto.getProductName());
 
             Integer productPreId = productLibraryPre.getProductPreId();
             ProductLibraryStandard productLibraryStandard = productLibraryStandardService.selectByProductPreId(productPreId);
+            ProductConfiguration productConfigurationTemp = productConfigurationDao.selectByPciAndPsi(addConProDto.getProductConId(), productLibraryStandard.getProductStdId());
+            if(productConfigurationTemp!=null){
+                throw new Exception("该配置中已存在该产品，不允许重复添加");
+            }
             if (addConProDto.getPercentage().compareTo(productLibraryPre.getPurchaseStartPoint()) < 0) {
-                throw new Exception("该产品没有达到产品的起购价");
+                throw new Exception("该产品没有达到产品的起购价，起购价为：" + productLibraryPre.getPurchaseStartPoint().toString());
             }
             //不对标准库库存进行操作，配置独立
 //            if(addConProDto.getPercentage().intValue()>productLibraryStandard.getStock()){
@@ -124,6 +130,9 @@ public class ProductConfigurationController {
             productConfiguration.setProductConId(addConProDto.getProductConId());
             productConfiguration.setProductStdId(productLibraryStandard.getProductStdId());
             productLibraryConfigurationService.addConfigurationProduction(productConfiguration);
+        } catch (MyBatisSystemException e) {
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+            return new ResultBean<>("数据库错误，可能为返回数据数量和预定不匹配,即配置中存在相同产品");
         } catch (Exception e) {
             TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
             return new ResultBean<>(e);
