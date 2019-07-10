@@ -17,6 +17,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.EmptyStackException;
 import java.util.List;
 
 /**
@@ -131,7 +132,10 @@ public class UserController {
     @PutMapping(value = "/user/{userId}/userPwd/actions/modify")
     public ResultBean<Boolean> modifyUserPwd(@RequestParam("newUserPwd1") String newUserPwd1, @RequestParam("newUserPwd2") String newUserPwd2,
                                              @RequestParam("oldUserPwd") String oldUserPwd, @PathVariable Integer userId) {
-        if(newUserPwd1.equals(newUserPwd2)){
+        if (newUserPwd1.length() < 5 || newUserPwd1.length() > 20 || newUserPwd2.length() < 5 || newUserPwd2.length() > 20) {
+            return new ResultBean<>("密码应为5-20位");
+        }
+        if (newUserPwd1.equals(newUserPwd2)) {
             try {
                 User user = userService.getUserById(userId);
                 if (EdsUtil.decryptBasedDes(user.getUserPwd()).equals(oldUserPwd)) {
@@ -144,7 +148,7 @@ public class UserController {
                 return new ResultBean<>("修改失败！");
             }
             return new ResultBean<>(true);
-        }else {
+        } else {
             return new ResultBean<>("两次输入的新密码不一致！请重新输入！");
         }
     }
@@ -167,7 +171,7 @@ public class UserController {
                 return new ResultBean<>("地址过长！");
             } else if (userEmail.length() > 255) {
                 return new ResultBean<>("邮箱过长！");
-            } else if (zipCode!=null&&zipCode.length() != 6) {
+            } else if (zipCode != null && zipCode.length() != 6) {
                 throw new Exception("邮政编码不为6位");
             } else if (!("m".equals(gender.toLowerCase()) || "f".equals(gender.toLowerCase()))) {
                 throw new Exception("性别不正确");
@@ -184,7 +188,7 @@ public class UserController {
                     user.setCareer(career);
                     user.setUserGender(gender);
                     user.setZipCode(zipCode);
-                    if(birthDate!=null) {
+                    if (birthDate != null) {
                         DateFormat fmt = new SimpleDateFormat("yyyy-MM-dd");
                         Date date = fmt.parse(birthDate);
                         user.setUserBrithday(date);
@@ -216,12 +220,16 @@ public class UserController {
     @PutMapping(value = "/user/{userId}/payPwd/actions/modify")
     public ResultBean<Boolean> modifyPayPwd(@RequestParam("newPayPwd1") String newPayPwd1, @RequestParam("newPayPwd2") String newPayPwd2,
                                             @RequestParam("oldPayPwd") String oldPayPwd, @PathVariable Integer userId) {
-        if(newPayPwd1.length()==0||newPayPwd2.length()==0){
+        if (newPayPwd1.length() == 0 || newPayPwd2.length() == 0) {
             return new ResultBean<>("没有传入两个新密码");
         }
-        if(newPayPwd1.equals(newPayPwd2)){
+
+        if (newPayPwd1.equals(newPayPwd2)) {
             try {
-                if(oldPayPwd.length()==0){
+                if (newPayPwd1.length() != 6) {
+                    throw new Exception("支付密码应为6位");
+                }
+                if (oldPayPwd.length() == 0) {
                     throw new Exception("没有传入旧密码");
                 }
                 User user = userService.getUserById(userId);
@@ -235,7 +243,7 @@ public class UserController {
                 return new ResultBean<>("修改失败");
             }
             return new ResultBean<>(true);
-        }else {
+        } else {
             return new ResultBean<>("两次输入的新支付密码不一致！请重新输入！");
         }
     }
@@ -278,8 +286,11 @@ public class UserController {
     @PutMapping(value = "/user/{userId}/payPwd")
     public ResultBean<Boolean> setPayPwd(@PathVariable Integer userId, @RequestParam("payPwd") String payPwd) {
         try {
-            if(payPwd.length()==0){
+            if (payPwd.length() == 0) {
                 throw new Exception("没有输入支付密码");
+            }
+            if(payPwd.length()!=6){
+                throw new Exception("支付密码应为6位");
             }
             User user = new User();
             user.setUserId(userId);
