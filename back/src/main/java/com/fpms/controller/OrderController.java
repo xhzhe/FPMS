@@ -117,19 +117,21 @@ public class OrderController {
                 return new ResultBean<>("购买金额超过最大金额限制！");
             }
         } else if (order.getOrderType() == 2) {
-            ProductLibraryConfiguration productLibraryConfiguration=productLibraryConfigurationService.selectById(order.getProductConId());
+            ProductLibraryConfiguration productLibraryConfiguration = productLibraryConfigurationService.selectById(order.getProductConId());
             if (order.getProductConId() == null || productLibraryConfiguration == null) {
                 return new ResultBean<>("配置库产品不存在!");
             }
-            if(!productLibraryConfiguration.getReviewStatus().equals(Byte.parseByte("1"))){
+            if (!productLibraryConfiguration.getReviewStatus().equals(Byte.parseByte("1"))) {
                 return new ResultBean<>("该配置不处于审核通过状态，可能已被弃用");
             }
-            if(!productLibraryConfiguration.getIsSale().equals(Byte.parseByte("1"))){
+            if (!productLibraryConfiguration.getIsSale().equals(Byte.parseByte("1"))) {
                 return new ResultBean<>("该配置不处于上架状态，不允许购买");
             }
             if (productLibraryConfiguration.getStock() == 0) {
                 return new ResultBean<>("库存不足，无法下单!");
             }
+            //配置金额计算
+            order.setOrderMoney(order.getOrderMoney().multiply(productLibraryConfiguration.getProductConPrice()));
         }
         try {
             //新增订单
@@ -219,9 +221,8 @@ public class OrderController {
             } else if (order1.getOrderType() == 2) {
                 //减少库存
                 ProductLibraryConfiguration productLibraryConfiguration = productLibraryConfigurationService.selectById(order1.getProductConId());
-                if (userMoney.subtract(productLibraryConfiguration.getProductConPrice().multiply(orderMoney)).doubleValue() < 0) {
-                    return new ResultBean<>("用户余额不足！ 需要购买的配置数量：" + orderMoney.toString() + "每个配置的单价：" +
-                            productLibraryConfiguration.getProductConPrice() + "需要的总金额：" + productLibraryConfiguration.getProductConPrice().multiply(orderMoney));
+                if (userMoney.subtract(orderMoney).doubleValue() < 0) {
+                    return new ResultBean<>("用户余额不足！" + "需要的总金额：" + orderMoney);
                 }
                 //配置按个购买
                 productLibraryConfiguration.setStock(productLibraryConfiguration.getStock() - 1);
@@ -232,7 +233,7 @@ public class OrderController {
                 order.setOrderStatus(Byte.valueOf("2"));
                 orderService.updateOrder(order);
                 //减少金额按照配置金额
-                user.setUserMoney(userMoney.subtract(productLibraryConfiguration.getProductConPrice().multiply(orderMoney)));
+                user.setUserMoney(userMoney.subtract(orderMoney));
                 userService.updateUser(user);
                 //放入个人产品库中
                 ProductUser productUser = new ProductUser();
