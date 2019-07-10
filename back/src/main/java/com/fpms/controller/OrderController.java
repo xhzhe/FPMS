@@ -48,6 +48,9 @@ public class OrderController {
     @Autowired
     private EvaluationService evaluationService;
 
+    @Autowired
+    private StaffService staffService;
+
     /**
      * 获取用户的订单列表
      *
@@ -280,7 +283,7 @@ public class OrderController {
                 } else if (order.getOrderType() == 2) {
                     ProductLibraryConfiguration productLibraryConfiguration = productLibraryConfigurationService.selectById(order.getProductConId());
                     orderDto.setProductName(productLibraryConfiguration.getProductConName());
-                    orderDto.setProductLibraryConfiguration(productLibraryConfiguration);
+                    orderDto.setConfigDetail(staffService.getConfigById(order.getProductConId()));
                 }
                 orderDtoList.add(orderDto);
             }
