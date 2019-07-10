@@ -161,7 +161,7 @@ public class ProductLibraryPreController {
      * @date : Created in 2019/7/2 15:57
      */
     @OperationLog("按Stdid查找预选库产品")
-    @GetMapping("/productPre/{productStdId}")
+    @GetMapping("/productPre/productStd/{productStdId}")
     public ResultBean<Object> getProductPreByStdId(@PathVariable Integer productStdId) {
         try {
             ProductLibraryPre productPre= productLibraryPreService.selectByStdId(productStdId);
