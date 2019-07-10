@@ -88,6 +88,13 @@ public interface ProductConfigurationDao {
      */
     Integer deleteByProductConId(@Param("productConId") Integer productConId);
 
+    /**
+     * 通过配置id获取配置中有什么产品
+     * @author     ：YongBiao Liao
+     * @date       ：Created in 2019/7/10 18:44
+     * @param       configId
+     * @return     : java.util.List<com.fpms.entity.ProductConfiguration>
+     */
     List<ProductConfiguration> getProductConfigId(Integer configId);
 
     /**

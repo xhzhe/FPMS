@@ -79,6 +79,7 @@ public class OrderController {
                     ProductLibraryConfiguration productLibraryConfiguration = productLibraryConfigurationService.selectById(order.getProductConId());
                     orderDto.setProductName(productLibraryConfiguration.getProductConName());
                     orderDto.setProductLibraryConfiguration(productLibraryConfiguration);
+                    orderDto.setConfigDetail(staffService.getConfigById(order.getProductConId()));
                 }
                 orderDtoList.add(orderDto);
             }
