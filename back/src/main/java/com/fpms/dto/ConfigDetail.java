@@ -15,9 +15,9 @@ public class ConfigDetail {
     public void addProduct(String name, String desc, Float rate,int productLibraryId){
         Product p=new Product();
         p.rate=rate;
-        p.describe=name;
+        p.describe=desc;
         p.productStdId=productLibraryId;
-        p.productName=desc;
+        p.productName=name;
         products.add(p);
     }
 }

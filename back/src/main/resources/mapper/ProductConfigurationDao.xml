@@ -12,12 +12,12 @@
     configuration_id, product_std_id, product_con_id, percentage, create_time
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select 
+    select
     <include refid="Base_Column_List" />
     from product_configuration
     where configuration_id = #{configurationId,jdbcType=INTEGER}
   </select>
-  <select id="getProductConfigID" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+  <select id="getProductConfigId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />
     from product_configuration

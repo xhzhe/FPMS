@@ -203,6 +203,7 @@ public class OrderController {
                 ProductLibraryStandard productLibraryStandard = productLibraryStandardService.selectById(order1.getProductStdId());
                 productLibraryStandard.setStock(productLibraryStandard.getStock() - order1.getOrderMoney().intValue());
                 productLibraryStandardService.updateProductStandard(productLibraryStandard);
+                //更新用户金额
                 user.setUserMoney(userMoney.subtract(orderMoney));
                 userService.updateUser(user);
                 //放入个人产品库中
