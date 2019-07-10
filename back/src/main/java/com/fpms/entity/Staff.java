@@ -28,7 +28,7 @@ public class Staff {
     private Byte staffStatus;
 
     private Integer createBy;
-
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+0")
     private Date createTime;
 
     public Integer getStaffId() {
