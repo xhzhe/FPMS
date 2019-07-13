@@ -1,9 +1,9 @@
 package com.fpms.service;
 
-import com.fpms.dto.ProductWithName;
 import com.fpms.entity.ProductLibraryStandard;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -64,21 +64,21 @@ public interface ProductLibraryStandardService {
      * 获取所有标准库产品
      *
      * @param
-     * @return : ArrayList<ProductWithName>
+     * @return : ArrayList<BeanMap>
      * @author ：TianHong Liao
      * @date ：Created in 2019/6/28 16:50
      */
-    ArrayList<ProductWithName> getAll() throws Exception;
+    ArrayList<HashMap<String,Object>> getAll() throws Exception;
 
     /**
      * 查找单个标准库产品
      *
      * @param id
-     * @return : com.fpms.dto.ProductWithName
+     * @return : com.fpms.dto.BeanMap
      * @author : HuiZhe Xu
      * @date : Created in 2019/7/2 16:05
      */
-    ProductWithName getProductStd(Integer id) throws Exception;
+    HashMap<String,Object> getProductStd(Integer id) throws Exception;
 
     /**
      * 插入标准库产品

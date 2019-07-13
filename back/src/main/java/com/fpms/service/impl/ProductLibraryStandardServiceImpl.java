@@ -2,18 +2,18 @@ package com.fpms.service.impl;
 
 import com.fpms.dao.ProductLibraryPreDao;
 import com.fpms.dao.ProductLibraryStandardDao;
-import com.fpms.dto.ProductWithName;
 
 import com.fpms.entity.ProductLibraryPre;
 import com.fpms.entity.ProductLibraryStandard;
 
 import com.fpms.service.ProductLibraryStandardService;
+import com.google.common.collect.Maps;
 import org.mybatis.spring.MyBatisSystemException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cglib.beans.BeanMap;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 /**
  * @author : HuiZhe Xu
@@ -39,9 +39,11 @@ public class ProductLibraryStandardServiceImpl implements ProductLibraryStandard
     /**
      * 下架产品
      *
-     * @param id
+     * @return : void
+     * @throws Exception when product not exist
      * @author : HuiZhe Xu
-     * @date : Created in 2019/6/25 11:05
+     * @date : Created in 2019/7/13 21:30
+     * @parameter : id
      */
     @Override
     public void obtainedProducts(Integer id) throws Exception {
@@ -57,12 +59,12 @@ public class ProductLibraryStandardServiceImpl implements ProductLibraryStandard
     }
 
     /**
-     * 通过标准库iD获取标准库产品
+     * 过标准库iD获取标准库产品
      *
-     * @param productStdId
      * @return : com.fpms.entity.ProductLibraryStandard
-     * @author ：HuiZhe Xu
-     * @date ：Created in 2019/6/25 10:34
+     * @author : HuiZhe Xu
+     * @date : Created in 2019/7/13 21:31
+     * @parameter : productStdId
      */
     @Override
     public ProductLibraryStandard selectById(Integer productStdId) throws Exception {
@@ -137,13 +139,13 @@ public class ProductLibraryStandardServiceImpl implements ProductLibraryStandard
      * 获取所有标准库产品
      *
      * @param
-     * @return : ArrayList<ProductWithName>
+     * @return : ArrayList<BeanMap>
      * @author ：TianHong Liao
      * @date ：Created in 2019/6/28 16:50
      */
     @Override
-    public ArrayList<ProductWithName> getAll() throws Exception {
-        ArrayList<ProductWithName> productWithNames = new ArrayList<>();
+    public ArrayList<HashMap<String, Object>> getAll() throws Exception {
+        ArrayList<HashMap<String, Object>> productWithNames = new ArrayList<>();
         List<ProductLibraryStandard> productLibraryStandards = productLibraryStandardDao.selectAll();
         if (productLibraryStandards == null) {
             throw new Exception("标准库中无产品");
@@ -158,12 +160,12 @@ public class ProductLibraryStandardServiceImpl implements ProductLibraryStandard
      * 查找单个标准库产品
      *
      * @param id
-     * @return : com.fpms.dto.ProductWithName
+     * @return : BeanMap
      * @author : HuiZhe Xu
      * @date : Created in 2019/7/2 16:05
      */
     @Override
-    public ProductWithName getProductStd(Integer id) throws Exception {
+    public HashMap<String, Object> getProductStd(Integer id) throws Exception {
         ProductLibraryStandard productLibraryStandard = selectById(id);
         return makeProductWithName(productLibraryStandard);
     }
@@ -195,7 +197,7 @@ public class ProductLibraryStandardServiceImpl implements ProductLibraryStandard
         throw new Exception("插入失败");
     }
 
-    private ProductWithName makeProductWithName(ProductLibraryStandard productLibraryStandard) throws Exception {
+    private HashMap<String, Object> makeProductWithName(ProductLibraryStandard productLibraryStandard) throws Exception {
         if (productLibraryStandard.getProductPreId() == null) {
             throw new Exception("非法产品，不存在预选库id");
         }
@@ -204,25 +206,12 @@ public class ProductLibraryStandardServiceImpl implements ProductLibraryStandard
             throw new Exception("标准库中产品没有出现在预选库中，不合法产品");
         }
         String name = productLibraryPre.getProductName();
-        ProductWithName productWithName = new ProductWithName();
-        productWithName.setCreateTime(productLibraryStandard.getCreateTime());
-        productWithName.setIsSale(productLibraryStandard.getIsSale());
-        productWithName.setCreditRiskIndex(productLibraryStandard.getCreditRiskIndex());
-        productWithName.setEvalutionAvgScore(productLibraryStandard.getEvalutionAvgScore());
-        productWithName.setEvalutionNum(productLibraryStandard.getEvalutionNum());
-        productWithName.setExchangeRateRiskIndex(productLibraryStandard.getExchangeRateRiskIndex());
-        productWithName.setInterestRateRiskIndex(productLibraryStandard.getInterestRateRiskIndex());
-        productWithName.setInterRiskRating(productLibraryStandard.getInterRiskRating());
-        productWithName.setMarketRiskIndex(productLibraryStandard.getMarketRiskIndex());
-        productWithName.setProductName(name);
-        productWithName.setProductPreId(productLibraryStandard.getProductPreId());
-        productWithName.setProductStdId(productLibraryStandard.getProductStdId());
-        productWithName.setSaleEndTime(productLibraryStandard.getSaleEndTime());
-        productWithName.setSaleNum(productLibraryStandard.getSaleNum());
-        productWithName.setSaleStartTime(productLibraryStandard.getSaleStartTime());
-        productWithName.setStock(productLibraryStandard.getStock());
-        productWithName.setSuitUser(productLibraryStandard.getSuitUser());
-        return productWithName;
+        HashMap<String, Object> product = Maps.newHashMap();
+        BeanMap.create(productLibraryStandard).forEach((k, v) ->
+                product.put(k.toString(), v)
+        );
+        product.put("productName", name);
+        return product;
     }
 
     /**

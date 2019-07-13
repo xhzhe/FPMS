@@ -2,7 +2,6 @@ package com.fpms.controller;
 
 import com.fpms.annotation.OperationLog;
 import com.fpms.dao.ProductLibraryStandardDao;
-import com.fpms.dto.ProductWithName;
 import com.fpms.entity.ProductLibraryStandard;
 import com.fpms.entity.pojo.ResultBean;
 import com.fpms.service.ProductLibraryPreService;
@@ -13,6 +12,7 @@ import org.springframework.transaction.interceptor.TransactionAspectSupport;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -115,13 +115,13 @@ public class ProductLibraryStandardController {
      * 获取所有标准库产品
      *
      * @param
-     * @return : ArrayList<ProductWithName>
+     * @return : ArrayList<BeanMap>
      * @author ：TianHong Liao
      * @date ：Created in 2019/6/28 16:52
      */
     @GetMapping("/productStds")
-    public ResultBean<List<ProductWithName>> getAllProductStd() {
-        ArrayList<ProductWithName> productWithNames;
+    public ResultBean<List<HashMap<String,Object>>> getAllProductStd() {
+        ArrayList<HashMap<String,Object>> productWithNames;
         try {
             productWithNames = productLibraryStandardService.getAll();
         } catch (Exception e) {
@@ -134,13 +134,13 @@ public class ProductLibraryStandardController {
      * 获取单个产品
      *
      * @param productStdId
-     * @return : com.fpms.entity.pojo.ResultBean<com.fpms.dto.ProductWithName>
+     * @return : com.fpms.entity.pojo.ResultBean<HashMap<String,Object>>
      * @author : HuiZhe Xu
      * @date : Created in 2019/7/2 16:14
      */
     @OperationLog("获取单个产品")
     @GetMapping("/productStd/{productStdId}")
-    public ResultBean<ProductWithName> getProductStd(@PathVariable Integer productStdId) {
+    public ResultBean<HashMap<String,Object>> getProductStd(@PathVariable Integer productStdId) {
         try {
             if (productStdId == null) {
                 throw new Exception("没有传入id");
@@ -148,7 +148,7 @@ public class ProductLibraryStandardController {
             if (productStdId < 0) {
                 throw new Exception("id不合法");
             }
-            ProductWithName productWithNames = productLibraryStandardService.getProductStd(productStdId);
+            HashMap<String,Object> productWithNames = productLibraryStandardService.getProductStd(productStdId);
             return new ResultBean<>(productWithNames);
         } catch (Exception e) {
             return new ResultBean<>(e);
